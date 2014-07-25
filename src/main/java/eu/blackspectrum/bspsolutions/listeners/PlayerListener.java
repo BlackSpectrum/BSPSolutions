@@ -7,7 +7,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -33,14 +32,6 @@ public class PlayerListener implements Listener
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerConsume( final PlayerItemConsumeEvent event ) {
-		SaferSafeZones.onPlayerConsume( event );
-	}
-
-
-
-
-	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath( final PlayerDeathEvent event ) {
 		DieSilent.onPlayerDeath( event );
 		DropAll.onPlayerDeath( event );
@@ -52,8 +43,9 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
 		FalseAccessBlocker.onPlayerInteractBlock( event );
-		ForceOpen.onOpenChest( event );
 		SaferSafeZones.onPlayerUseItem( event );
+		ForceOpen.onOpenChest( event );
+		
 	}
 
 

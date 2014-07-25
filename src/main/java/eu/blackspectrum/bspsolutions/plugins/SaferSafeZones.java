@@ -4,12 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -49,15 +47,6 @@ public class SaferSafeZones
 
 
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public static void onPlayerConsume( final PlayerItemConsumeEvent event ) {
-		if ( event.getItem().getType().equals( Material.POTION ) )
-			event.setCancelled( true );
-	}
-
-
-
-
 	public static void onPlayerDamaged( final EntityDamageEvent event ) {
 		if ( event.getEntityType().equals( EntityType.PLAYER ) )
 			if ( BSPSolutions.isInSafeZone( event.getEntity().getLocation() ) )
@@ -80,6 +69,10 @@ public class SaferSafeZones
 	public static void onPlayerUseItem( final PlayerInteractEvent event ) {
 		if ( BSPSolutions.isInSafeZone( event.getPlayer().getLocation() ) )
 		{
+			if ( event.getItem() == null || event.getAction().equals( Action.LEFT_CLICK_AIR )
+					|| event.getAction().equals( Action.LEFT_CLICK_BLOCK ) )
+				return;
+
 			final Material item = event.getItem().getType();
 
 			if ( item.equals( Material.EGG ) || item.equals( Material.ENDER_PEARL ) || item.equals( Material.POTION ) )

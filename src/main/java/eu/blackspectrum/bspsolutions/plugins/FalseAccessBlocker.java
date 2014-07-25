@@ -27,25 +27,28 @@ public class FalseAccessBlocker
 
 	public static void onPlayerInteractBlock( final PlayerInteractEvent event ) {
 		final Player player = event.getPlayer();
+		
 		if ( event.getAction().equals( Action.RIGHT_CLICK_BLOCK ) )
+		{
 			if ( event.isCancelled() )
 			{
 				player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
 				return;
 			}
 
-		if ( player.hasMetadata( "lastCancelledEvent" ) )
-		{
-			long lastCancelledEvent = -1;
-			for ( final MetadataValue meta : player.getMetadata( "lastCancelledEvent" ) )
-				if ( meta.getOwningPlugin().equals( BSPSolutions.instance ) )
-					lastCancelledEvent = meta.asLong();
+			if ( player.hasMetadata( "lastCancelledEvent" ) )
+			{
+				long lastCancelledEvent = -1;
+				for ( final MetadataValue meta : player.getMetadata( "lastCancelledEvent" ) )
+					if ( meta.getOwningPlugin().equals( BSPSolutions.instance ) )
+						lastCancelledEvent = meta.asLong();
 
-			if ( lastCancelledEvent > 0 && ( lastCancelledEvent + 750L ) > System.currentTimeMillis() )
-				event.setCancelled( true );
+				if ( lastCancelledEvent > 0 && ( lastCancelledEvent + 750L ) > System.currentTimeMillis() )
+					event.setCancelled( true );
 
-			player.removeMetadata( "lastCancelledEvent", BSPSolutions.instance );
+				player.removeMetadata( "lastCancelledEvent", BSPSolutions.instance );
 
+			}
 		}
 	}
 }
