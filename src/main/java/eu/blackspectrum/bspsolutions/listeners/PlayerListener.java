@@ -50,7 +50,6 @@ public class PlayerListener implements Listener
 
 
 
-
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteractEntity( final PlayerInteractEntityEvent event ) {
 		AbandonPet.onPetHit( event );
@@ -71,6 +70,7 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove( final PlayerMoveEvent event ) {
 		SaferSafeZones.onPlayerChunkMove( event );
+		FalseAccessBlocker.onPlayerJump( event );
 	}
 
 
