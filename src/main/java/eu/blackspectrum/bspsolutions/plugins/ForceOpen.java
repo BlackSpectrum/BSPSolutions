@@ -20,7 +20,7 @@ public class ForceOpen
 			final Block block = event.getClickedBlock();
 			final Player player = event.getPlayer();
 
-			if ( block.getType().equals( Material.CHEST ) )
+			if ( block.getType().equals( Material.CHEST ) && !player.isSneaking())
 			{
 				event.setCancelled( true );
 				final Chest chest = (Chest) block.getState();
