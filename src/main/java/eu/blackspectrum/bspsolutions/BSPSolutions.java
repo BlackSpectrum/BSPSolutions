@@ -52,8 +52,23 @@ public class BSPSolutions extends JavaPlugin
 
 
 
+	public static boolean isClimbing( final Entity e ) {
+		final Material m = e.getLocation().getBlock().getType();
+		return !e.isOnGround() && m.equals( Material.LADDER ) || m.equals( Material.VINE );
+	}
+
+
+
+
 	public static boolean isInSafeZone( final Location location ) {
 		return BoardColls.get().getFactionAt( PS.valueOf( location ) ).getName().equalsIgnoreCase( "SafeZone" );
+	}
+
+
+
+
+	public static boolean isSwimming( final Entity e ) {
+		return e.getLocation().getBlock().isLiquid();
 	}
 
 

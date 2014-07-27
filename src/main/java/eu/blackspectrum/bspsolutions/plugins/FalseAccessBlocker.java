@@ -30,9 +30,12 @@ public class FalseAccessBlocker
 
 	public static void onBlockCancelledInAir( final BlockPlaceEvent event ) {
 		final Entity player = event.getPlayer();
+		if ( !event.isCancelled() )
+			return;
 
-		if ( !player.isOnGround() )
-			player.teleport( player.getLocation().subtract( new Vector( 0, 0.5, 0 ) ) );
+		if ( !player.isOnGround() && !player.isInsideVehicle() && !BSPSolutions.isClimbing( player ) && !BSPSolutions.isSwimming( player ) )
+
+			player.setVelocity( new Vector( Math.random() * 0.3 - 0.15, -1, Math.random() * 0.3 - 0.15 ) );
 
 	}
 
