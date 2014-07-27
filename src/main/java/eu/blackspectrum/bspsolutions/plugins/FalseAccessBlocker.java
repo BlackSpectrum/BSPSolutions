@@ -40,10 +40,11 @@ public class FalseAccessBlocker
 			final Location placedLoc = event.getBlockPlaced().getLocation();
 			final double diffX = player.getLocation().getX() - placedLoc.getX();
 			final double diffZ = player.getLocation().getZ() - placedLoc.getZ();
-			if ( diffX < 1.3d && diffX > -0.3d && diffZ < 1.3d && diffZ > -0.3d )
+			double diffY = player.getLocation().getY() - placedLoc.getY();
+			if ( diffX < 1.3d && diffX > -0.3d && diffZ < 1.3d && diffZ > -0.3d && diffY < 1.5d && diffY > 0.5d )
 			{
 				event.getPlayer().damage( 6 );
-				player.teleport( player.getLocation().subtract( 0, 0.35, 0 ), TeleportCause.PLUGIN );
+				player.teleport( player.getLocation().subtract( 0, 0.75, 0 ), TeleportCause.PLUGIN );
 				player.setVelocity( new Vector( Math.random() * 1 - 0.5, -1, Math.random() * 1 - 0.5 ) );
 			}
 		}
