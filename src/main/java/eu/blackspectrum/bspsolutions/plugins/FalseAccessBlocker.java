@@ -34,9 +34,10 @@ public class FalseAccessBlocker
 			return;
 
 		if ( !player.isOnGround() && !player.isInsideVehicle() && !BSPSolutions.isClimbing( player ) && !BSPSolutions.isSwimming( player ) )
-
-			player.setVelocity( new Vector( Math.random() * 0.3 - 0.15, -1, Math.random() * 0.3 - 0.15 ) );
-
+			{
+				event.getPlayer().damage( 6 );
+				player.setVelocity( new Vector( Math.random() * 0.5 - 0.25, -1, Math.random() * 0.5 - 0.25 ) );
+			}
 	}
 
 

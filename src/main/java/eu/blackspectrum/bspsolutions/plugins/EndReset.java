@@ -5,6 +5,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -26,8 +27,12 @@ public class EndReset
 		if ( Bukkit.getServer().getOnlinePlayers().length > 0 )
 			return;
 
+		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) == 0 )
+			if ( BSPSolutions.getWorld( "world_the_end" ).getEntitiesByClasses( EnderDragon.class ).size() == 0 )
+				scheduleReset();
+
 		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) != 0
-				&& System.currentTimeMillis() > BSPSolutions.config.getLong( "EndReset.nextReset" ) )
+				&& System.currentTimeMillis() >= BSPSolutions.config.getLong( "EndReset.nextReset" ) )
 			resetEnd();
 	}
 
@@ -82,7 +87,7 @@ public class EndReset
 		long nextReset = System.currentTimeMillis() + minDays * MS_IN_DAY;
 
 		if ( maxDays > 0 )
-			nextReset += rand.nextInt( maxDays ) * MS_IN_DAY;
+			nextReset += rand.nextInt( maxDays + 1 ) * MS_IN_DAY;
 
 		BSPSolutions.config.set( "EndReset.nextReset", nextReset );
 		BSPSolutions.instance.saveConfig();
