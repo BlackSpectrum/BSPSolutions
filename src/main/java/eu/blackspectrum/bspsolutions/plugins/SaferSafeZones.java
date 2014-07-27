@@ -82,7 +82,7 @@ public class SaferSafeZones
 				final Player player = event.getPlayer();
 				toDrop.setAmount( 1 );
 				if ( event.getItem().getAmount() == 1 )
-					player.getInventory().remove( event.getItem() );
+					player.getInventory().remove( player.getItemInHand() );
 				else
 					event.getItem().setAmount( event.getItem().getAmount() - 1 );
 

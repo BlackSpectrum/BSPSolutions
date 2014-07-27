@@ -92,7 +92,7 @@ public class BSPSolutions extends JavaPlugin
 		pm.registerEvents( new PlayerListener(), this );
 		pm.registerEvents( new EntityListener(), this );
 		pm.registerEvents( new BlockListener(), this );
-		
+
 		EndReset.onEnable();
 
 	}

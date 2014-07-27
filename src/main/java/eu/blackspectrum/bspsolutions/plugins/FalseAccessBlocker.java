@@ -1,11 +1,13 @@
 package eu.blackspectrum.bspsolutions.plugins;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
@@ -34,10 +36,17 @@ public class FalseAccessBlocker
 			return;
 
 		if ( !player.isOnGround() && !player.isInsideVehicle() && !BSPSolutions.isClimbing( player ) && !BSPSolutions.isSwimming( player ) )
+		{
+			final Location placedLoc = event.getBlockPlaced().getLocation();
+			final double diffX = player.getLocation().getX() - placedLoc.getX();
+			final double diffZ = player.getLocation().getZ() - placedLoc.getZ();
+			if ( diffX < 1.3d && diffX > -0.3d && diffZ < 1.3d && diffZ > -0.3d )
 			{
 				event.getPlayer().damage( 6 );
-				player.setVelocity( new Vector( Math.random() * 0.5 - 0.25, -1, Math.random() * 0.5 - 0.25 ) );
+				player.teleport( player.getLocation().subtract( 0, 0.35, 0 ), TeleportCause.PLUGIN );
+				player.setVelocity( new Vector( Math.random() * 1 - 0.5, -1, Math.random() * 1 - 0.5 ) );
 			}
+		}
 	}
 
 
