@@ -16,7 +16,7 @@ public class EntityListener implements Listener
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onCreatureSpawn( CreatureSpawnEvent event ) {
+	public void onCreatureSpawn( final CreatureSpawnEvent event ) {
 		AbandonPet.onPetBreed( event );
 	}
 
@@ -24,16 +24,16 @@ public class EntityListener implements Listener
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDeath( EntityDeathEvent event ) {
-		DropAll.onEnderManDeath( event );
+	public void onEntityDamaged( final EntityDamageEvent event ) {
+		SaferSafeZones.onPlayerDamaged( event );
+
 	}
 
 
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDamaged( EntityDamageEvent event ) {
-		SaferSafeZones.onPlayerDamaged( event );
-
+	public void onEntityDeath( final EntityDeathEvent event ) {
+		DropAll.onEnderManDeath( event );
 	}
 }

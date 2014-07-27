@@ -20,14 +20,14 @@ public class EndReset
 
 
 
-
 	public static void onEnable() {
 
 		// Only when there are no players left
 		if ( Bukkit.getServer().getOnlinePlayers().length > 0 )
 			return;
 
-		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) != 0 && System.currentTimeMillis() > BSPSolutions.config.getLong( "EndReset.nextReset" ) )
+		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) != 0
+				&& System.currentTimeMillis() > BSPSolutions.config.getLong( "EndReset.nextReset" ) )
 			resetEnd();
 	}
 
@@ -39,6 +39,17 @@ public class EndReset
 
 		if ( e.getType().equals( EntityType.ENDER_DRAGON ) )
 			scheduleReset();
+	}
+
+
+
+
+	public static void setUpConfig( final Configuration config ) {
+
+		config.set( "EndReset.nextReset", config.getLong( "EndReset.nextReset", 0 ) );
+		config.set( "EndReset.minDays", config.getInt( "EndReset.minDays", 5 ) );
+		config.set( "EndReset.maxDays", config.getInt( "EndReset.maxDays", 15 ) );
+
 	}
 
 
@@ -75,16 +86,5 @@ public class EndReset
 
 		BSPSolutions.config.set( "EndReset.nextReset", nextReset );
 		BSPSolutions.instance.saveConfig();
-	}
-
-
-
-
-	public static void setUpConfig( Configuration config ) {
-
-		config.set( "EndReset.nextReset", config.getLong( "EndReset.nextReset", 0 ) );
-		config.set( "EndReset.minDays", config.getInt( "EndReset.minDays", 5 ) );
-		config.set( "EndReset.maxDays", config.getInt( "EndReset.maxDays", 15 ) );
-
 	}
 }

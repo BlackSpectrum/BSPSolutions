@@ -42,11 +42,12 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
-		FalseAccessBlocker.onPlayerInteractBlock( event );
+		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
 		SaferSafeZones.onPlayerUseItem( event );
 		ForceOpen.onOpenChest( event );
-		
+
 	}
+
 
 
 
@@ -70,7 +71,6 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove( final PlayerMoveEvent event ) {
 		SaferSafeZones.onPlayerChunkMove( event );
-		FalseAccessBlocker.onPlayerJump( event );
 	}
 
 

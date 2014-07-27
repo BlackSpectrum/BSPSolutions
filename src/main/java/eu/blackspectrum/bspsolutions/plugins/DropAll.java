@@ -35,8 +35,4 @@ public class DropAll
 		enderChest.clear();
 	}
 
-
-
-
-
 }

@@ -8,10 +8,10 @@ import org.bukkit.metadata.MetadataValue;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
 
-
-
 public class NoLoginTp
 {
+
+
 	public static void onPlayerJoin( final PlayerJoinEvent event ) {
 		if ( event.getPlayer().hasMetadata( "logOutPos" ) )
 		{
@@ -21,14 +21,14 @@ public class NoLoginTp
 					loc = (Location) meta.value();
 
 			if ( !loc.equals( event.getPlayer().getLocation() ) )
-			{
 				event.getPlayer().teleport( loc );
-			}
 			event.getPlayer().removeMetadata( "logOutPos", BSPSolutions.instance );
 
 		}
 
 	}
+
+
 
 
 	public static void onPlayerLogout( final PlayerQuitEvent event ) {
