@@ -20,11 +20,18 @@ public class FalseAccessBlocker
 
 	public static void onBlockBreackCancelled( final BlockBreakEvent event ) {
 		final Player player = event.getPlayer();
-		if ( event.isCancelled() )
-		{
-			player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
+		if ( !event.isCancelled() )
 			return;
-		}
+		player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
+
+		if ( !( (Entity) player ).isOnGround() && !player.isInsideVehicle() && !BSPSolutions.isClimbing( player )
+				&& !BSPSolutions.isSwimming( player ) )
+			if ( event.getBlock().getLocation().distance( player.getLocation() ) < 1.0d )
+			{
+				player.teleport( player.getLocation(), TeleportCause.PLUGIN );
+				player.setVelocity( player.getLocation().getDirection().normalize().multiply( -0.5d ).setY( 0 ) );
+			}
+
 	}
 
 
@@ -40,7 +47,8 @@ public class FalseAccessBlocker
 			final Location placedLoc = event.getBlockPlaced().getLocation();
 			final double diffX = player.getLocation().getX() - placedLoc.getX();
 			final double diffZ = player.getLocation().getZ() - placedLoc.getZ();
-			double diffY = player.getLocation().getY() - placedLoc.getY();
+			final double diffY = player.getLocation().getY() - placedLoc.getY();
+
 			if ( diffX < 1.3d && diffX > -0.3d && diffZ < 1.3d && diffZ > -0.3d && diffY < 1.5d && diffY > 0.5d )
 			{
 				event.getPlayer().damage( 6 );
