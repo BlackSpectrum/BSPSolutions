@@ -22,15 +22,23 @@ public class FalseAccessBlocker
 		final Player player = event.getPlayer();
 		if ( !event.isCancelled() )
 			return;
+
 		player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
 
-		if ( !( (Entity) player ).isOnGround() && !player.isInsideVehicle() && !BSPSolutions.isClimbing( player )
-				&& !BSPSolutions.isSwimming( player ) )
-			if ( event.getBlock().getLocation().distance( player.getLocation() ) < 1.0d )
+		Vector dir = event.getBlock().getLocation().toVector().add( new Vector( 0.5, 0, 0.5 ) ).subtract( player.getLocation().toVector() );
+
+		if ( ( dir.getBlockY() == 1 || !( (Entity) player ).isOnGround() ) && !player.isInsideVehicle()
+				&& !BSPSolutions.isClimbing( player ) && !BSPSolutions.isSwimming( player ) )
+		{
+			dir = dir.setY( 0 );
+
+			if ( dir.length() <= 1.0d )
 			{
-				player.teleport( player.getLocation(), TeleportCause.PLUGIN );
-				player.setVelocity( player.getLocation().getDirection().normalize().multiply( -0.5d ).setY( 0 ) );
+				dir = dir.setY( 0 ).multiply( -0.5 );
+				player.teleport( player.getLocation().add( dir ), TeleportCause.PLUGIN );
+				player.setVelocity( dir );
 			}
+		}
 
 	}
 
@@ -52,8 +60,8 @@ public class FalseAccessBlocker
 			if ( diffX < 1.3d && diffX > -0.3d && diffZ < 1.3d && diffZ > -0.3d && diffY < 1.5d && diffY > 0.5d )
 			{
 				event.getPlayer().damage( 6 );
-				player.teleport( player.getLocation().subtract( 0, 0.75, 0 ), TeleportCause.PLUGIN );
-				player.setVelocity( new Vector( Math.random() * 1 - 0.5, -1, Math.random() * 1 - 0.5 ) );
+				player.teleport( player.getLocation().subtract( 0, 0.9, 0 ), TeleportCause.PLUGIN );
+				player.setVelocity( new Vector( Math.signum( Math.random() - 0.5 ) * 0.3, 0, Math.signum( Math.random() - 0.5 ) * 0.3 ) );
 			}
 		}
 	}
