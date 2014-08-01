@@ -17,6 +17,7 @@ import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
+import eu.blackspectrum.bspsolutions.listeners.FactionListener;
 import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
 
@@ -92,6 +93,7 @@ public class BSPSolutions extends JavaPlugin
 		pm.registerEvents( new PlayerListener(), this );
 		pm.registerEvents( new EntityListener(), this );
 		pm.registerEvents( new BlockListener(), this );
+		pm.registerEvents( new FactionListener(), this );
 
 		EndReset.onEnable();
 
