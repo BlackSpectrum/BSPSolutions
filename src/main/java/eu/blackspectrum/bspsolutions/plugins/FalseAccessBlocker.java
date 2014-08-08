@@ -1,6 +1,7 @@
 package eu.blackspectrum.bspsolutions.plugins;
 
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -27,7 +28,8 @@ public class FalseAccessBlocker
 
 		Vector dir = event.getBlock().getLocation().toVector().add( new Vector( 0.5, 0, 0.5 ) ).subtract( player.getLocation().toVector() );
 
-		if ( ( dir.getBlockY() == 1 || !( (Entity) player ).isOnGround() ) && !player.isInsideVehicle()
+		if ( ( dir.getBlockY() == 1 || !( (Entity) player ).isOnGround() )
+				&& !event.getBlock().getRelative( BlockFace.UP ).getType().isSolid() && !player.isInsideVehicle()
 				&& !BSPSolutions.isClimbing( player ) && !BSPSolutions.isSwimming( player ) )
 		{
 			dir = dir.setY( 0 );
