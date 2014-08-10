@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
+import eu.blackspectrum.bspsolutions.OfflineFactions;
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
 import eu.blackspectrum.bspsolutions.plugins.DieSilent;
@@ -65,6 +66,8 @@ public class PlayerListener implements Listener
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
 		NoLoginTp.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
+
+		OfflineFactions.Instance().removeFaction( event.getPlayer() );
 	}
 
 
@@ -81,6 +84,8 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit( final PlayerQuitEvent event ) {
 		NoLoginTp.onPlayerLogout( event );
+
+		OfflineFactions.Instance().addFaction( event.getPlayer() );
 	}
 
 

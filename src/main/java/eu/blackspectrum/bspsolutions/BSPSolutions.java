@@ -13,6 +13,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.massivecraft.factions.entity.BoardColls;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
@@ -62,7 +64,14 @@ public class BSPSolutions extends JavaPlugin
 
 
 	public static boolean isInSafeZone( final Location location ) {
-		return BoardColls.get().getFactionAt( PS.valueOf( location ) ).getName().equalsIgnoreCase( "SafeZone" );
+		return isSafeZone( BoardColls.get().getFactionAt( PS.valueOf( location ) ) );
+	}
+
+
+
+
+	public static boolean isSafeZone( final Faction faction ) {
+		return faction.equals( FactionColls.get().getForUniverse( faction.getUniverse() ).getSafezone() );
 	}
 
 
@@ -70,6 +79,13 @@ public class BSPSolutions extends JavaPlugin
 
 	public static boolean isSwimming( final Entity e ) {
 		return e.getLocation().getBlock().isLiquid();
+	}
+
+
+
+
+	public static boolean isWarZone( final Faction faction ) {
+		return faction.equals( FactionColls.get().getForUniverse( faction.getUniverse() ).getWarzone() );
 	}
 
 
@@ -106,6 +122,8 @@ public class BSPSolutions extends JavaPlugin
 		config = this.getConfig();
 
 		EndReset.setUpConfig( config );
+
+		config.set( "Factions.offlineDelay", config.getLong( "Factions.offlineDelay", 300 ) );
 
 		this.saveConfig();
 	}
