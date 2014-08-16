@@ -5,6 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -18,6 +19,7 @@ import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
 import eu.blackspectrum.bspsolutions.plugins.DieSilent;
 import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
+import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
 import eu.blackspectrum.bspsolutions.plugins.NoLoginTp;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
@@ -94,6 +96,12 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerUnleashEntity( final PlayerUnleashEntityEvent event ) {
 		BetterLeashes.onUnleash( event );
+	}
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerFish(PlayerFishEvent event)
+	{
+		FishFix.onPlayerCatchFish( event );
 	}
 
 }
