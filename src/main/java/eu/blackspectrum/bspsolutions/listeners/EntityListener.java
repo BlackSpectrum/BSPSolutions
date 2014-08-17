@@ -50,7 +50,7 @@ public class EntityListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode( final EntityExplodeEvent event ) {
-		if ( event.getEntityType().equals( EntityType.CREEPER ) )
+		if ( event.getEntityType() == EntityType.CREEPER )
 		{
 			final Iterator<Block> it = event.blockList().iterator();
 			while ( it.hasNext() )

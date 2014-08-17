@@ -28,10 +28,10 @@ public class FishFix
 
 
 	private static final Collection<PossibleFishingResult>	JUNK_RESULTS		= Arrays.asList( new PossibleFishingResult[] {
-			( new PossibleFishingResult( new ItemStack( Items.LEATHER_BOOTS ), 10 ) ).a( 0.9F ),
+			new PossibleFishingResult( new ItemStack( Items.LEATHER_BOOTS ), 10 ).a( 0.9F ),
 			new PossibleFishingResult( new ItemStack( Items.LEATHER ), 10 ), new PossibleFishingResult( new ItemStack( Items.BONE ), 10 ),
 			new PossibleFishingResult( new ItemStack( Items.POTION ), 10 ), new PossibleFishingResult( new ItemStack( Items.STRING ), 5 ),
-			( new PossibleFishingResult( new ItemStack( Items.FISHING_ROD ), 2 ) ).a( 0.9F ),
+			new PossibleFishingResult( new ItemStack( Items.FISHING_ROD ), 2 ).a( 0.9F ),
 			new PossibleFishingResult( new ItemStack( Items.BOWL ), 10 ), new PossibleFishingResult( new ItemStack( Items.STICK ), 5 ),
 			new PossibleFishingResult( new ItemStack( Items.INK_SACK, 10, 0 ), 1 ),
 			new PossibleFishingResult( new ItemStack( Blocks.TRIPWIRE_SOURCE ), 10 ),
@@ -39,9 +39,9 @@ public class FishFix
 	private static final Collection<PossibleFishingResult>	TREASURE_RESULTS	= Arrays.asList( new PossibleFishingResult[] {
 			new PossibleFishingResult( new ItemStack( Blocks.WATER_LILY ), 1 ),
 			new PossibleFishingResult( new ItemStack( Items.NAME_TAG ), 1 ), new PossibleFishingResult( new ItemStack( Items.SADDLE ), 1 ),
-			( new PossibleFishingResult( new ItemStack( Items.BOW ), 1 ) ).a( 0.25F ).a(),
-			( new PossibleFishingResult( new ItemStack( Items.FISHING_ROD ), 1 ) ).a( 0.25F ).a(),
-			( new PossibleFishingResult( new ItemStack( Items.BOOK ), 1 ) ).a() } );
+			new PossibleFishingResult( new ItemStack( Items.BOW ), 1 ).a( 0.25F ).a(),
+			new PossibleFishingResult( new ItemStack( Items.FISHING_ROD ), 1 ).a( 0.25F ).a(),
+			new PossibleFishingResult( new ItemStack( Items.BOOK ), 1 ).a()	} );
 	private static final Collection<PossibleFishingResult>	FISH_RESULTS		= Arrays.asList( new PossibleFishingResult[] {
 			new PossibleFishingResult( new ItemStack( Items.RAW_FISH, 1, EnumFish.COD.a() ), 60 ),
 			new PossibleFishingResult( new ItemStack( Items.RAW_FISH, 1, EnumFish.SALMON.a() ), 25 ),
@@ -53,34 +53,34 @@ public class FishFix
 
 
 
-	public static void onPlayerCatchFish( PlayerFishEvent event ) {
+	public static void onPlayerCatchFish( final PlayerFishEvent event ) {
 		if ( event.isCancelled() || event.getState() != PlayerFishEvent.State.CAUGHT_FISH )
 			return;
 
 		event.setCancelled( true );
 
-		EntityHuman owner = ( (CraftHumanEntity) event.getPlayer() ).getHandle();
-		World playerWorld = ( (CraftEntity) event.getPlayer() ).getHandle().world;
+		final EntityHuman owner = ( (CraftHumanEntity) event.getPlayer() ).getHandle();
+		final World playerWorld = ( (CraftEntity) event.getPlayer() ).getHandle().world;
 
-		double hookX = event.getHook().getLocation().getX();
-		double hookY = event.getHook().getLocation().getY();
-		double hookZ = event.getHook().getLocation().getZ();
+		final double hookX = event.getHook().getLocation().getX();
+		final double hookY = event.getHook().getLocation().getY();
+		final double hookZ = event.getHook().getLocation().getZ();
 
-		EntityItem fishedItem = new EntityItem( playerWorld, hookX, hookY, hookZ, getCaughtFish( owner ) );
+		final EntityItem fishedItem = new EntityItem( playerWorld, hookX, hookY, hookZ, getCaughtFish( owner ) );
 
-		Entity hook = ( (CraftEntity) event.getHook() ).getHandle();
+		final Entity hook = ( (CraftEntity) event.getHook() ).getHandle();
 
-		double playerX = event.getPlayer().getLocation().getX();
-		double playerY = event.getPlayer().getLocation().getY();
-		double playerZ = event.getPlayer().getLocation().getZ();
+		final double playerX = event.getPlayer().getLocation().getX();
+		final double playerY = event.getPlayer().getLocation().getY();
+		final double playerZ = event.getPlayer().getLocation().getZ();
 
-		double directionX = playerX - hookX;
-		double directionY = playerY - hookY;
-		double directionZ = playerZ - hookZ;
-		double directionLength = (double) MathHelper.sqrt( directionX * directionX + directionY * directionY + directionZ * directionZ );
+		final double directionX = playerX - hookX;
+		final double directionY = playerY - hookY;
+		final double directionZ = playerZ - hookZ;
+		final double directionLength = MathHelper.sqrt( directionX * directionX + directionY * directionY + directionZ * directionZ );
 
 		fishedItem.motX = directionX * 0.1d;
-		fishedItem.motY = directionY * 0.1d + (double) MathHelper.sqrt( directionLength ) * 0.08D;
+		fishedItem.motY = directionY * 0.1d + MathHelper.sqrt( directionLength ) * 0.08D;
 		fishedItem.motZ = directionZ * 0.1d;
 
 		// Spawn the fished fish
@@ -97,14 +97,14 @@ public class FishFix
 
 
 
-	private static ItemStack getCaughtFish( EntityHuman owner ) {
+	private static ItemStack getCaughtFish( final EntityHuman owner ) {
 		float f = random.nextFloat();
 
-		int luckLevel = EnchantmentManager.getLuckEnchantmentLevel( owner );
-		int lureLevel = EnchantmentManager.getLureEnchantmentLevel( owner );
+		final int luckLevel = EnchantmentManager.getLuckEnchantmentLevel( owner );
+		final int lureLevel = EnchantmentManager.getLureEnchantmentLevel( owner );
 
-		float junkChance = 0.1F - (float) luckLevel * 0.025F - (float) lureLevel * 0.01F;
-		float treasureChance = 0.05F + (float) luckLevel * 0.01F - (float) lureLevel * 0.01F;
+		float junkChance = 0.1F - luckLevel * 0.025F - lureLevel * 0.01F;
+		float treasureChance = 0.05F + luckLevel * 0.01F - lureLevel * 0.01F;
 
 		junkChance = MathHelper.a( junkChance, 0.0F, 1.0F );
 		treasureChance = MathHelper.a( treasureChance, 0.0F, 1.0F );

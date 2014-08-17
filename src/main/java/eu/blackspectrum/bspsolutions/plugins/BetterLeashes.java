@@ -26,7 +26,7 @@ public class BetterLeashes
 
 		( (LivingEntity) event.getEntity() ).setLeashHolder( null );
 
-		if ( leashHolder.getType().equals( EntityType.LEASH_HITCH ) )
+		if ( leashHolder.getType() == EntityType.LEASH_HITCH )
 			leashHolder.remove();
 
 		event.getPlayer().getWorld().dropItemNaturally( event.getPlayer().getLocation(), new ItemStack( Material.LEASH, 1 ) );

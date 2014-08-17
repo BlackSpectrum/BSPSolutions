@@ -34,7 +34,7 @@ public class BSPSolutions extends JavaPlugin
 
 
 	public static void dropItemNaturally( final Entity e, final ItemStack i ) {
-		if ( i != null && !i.getType().equals( Material.AIR ) )
+		if ( i != null && i.getType() != Material.AIR )
 			e.getLocation().getWorld().dropItemNaturally( e.getLocation(), i );
 	}
 
@@ -57,7 +57,7 @@ public class BSPSolutions extends JavaPlugin
 
 	public static boolean isClimbing( final Entity e ) {
 		final Material m = e.getLocation().getBlock().getType();
-		return !e.isOnGround() && m.equals( Material.LADDER ) || m.equals( Material.VINE );
+		return !e.isOnGround() && m == Material.LADDER || m == Material.VINE;
 	}
 
 

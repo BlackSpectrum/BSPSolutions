@@ -48,7 +48,7 @@ public class SaferSafeZones
 
 
 	public static void onPlayerDamaged( final EntityDamageEvent event ) {
-		if ( event.getEntityType().equals( EntityType.PLAYER ) )
+		if ( event.getEntityType() == EntityType.PLAYER )
 			if ( BSPSolutions.isInSafeZone( event.getEntity().getLocation() ) )
 				event.setCancelled( true );
 	}
@@ -69,13 +69,12 @@ public class SaferSafeZones
 	public static void onPlayerUseItem( final PlayerInteractEvent event ) {
 		if ( BSPSolutions.isInSafeZone( event.getPlayer().getLocation() ) )
 		{
-			if ( event.getItem() == null || event.getAction().equals( Action.LEFT_CLICK_AIR )
-					|| event.getAction().equals( Action.LEFT_CLICK_BLOCK ) )
+			if ( event.getItem() == null || event.getAction() != Action.RIGHT_CLICK_AIR )
 				return;
 
 			final Material item = event.getItem().getType();
 
-			if ( item.equals( Material.EGG ) || item.equals( Material.ENDER_PEARL ) || item.equals( Material.POTION ) )
+			if ( item == Material.EGG || item == Material.ENDER_PEARL || item == Material.POTION )
 			{
 				event.setCancelled( true );
 				final ItemStack toDrop = event.getItem().clone();

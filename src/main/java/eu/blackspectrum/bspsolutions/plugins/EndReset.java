@@ -42,7 +42,7 @@ public class EndReset
 	public static void onEnderdragonDeath( final EntityDeathEvent event ) {
 		final Entity e = event.getEntity();
 
-		if ( e.getType().equals( EntityType.ENDER_DRAGON ) )
+		if ( e.getType() == EntityType.ENDER_DRAGON )
 			scheduleReset();
 	}
 

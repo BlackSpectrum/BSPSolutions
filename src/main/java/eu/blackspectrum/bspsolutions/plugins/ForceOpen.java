@@ -15,12 +15,12 @@ public class ForceOpen
 		if ( event.isCancelled() )
 			return;
 
-		if ( event.getAction().equals( Action.RIGHT_CLICK_BLOCK ) )
+		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 		{
 			final Block block = event.getClickedBlock();
 			final Player player = event.getPlayer();
 
-			if ( ( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) ) && !player.isSneaking() )
+			if ( ( block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST ) && !player.isSneaking() )
 			{
 				event.setCancelled( true );
 				final Chest chest = (Chest) block.getState();

@@ -74,7 +74,7 @@ public class FalseAccessBlocker
 	public static void onPlayerInteractBlockCancelled( final PlayerInteractEvent event ) {
 		final Player player = event.getPlayer();
 
-		if ( event.getAction().equals( Action.RIGHT_CLICK_BLOCK ) )
+		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 		{
 			if ( event.isCancelled() )
 			{

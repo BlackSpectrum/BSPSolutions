@@ -45,6 +45,14 @@ public class PlayerListener implements Listener
 
 
 
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerFish( final PlayerFishEvent event ) {
+		FishFix.onPlayerCatchFish( event );
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
 		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
@@ -96,12 +104,6 @@ public class PlayerListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerUnleashEntity( final PlayerUnleashEntityEvent event ) {
 		BetterLeashes.onUnleash( event );
-	}
-	
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerFish(PlayerFishEvent event)
-	{
-		FishFix.onPlayerCatchFish( event );
 	}
 
 }

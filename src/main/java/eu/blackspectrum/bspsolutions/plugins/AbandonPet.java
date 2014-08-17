@@ -11,7 +11,7 @@ public class AbandonPet
 
 
 	public static void onPetBreed( final CreatureSpawnEvent event ) {
-		if ( event.getEntity() instanceof Tameable && event.getSpawnReason().equals( SpawnReason.BREEDING ) )
+		if ( event.getEntity() instanceof Tameable && event.getSpawnReason() == SpawnReason.BREEDING )
 			( (Tameable) event.getEntity() ).setTamed( false );
 	}
 
@@ -19,7 +19,7 @@ public class AbandonPet
 
 
 	public static void onPetHit( final PlayerInteractEntityEvent event ) {
-		if ( event.getRightClicked() instanceof Tameable && event.getPlayer().getItemInHand().getType().equals( Material.STICK ) )
+		if ( event.getRightClicked() instanceof Tameable && event.getPlayer().getItemInHand().getType() == Material.STICK )
 			if ( ( (Tameable) event.getRightClicked() ).getOwner().equals( event.getPlayer() ) )
 				( (Tameable) event.getRightClicked() ).setTamed( false );
 	}
