@@ -25,9 +25,7 @@ public class PurgatoryPlugin
 
 		// If he can leave purgatory TP him
 		if ( Purgatory.Instance().canPlayerLeave( player ) && !player.isDead() )
-		{
 			Purgatory.Instance().freePlayer( player );
-		}
 	}
 
 
@@ -35,7 +33,7 @@ public class PurgatoryPlugin
 
 	public static void onPlayerRespawn( final PlayerRespawnEvent event ) {
 		final Player player = event.getPlayer();
-		
+
 		// If he cant leave purgatory, spawn him inside
 		if ( !Purgatory.Instance().canPlayerLeave( player ) )
 		{

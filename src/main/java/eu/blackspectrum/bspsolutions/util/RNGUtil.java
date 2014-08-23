@@ -90,4 +90,14 @@ public class RNGUtil
 		return RANDOM.nextLong();
 	}
 
+
+
+
+	public static int randomSignum() {
+		if ( RANDOM.nextBoolean() )
+			return 1;
+		else
+			return -1;
+	}
+
 }

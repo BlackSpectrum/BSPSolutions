@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.massivecore.ps.PS;
@@ -17,8 +18,37 @@ public class LocationUtil
 {
 
 
+	public static Location getCenterOfWorld() {
+		return new Location( getOverWorld(), BSPSolutions.config.getInt( "Locations.center.x" ), 0,
+				BSPSolutions.config.getInt( "Locations.center.z" ) );
+	}
+
+
+
+
+	public static World getEnd() {
+		return getWorld( BSPSolutions.config.getString( "Locations.worlds.end" ) );
+	}
+
+
+
+
+	public static World getNether() {
+		return getWorld( BSPSolutions.config.getString( "Locations.worlds.nether" ) );
+	}
+
+
+
+
+	public static World getOverWorld() {
+		return getWorld( BSPSolutions.config.getString( "Locations.worlds.world" ) );
+	}
+
+
+
+
 	public static World getPurgatoryWorld() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worldPurgatory" ) );
+		return getWorld( BSPSolutions.config.getString( "Locations.worlds.purgatory" ) );
 	}
 
 
@@ -37,7 +67,7 @@ public class LocationUtil
 
 
 	public static World getSpawnWorld() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worldSpawn" ) );
+		return getWorld( BSPSolutions.config.getString( "Locations.worlds.spawn" ) );
 	}
 
 
@@ -45,6 +75,21 @@ public class LocationUtil
 
 	public static World getWorld( final String name ) {
 		return Bukkit.getServer().getWorld( name );
+	}
+
+
+
+
+	public static boolean isCloseToCenter( final Player player ) {
+		return player.getWorld().equals( getOverWorld() )
+				&& player
+						.getLocation()
+						.toVector()
+						.distance(
+								new Vector( BSPSolutions.config.getInt( "Locations.center.x" ), player.getLocation().getY(),
+										BSPSolutions.config.getInt( "Locations.center.z" ) ) ) <= BSPSolutions.config
+						.getInt( "Locations.center.radius" );
+
 	}
 
 
@@ -58,8 +103,16 @@ public class LocationUtil
 
 
 	public static void setUpConfig( final Configuration config ) {
-		config.set( "Locations.worldSpawn", config.get( "Locations.worldSpawn", "world_creative" ) );
-		config.set( "Locations.worldPurgatory", config.get( "Locations.worldPurgatory", "world_purgatory" ) );
+		config.set( "Locations.worlds.spawn", config.get( "Locations.worlds.spawn", "world_creative" ) );
+		config.set( "Locations.worlds.purgatory", config.get( "Locations.worlds.purgatory", "world_purgatory" ) );
+		config.set( "Locations.worlds.world", config.get( "Locations.worlds.world", "world" ) );
+		config.set( "Locations.worlds.nether", config.get( "Locations.worlds.nether", "world_nether" ) );
+		config.set( "Locations.worlds.end", config.get( "Locations.worlds.end", "world_the_end" ) );
+		config.set( "Locations.center.x", config.get( "Locations.center.x", 500 ) );
+		config.set( "Locations.center.z", config.get( "Locations.center.z", -340 ) );
+		config.set( "Locations.center.radius", config.get( "Locations.center.radius", 5 ) );
+		config.set( "Locations.spawn.radiusMin", config.get( "Locations.spawn.radius", 1200 ) );
+		config.set( "Locations.spawn.radiusMax", config.get( "Locations.spawn.radius", 3500 ) );
 	}
 
 }

@@ -51,9 +51,9 @@ public class Purgatory
 
 
 	public boolean canPlayerLeave( final Player player ) {
-		if(players == null)
+		if ( this.players == null )
 			return false;
-		
+
 		if ( this.players.containsKey( player.getUniqueId() ) )
 			return System.currentTimeMillis() > this.players.get( player.getUniqueId() );
 
@@ -65,9 +65,9 @@ public class Purgatory
 
 
 	public void checkPlayers() {
-		if(players == null)
+		if ( this.players == null )
 			return;
-		
+
 		final Iterator<UUID> it = this.players.keySet().iterator();
 
 		while ( it.hasNext() )
@@ -99,7 +99,7 @@ public class Purgatory
 		this.removePlayer( player );
 
 		event.setRespawnLocation( LocationUtil.getRespawnLocation( player ) );
-		
+
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}
 

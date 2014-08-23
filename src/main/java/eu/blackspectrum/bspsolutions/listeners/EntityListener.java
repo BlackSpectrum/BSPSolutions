@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
+import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
@@ -34,7 +35,7 @@ public class EntityListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamaged( final EntityDamageEvent event ) {
 		SaferSafeZones.onPlayerDamaged( event );
-
+		CompassTeleport.onPlayerHurt( event );
 	}
 
 

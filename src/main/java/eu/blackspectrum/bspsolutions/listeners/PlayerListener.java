@@ -16,8 +16,10 @@ import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
+import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.DieSilent;
 import eu.blackspectrum.bspsolutions.plugins.DropAll;
+import eu.blackspectrum.bspsolutions.plugins.FMapPlugin;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
 import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
@@ -31,6 +33,7 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChangedWorld( final PlayerChangedWorldEvent event ) {
+		CompassTeleport.onWorldChange( event );
 		SaferSafeZones.onPlayerChangedWorld( event );
 	}
 
@@ -57,10 +60,11 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
+		CompassTeleport.onRightClick( event );
+		FMapPlugin.onPlayerRightClickMap( event );
 		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
 		SaferSafeZones.onPlayerUseItem( event );
 		ForceOpen.onOpenChest( event );
-
 	}
 
 
@@ -76,6 +80,7 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
+		CompassTeleport.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
 
 		FactionsUtil.removeFaction( event.getPlayer() );

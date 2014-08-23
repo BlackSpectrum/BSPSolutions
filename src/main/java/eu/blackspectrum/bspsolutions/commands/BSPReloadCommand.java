@@ -5,11 +5,10 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
 
-
-
 public class BSPReloadCommand extends MassiveCommand
 {
-	
+
+
 	public BSPReloadCommand() {
 		this.addAliases( "reload" );
 
@@ -23,8 +22,8 @@ public class BSPReloadCommand extends MassiveCommand
 	public void perform() {
 		BSPSolutions.instance.onDisable();
 		BSPSolutions.instance.onEnable();
-		
-		sender.sendMessage( "BSPSolutions reloaded!" );
+
+		this.sender.sendMessage( "BSPSolutions reloaded!" );
 	}
 
 }

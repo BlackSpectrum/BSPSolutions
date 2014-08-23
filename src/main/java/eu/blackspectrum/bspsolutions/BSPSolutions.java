@@ -15,9 +15,10 @@ import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
-import eu.blackspectrum.bspsolutions.listeners.FactionListener;
+import eu.blackspectrum.bspsolutions.listeners.MiscEventListener;
 import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
+import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
@@ -28,6 +29,7 @@ public class BSPSolutions extends JavaPlugin
 
 	public static Plugin		instance;
 	public static Configuration	config;
+	public static String		pluginName;
 
 
 
@@ -73,7 +75,9 @@ public class BSPSolutions extends JavaPlugin
 
 		// Unregister all events
 		HandlerList.unregisterAll( this );
-		
+
+		FMaps.Instance().collectGarbage();
+		FMaps.Instance().dump();
 	}
 
 
@@ -83,6 +87,9 @@ public class BSPSolutions extends JavaPlugin
 	public void onEnable() {
 		instance = this;
 
+		if ( pluginName == null || pluginName.isEmpty() )
+			pluginName = this.getName();
+
 		this.setUpConfig();
 
 		// Register listener
@@ -90,10 +97,13 @@ public class BSPSolutions extends JavaPlugin
 		pm.registerEvents( new PlayerListener(), this );
 		pm.registerEvents( new EntityListener(), this );
 		pm.registerEvents( new BlockListener(), this );
-		pm.registerEvents( new FactionListener(), this );
+		pm.registerEvents( new MiscEventListener(), this );
 
 		// Start plugin enables
 		EndReset.onEnable();
+
+		// Initialize misc
+		FMaps.Instance().initialize();
 
 		// Add commands
 		new PurgatoryCommand().register();
@@ -103,6 +113,7 @@ public class BSPSolutions extends JavaPlugin
 		final BukkitScheduler scheduler = this.getServer().getScheduler();
 
 		scheduler.runTaskTimer( this, new PurgatoryCheckTask(), 1200, 1200 );
+		scheduler.runTaskTimer( this, new GarbageCollectTask(), 6000, 6000 );
 	}
 
 
