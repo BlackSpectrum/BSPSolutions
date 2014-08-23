@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
+import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
 import eu.blackspectrum.bspsolutions.listeners.MiscEventListener;
@@ -108,6 +109,7 @@ public class BSPSolutions extends JavaPlugin
 		// Add commands
 		new PurgatoryCommand().register();
 		new BSPCommand().register();
+		new RandomTeleportCommand().register();
 
 		// Schedule tasks
 		final BukkitScheduler scheduler = this.getServer().getScheduler();

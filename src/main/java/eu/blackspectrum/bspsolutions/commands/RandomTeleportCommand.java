@@ -56,7 +56,7 @@ public class RandomTeleportCommand extends MassiveCommand
 		final int centerX = LocationUtil.getCenterOfWorld().getBlockX(), centerZ = LocationUtil.getCenterOfWorld().getBlockZ();
 
 		final World world = LocationUtil.getOverWorld();
-		Location location;
+		Location location = null;
 
 		while ( keepTrying )
 		{
@@ -91,5 +91,8 @@ public class RandomTeleportCommand extends MassiveCommand
 			if ( ++attempts >= 0.1 * Math.PI * ( Math.pow( radiusMax, 2 ) - Math.pow( radiusMin, 2 ) ) )
 				this.sender.sendMessage( "Teleportation failed! Is the teleport area valid?" );
 		}
+
+		if ( location != null )
+			target.teleport( location );
 	}
 }
