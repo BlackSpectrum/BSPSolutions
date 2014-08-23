@@ -11,9 +11,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
-import eu.blackspectrum.bspsolutions.OfflineFactions;
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
 import eu.blackspectrum.bspsolutions.plugins.DieSilent;
@@ -21,8 +21,9 @@ import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
 import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
-import eu.blackspectrum.bspsolutions.plugins.NoLoginTp;
+import eu.blackspectrum.bspsolutions.plugins.PurgatoryPlugin;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
+import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
 public class PlayerListener implements Listener
 {
@@ -40,6 +41,7 @@ public class PlayerListener implements Listener
 	public void onPlayerDeath( final PlayerDeathEvent event ) {
 		DieSilent.onPlayerDeath( event );
 		DropAll.onPlayerDeath( event );
+		PurgatoryPlugin.onPlayerDie( event );
 	}
 
 
@@ -74,10 +76,11 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
-		NoLoginTp.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
 
-		OfflineFactions.Instance().removeFaction( event.getPlayer() );
+		FactionsUtil.removeFaction( event.getPlayer() );
+
+		PurgatoryPlugin.onPlayerJoin( event );
 	}
 
 
@@ -93,9 +96,16 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit( final PlayerQuitEvent event ) {
-		NoLoginTp.onPlayerLogout( event );
 
-		OfflineFactions.Instance().addFaction( event.getPlayer() );
+		FactionsUtil.addFaction( event.getPlayer() );
+	}
+
+
+
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerRespawn( final PlayerRespawnEvent event ) {
+		PurgatoryPlugin.onPlayerRespawn( event );
 	}
 
 

@@ -13,7 +13,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.util.ItemUtil;
+import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class SaferSafeZones
 {
@@ -22,7 +23,7 @@ public class SaferSafeZones
 	public static void onPlayerChangedWorld( final PlayerChangedWorldEvent event ) {
 		final Player player = event.getPlayer();
 
-		if ( BSPSolutions.isInSafeZone( player.getLocation() ) )
+		if ( LocationUtil.isInSafeZone( player.getLocation() ) )
 			onEnterSafeZone( player );
 	}
 
@@ -40,7 +41,7 @@ public class SaferSafeZones
 		if ( from.getChunk().equals( to.getChunk() ) )
 			return;
 
-		if ( BSPSolutions.isInSafeZone( to ) )
+		if ( LocationUtil.isInSafeZone( to ) )
 			onEnterSafeZone( player );
 	}
 
@@ -49,7 +50,7 @@ public class SaferSafeZones
 
 	public static void onPlayerDamaged( final EntityDamageEvent event ) {
 		if ( event.getEntityType() == EntityType.PLAYER )
-			if ( BSPSolutions.isInSafeZone( event.getEntity().getLocation() ) )
+			if ( LocationUtil.isInSafeZone( event.getEntity().getLocation() ) )
 				event.setCancelled( true );
 	}
 
@@ -59,7 +60,7 @@ public class SaferSafeZones
 	public static void onPlayerJoin( final PlayerJoinEvent event ) {
 		final Player player = event.getPlayer();
 
-		if ( BSPSolutions.isInSafeZone( player.getLocation() ) )
+		if ( LocationUtil.isInSafeZone( player.getLocation() ) )
 			onEnterSafeZone( player );
 	}
 
@@ -67,7 +68,7 @@ public class SaferSafeZones
 
 
 	public static void onPlayerUseItem( final PlayerInteractEvent event ) {
-		if ( BSPSolutions.isInSafeZone( event.getPlayer().getLocation() ) )
+		if ( LocationUtil.isInSafeZone( event.getPlayer().getLocation() ) )
 		{
 			if ( event.getItem() == null || event.getAction() != Action.RIGHT_CLICK_AIR )
 				return;
@@ -85,7 +86,7 @@ public class SaferSafeZones
 				else
 					event.getItem().setAmount( event.getItem().getAmount() - 1 );
 
-				BSPSolutions.dropItemNaturally( player, toDrop );
+				ItemUtil.dropItemNaturally( player, toDrop );
 			}
 		}
 	}

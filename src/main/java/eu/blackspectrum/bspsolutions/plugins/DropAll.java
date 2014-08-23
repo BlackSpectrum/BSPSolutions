@@ -7,7 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.util.ItemUtil;
 
 public class DropAll
 {
@@ -19,7 +19,7 @@ public class DropAll
 
 		final Enderman e = (Enderman) event.getEntity();
 
-		BSPSolutions.dropItemNaturally( e, e.getCarriedMaterial(), 1 );
+		ItemUtil.dropItemNaturally( e, e.getCarriedMaterial(), 1 );
 	}
 
 
@@ -30,7 +30,7 @@ public class DropAll
 		final Inventory enderChest = player.getEnderChest();
 
 		for ( final ItemStack item : enderChest.getContents() )
-			BSPSolutions.dropItemNaturally( player, item );
+			ItemUtil.dropItemNaturally( player, item );
 
 		enderChest.clear();
 	}

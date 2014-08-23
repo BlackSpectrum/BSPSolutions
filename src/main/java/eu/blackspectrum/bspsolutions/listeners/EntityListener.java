@@ -14,10 +14,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 import com.massivecraft.massivecore.ps.PS;
 
-import eu.blackspectrum.bspsolutions.OfflineFactions;
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
+import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
 public class EntityListener implements Listener
 {
@@ -57,7 +57,7 @@ public class EntityListener implements Listener
 			{
 				final Block block = it.next();
 
-				if ( OfflineFactions.Instance().isFactionOffline( PS.valueOf( block ) ) )
+				if ( FactionsUtil.isFactionOffline( PS.valueOf( block ) ) )
 					it.remove();
 			}
 		}

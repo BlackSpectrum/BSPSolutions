@@ -2,4 +2,9 @@ name: ${project.name}
 main: ${project.groupId}.bspsolutions.BSPSolutions
 version: ${project.version}
 author: Mats391
-depend: [Factions]
+depend: [Factions, BSPSpawnBed]
+permissions:
+  BSP.purgatory:
+    default: op
+  BSP.admin:
+    default: op

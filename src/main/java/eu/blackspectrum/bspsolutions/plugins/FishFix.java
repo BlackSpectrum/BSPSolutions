@@ -2,7 +2,6 @@ package eu.blackspectrum.bspsolutions.plugins;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Random;
 
 import net.minecraft.server.v1_7_R4.Blocks;
 import net.minecraft.server.v1_7_R4.EnchantmentManager;
@@ -22,6 +21,8 @@ import net.minecraft.server.v1_7_R4.World;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftHumanEntity;
 import org.bukkit.event.player.PlayerFishEvent;
+
+import eu.blackspectrum.bspsolutions.util.RNGUtil;
 
 public class FishFix
 {
@@ -47,8 +48,6 @@ public class FishFix
 			new PossibleFishingResult( new ItemStack( Items.RAW_FISH, 1, EnumFish.SALMON.a() ), 25 ),
 			new PossibleFishingResult( new ItemStack( Items.RAW_FISH, 1, EnumFish.CLOWNFISH.a() ), 2 ),
 			new PossibleFishingResult( new ItemStack( Items.RAW_FISH, 1, EnumFish.PUFFERFISH.a() ), 13 ) } );
-
-	private static final Random								random				= new Random();
 
 
 
@@ -98,7 +97,7 @@ public class FishFix
 
 
 	private static ItemStack getCaughtFish( final EntityHuman owner ) {
-		float f = random.nextFloat();
+		float f = RNGUtil.nextFloat();
 
 		final int luckLevel = EnchantmentManager.getLuckEnchantmentLevel( owner );
 		final int lureLevel = EnchantmentManager.getLureEnchantmentLevel( owner );
@@ -112,7 +111,7 @@ public class FishFix
 		if ( f < junkChance )
 		{
 			owner.a( StatisticList.A, 1 );
-			return ( (PossibleFishingResult) WeightedRandom.a( random, JUNK_RESULTS ) ).a( random );
+			return ( (PossibleFishingResult) WeightedRandom.a( RNGUtil.getRandom(), JUNK_RESULTS ) ).a( RNGUtil.getRandom() );
 		}
 		else
 		{
@@ -120,13 +119,13 @@ public class FishFix
 			if ( f < treasureChance )
 			{
 				owner.a( StatisticList.B, 1 );
-				return ( (PossibleFishingResult) WeightedRandom.a( random, TREASURE_RESULTS ) ).a( random );
+				return ( (PossibleFishingResult) WeightedRandom.a( RNGUtil.getRandom(), TREASURE_RESULTS ) ).a( RNGUtil.getRandom() );
 			}
 			else
 			{
 
 				owner.a( StatisticList.z, 1 );
-				return ( (PossibleFishingResult) WeightedRandom.a( random, FISH_RESULTS ) ).a( random );
+				return ( (PossibleFishingResult) WeightedRandom.a( RNGUtil.getRandom(), FISH_RESULTS ) ).a( RNGUtil.getRandom() );
 			}
 		}
 	}
