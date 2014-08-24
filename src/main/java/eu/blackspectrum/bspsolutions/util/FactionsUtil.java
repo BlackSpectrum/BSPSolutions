@@ -53,8 +53,9 @@ public class FactionsUtil
 
 
 
-	public static boolean isFactionOffline( final Faction faction ) {		
-		if ( offlineFactions != null && offlineFactions.containsKey( faction.getId() ) && System.currentTimeMillis() > offlineFactions.get( faction.getId() ) )
+	public static boolean isFactionOffline( final Faction faction ) {
+		if ( offlineFactions != null && offlineFactions.containsKey( faction.getId() )
+				&& System.currentTimeMillis() > offlineFactions.get( faction.getId() ) )
 		{
 			removeFaction( faction );
 			return true;

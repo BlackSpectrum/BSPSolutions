@@ -82,8 +82,6 @@ public class RandomTeleportCommand extends MassiveCommand
 
 			break;
 		}
-		
-		
 
 		if ( location != null )
 		{

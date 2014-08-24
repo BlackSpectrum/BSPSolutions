@@ -1,8 +1,5 @@
 package eu.blackspectrum.bspsolutions.listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,10 +16,6 @@ public class MiscEventListener implements Listener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGarbageCollect( final GarbageCollectEvent event ) {
 		FMaps.Instance().collectGarbage();
-
-		for ( final World w : Bukkit.getWorlds() )
-			for ( final Chunk c : w.getLoadedChunks() )
-				c.unload( true, true );
 	}
 
 
