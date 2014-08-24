@@ -1,6 +1,7 @@
 package eu.blackspectrum.bspsolutions.plugins;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -10,7 +11,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
 import eu.blackspectrum.bspsolutions.TeleportingPlayers;
-import eu.blackspectrum.bspsolutions.tasks.TeleportTask;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class CompassTeleport
@@ -45,7 +45,7 @@ public class CompassTeleport
 				if ( TeleportingPlayers.Instance().isTeleporting( player ) )
 					TeleportingPlayers.Instance().abortTeleport( player );
 				else if ( LocationUtil.isCloseToCenter( player ) )
-					new TeleportTask( player ).runTaskTimer( BSPSolutions.instance, 0, 20 );
+					TeleportingPlayers.Instance().startTeleport( player );
 				else
 					player.sendMessage( BSPSolutions.config.getString( "CompassTP.cantUseMessage" ) );
 	}
@@ -56,6 +56,17 @@ public class CompassTeleport
 	public static void onWorldChange( final PlayerChangedWorldEvent event ) {
 		if ( event.getPlayer().getWorld().equals( LocationUtil.getOverWorld() ) )
 			event.getPlayer().setCompassTarget( LocationUtil.getCenterOfWorld() );
+	}
+
+
+
+
+	public static void setUpConfig( final Configuration config ) {
+		config.set( "CompassTP.successMessage", config.getString( "CompassTP.successMessage", "Teleport succeeded!" ) );
+		config.set( "CompassTP.failMessage", config.getString( "CompassTP.failMessage", "Teleport failed!" ) );
+		config.set( "CompassTP.cantUseMessage",
+				config.getString( "CompassTP.cantUseMessage", "You cannot use that here. Use compass to get to the Center of the World." ) );
+		config.set( "CompassTP.timerLength", BSPSolutions.config.getInt( "CompassTP.timerLength", 5 ) );
 	}
 
 }

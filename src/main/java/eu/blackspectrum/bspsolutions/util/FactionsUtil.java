@@ -53,8 +53,8 @@ public class FactionsUtil
 
 
 
-	public static boolean isFactionOffline( final Faction faction ) {
-		if ( offlineFactions.containsKey( faction.getId() ) && System.currentTimeMillis() > offlineFactions.get( faction.getId() ) )
+	public static boolean isFactionOffline( final Faction faction ) {		
+		if ( offlineFactions != null && offlineFactions.containsKey( faction.getId() ) && System.currentTimeMillis() > offlineFactions.get( faction.getId() ) )
 		{
 			removeFaction( faction );
 			return true;
@@ -139,7 +139,7 @@ public class FactionsUtil
 
 
 	public static void setUpConfig( final Configuration config ) {
-		config.set( "Factions.offlineDelay", config.getLong( "Factions.offlineDelay", 300 ) );
+		config.set( "Factions.offlineDelay", config.get( "Factions.offlineDelay", 300 ) );
 	}
 
 }

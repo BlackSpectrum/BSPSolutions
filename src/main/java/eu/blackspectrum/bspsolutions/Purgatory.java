@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
@@ -34,7 +35,7 @@ public class Purgatory
 
 
 	public static void setUpConfig( final Configuration config ) {
-		config.set( "Purgatory.time", config.getLong( "Purgatory.time", 900 ) );
+		config.set( "Purgatory.time", config.get( "Purgatory.time", 900 ) );
 	}
 
 
@@ -51,10 +52,7 @@ public class Purgatory
 
 
 	public boolean canPlayerLeave( final Player player ) {
-		if ( this.players == null )
-			return false;
-
-		if ( this.players.containsKey( player.getUniqueId() ) )
+		if ( this.players != null && this.players.containsKey( player.getUniqueId() ) )
 			return System.currentTimeMillis() > this.players.get( player.getUniqueId() );
 
 		// Check if in purgatory world, if not no need to leave
@@ -87,7 +85,7 @@ public class Purgatory
 	public void freePlayer( final Player player ) {
 		this.removePlayer( player );
 
-		player.teleport( LocationUtil.getRespawnLocation( player ) );
+		player.teleport( LocationUtil.getRespawnLocation( player ), TeleportCause.PLUGIN );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}

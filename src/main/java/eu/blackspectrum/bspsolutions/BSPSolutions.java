@@ -18,6 +18,7 @@ import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
 import eu.blackspectrum.bspsolutions.listeners.MiscEventListener;
 import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
+import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
 import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
@@ -131,6 +132,7 @@ public class BSPSolutions extends JavaPlugin
 		// Plugins
 		EndReset.setUpConfig( config );
 		Purgatory.setUpConfig( config );
+		CompassTeleport.setUpConfig( config );
 
 		this.saveConfig();
 	}

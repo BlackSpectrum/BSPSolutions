@@ -51,9 +51,9 @@ public class EndReset
 
 	public static void setUpConfig( final Configuration config ) {
 
-		config.set( "EndReset.nextReset", config.getLong( "EndReset.nextReset", 0 ) );
-		config.set( "EndReset.minDays", config.getInt( "EndReset.minDays", 5 ) );
-		config.set( "EndReset.maxDays", config.getInt( "EndReset.maxDays", 15 ) );
+		config.set( "EndReset.nextReset", config.get( "EndReset.nextReset", 0 ) );
+		config.set( "EndReset.minDays", config.get( "EndReset.minDays", 5 ) );
+		config.set( "EndReset.maxDays", config.get( "EndReset.maxDays", 15 ) );
 
 	}
 

@@ -2,7 +2,10 @@ package eu.blackspectrum.bspsolutions.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -97,6 +100,43 @@ public class LocationUtil
 
 	public static boolean isInSafeZone( final Location location ) {
 		return FactionsUtil.isSafeZone( BoardColls.get().getFactionAt( PS.valueOf( location ) ) );
+	}
+
+
+
+
+	public static boolean isLocationSafe( final Location location ) {
+		final Material block = location.getBlock().getType();
+		final Material above = location.getBlock().getRelative( BlockFace.UP ).getType();
+
+		if ( block.isSolid() || above.isSolid() || ItemUtil.isLava( block ) || ItemUtil.isLava( above ) || block == Material.FIRE
+				|| above == Material.FIRE )
+			return false;
+
+		final Material below = location.getBlock().getRelative( BlockFace.DOWN ).getType();
+
+		if ( ItemUtil.isLava( below ) || below == Material.FIRE || below == Material.CACTUS || below == Material.ENDER_PORTAL )
+			return false;
+
+		if ( !below.isSolid() )
+		{
+			int fallHeight = 1;
+			Block belowBlock = location.getBlock().getRelative( BlockFace.DOWN );
+
+			while ( fallHeight < 4 )
+			{
+				belowBlock = belowBlock.getRelative( BlockFace.DOWN );
+				if ( belowBlock.getType().isSolid() || ItemUtil.isWater( belowBlock ) )
+					return true;
+
+				fallHeight++;
+			}
+
+			return false;
+		}
+
+		return true;
+
 	}
 
 

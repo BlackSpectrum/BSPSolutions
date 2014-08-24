@@ -22,7 +22,7 @@ public class MiscEventListener implements Listener
 
 		for ( final World w : Bukkit.getWorlds() )
 			for ( final Chunk c : w.getLoadedChunks() )
-				c.unload( true );
+				c.unload( true, true );
 	}
 
 

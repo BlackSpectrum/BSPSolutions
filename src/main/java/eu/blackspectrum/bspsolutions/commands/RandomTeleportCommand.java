@@ -3,6 +3,7 @@ package eu.blackspectrum.bspsolutions.commands;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
@@ -21,6 +22,7 @@ public class RandomTeleportCommand extends MassiveCommand
 
 	public RandomTeleportCommand() {
 		this.addAliases( "randomteleport" );
+		this.addAliases( "rtp" );
 
 		this.addRequirements( ReqIsPlayer.get() );
 		this.addRequirements( ReqHasPerm.get( "BSP.admin" ) );
@@ -47,21 +49,18 @@ public class RandomTeleportCommand extends MassiveCommand
 			return;
 		}
 
-		boolean keepTrying = true;
-
 		final int radiusMin = BSPSolutions.config.getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.config
 				.getInt( "Locations.spawn.radiusMax" );
 
-		int x, y, z, attempts = 0;
+		int x, y, z;
 		final int centerX = LocationUtil.getCenterOfWorld().getBlockX(), centerZ = LocationUtil.getCenterOfWorld().getBlockZ();
 
 		final World world = LocationUtil.getOverWorld();
 		Location location = null;
 
-		while ( keepTrying )
+		while ( true )
 		{
-			attempts = 0;
-			keepTrying = false;
+
 			x = RNGUtil.randomSignum() * ( radiusMin + (int) ( RNGUtil.nextFloat() * ( radiusMax - radiusMin ) ) );
 			z = RNGUtil.randomSignum() * ( radiusMin + (int) ( RNGUtil.nextFloat() * ( radiusMax - radiusMin ) ) );
 
@@ -70,29 +69,26 @@ public class RandomTeleportCommand extends MassiveCommand
 
 			location = new Location( LocationUtil.getOverWorld(), x, 0, z );
 
-			world.getChunkAt( location ).load();
-
 			y = world.getHighestBlockAt( location ).getY();
 
-			location.setY( y - 1 );
-			final int t = world.getBlockTypeIdAt( location );
-			if ( y < 63 || t >= 8 && t <= 11 || t == 51 || t == 81 || t == 119 )
-			{
-				keepTrying = true;
+			location.setY( y );
+
+			if ( y < 63 || !LocationUtil.isLocationSafe( location ) )
 				continue;
-			}
 
 			final Faction faction = BoardColls.get().getFactionAt( PS.valueOf( location ) );
 			if ( !faction.isNone() )
-			{
-				keepTrying = true;
 				continue;
-			}
-			if ( ++attempts >= 0.1 * Math.PI * ( Math.pow( radiusMax, 2 ) - Math.pow( radiusMin, 2 ) ) )
-				this.sender.sendMessage( "Teleportation failed! Is the teleport area valid?" );
+
+			break;
 		}
+		
+		
 
 		if ( location != null )
-			target.teleport( location );
+		{
+			location.getChunk().load();
+			target.teleport( location, TeleportCause.PLUGIN );
+		}
 	}
 }

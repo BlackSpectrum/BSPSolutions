@@ -3,8 +3,9 @@ package eu.blackspectrum.bspsolutions;
 import java.util.HashSet;
 import java.util.UUID;
 
-import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+
+import eu.blackspectrum.bspsolutions.tasks.TeleportTask;
 
 public class TeleportingPlayers
 {
@@ -21,17 +22,6 @@ public class TeleportingPlayers
 			instance = new TeleportingPlayers();
 
 		return instance;
-	}
-
-
-
-
-	public static void setUpConfig( final Configuration config ) {
-		config.set( "CompassTP.successMessage", config.getString( "CompassTP.successMessage", "Teleport succeeded!" ) );
-		config.set( "CompassTP.failMessage", config.getString( "CompassTP.failMessage", "Teleport failed!" ) );
-		config.set( "CompassTP.cantUseMessage",
-				config.getString( "CompassTP.cantUseMessage", "You cannot use that here. Use compass to get to the Center of the World." ) );
-		config.set( "CompassTP.timerLength", BSPSolutions.config.getInt( "CompassTP.timerLength", 5 ) );
 	}
 
 
@@ -82,6 +72,14 @@ public class TeleportingPlayers
 
 		if ( this.players.isEmpty() )
 			this.players = null;
+	}
+
+
+
+
+	public void startTeleport( final Player player ) {
+		this.addPlayer( player );
+		new TeleportTask( player ).runTaskTimer( BSPSolutions.instance, 0, 20 );
 	}
 
 }

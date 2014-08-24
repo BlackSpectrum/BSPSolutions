@@ -1,6 +1,7 @@
 package eu.blackspectrum.bspsolutions.tasks;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
@@ -44,7 +45,7 @@ public class TeleportTask extends BukkitRunnable
 			this.player.sendMessage( "Teleporting in " + this.timer-- + " seconds. Use again to cancel." );
 		else
 		{
-			this.player.teleport( LocationUtil.getSpawnWorld().getSpawnLocation() );
+			this.player.teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
 			this.player.sendMessage( BSPSolutions.config.getString( "CompassTP.successMessage" ) );
 			TeleportingPlayers.Instance().removePlayer( this.player );
 			this.cancel();
