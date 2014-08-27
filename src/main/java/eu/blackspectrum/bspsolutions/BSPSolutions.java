@@ -194,16 +194,16 @@ public class BSPSolutions extends MassivePlugin
 
 
 	private void setUpConfig() {
-		config = this.getConfig2();
+		config = this.getConfig();
 
 		// Utils
-		LocationUtil.setUpConfig( getConfig2() );
-		FactionsUtil.setUpConfig( getConfig2() );
+		LocationUtil.setUpConfig( config );
+		FactionsUtil.setUpConfig( config );
 
 		// Plugins
-		EndReset.setUpConfig( getConfig2() );
-		Purgatory.setUpConfig( getConfig2() );
-		CompassTeleport.setUpConfig( getConfig2() );
+		EndReset.setUpConfig( config );
+		Purgatory.setUpConfig( config );
+		CompassTeleport.setUpConfig( config );
 
 		this.saveConfig();
 	}
