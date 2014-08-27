@@ -2,7 +2,6 @@ package eu.blackspectrum.bspsolutions.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -23,11 +22,11 @@ import eu.blackspectrum.bspsolutions.plugins.FMapPlugin;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
 import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
-import eu.blackspectrum.bspsolutions.plugins.PurgatoryPlugin;
+import eu.blackspectrum.bspsolutions.plugins.Purgatory;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
-public class PlayerListener implements Listener
+public class PlayerListener extends BSPListener
 {
 
 
@@ -44,7 +43,7 @@ public class PlayerListener implements Listener
 	public void onPlayerDeath( final PlayerDeathEvent event ) {
 		DieSilent.onPlayerDeath( event );
 		DropAll.onPlayerDeath( event );
-		PurgatoryPlugin.onPlayerDie( event );
+		Purgatory.onPlayerDie( event );
 	}
 
 
@@ -85,7 +84,7 @@ public class PlayerListener implements Listener
 
 		FactionsUtil.removeFaction( event.getPlayer() );
 
-		PurgatoryPlugin.onPlayerJoin( event );
+		Purgatory.onPlayerJoin( event );
 	}
 
 
@@ -110,7 +109,7 @@ public class PlayerListener implements Listener
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerRespawn( final PlayerRespawnEvent event ) {
-		PurgatoryPlugin.onPlayerRespawn( event );
+		Purgatory.onPlayerRespawn( event );
 	}
 
 

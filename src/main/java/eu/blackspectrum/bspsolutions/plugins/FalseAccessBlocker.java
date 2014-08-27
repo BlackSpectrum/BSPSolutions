@@ -24,7 +24,7 @@ public class FalseAccessBlocker
 		if ( !event.isCancelled() )
 			return;
 
-		player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
+		player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.Instance(), System.currentTimeMillis() ) );
 
 		Vector dir = event.getBlock().getLocation().toVector().add( new Vector( 0.5, 0, 0.5 ) ).subtract( player.getLocation().toVector() );
 
@@ -78,7 +78,7 @@ public class FalseAccessBlocker
 		{
 			if ( event.isCancelled() )
 			{
-				player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.instance, System.currentTimeMillis() ) );
+				player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.Instance(), System.currentTimeMillis() ) );
 				return;
 			}
 
@@ -86,13 +86,13 @@ public class FalseAccessBlocker
 			{
 				long lastCancelledEvent = -1;
 				for ( final MetadataValue meta : player.getMetadata( "lastCancelledEvent" ) )
-					if ( meta.getOwningPlugin().equals( BSPSolutions.instance ) )
+					if ( meta.getOwningPlugin().equals( BSPSolutions.Instance() ) )
 						lastCancelledEvent = meta.asLong();
 
 				if ( lastCancelledEvent > 0 && lastCancelledEvent + 750L > System.currentTimeMillis() )
 					event.setCancelled( true );
 
-				player.removeMetadata( "lastCancelledEvent", BSPSolutions.instance );
+				player.removeMetadata( "lastCancelledEvent", BSPSolutions.Instance() );
 
 			}
 		}

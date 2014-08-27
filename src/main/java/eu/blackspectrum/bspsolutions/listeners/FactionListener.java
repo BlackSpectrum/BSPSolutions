@@ -3,14 +3,13 @@ package eu.blackspectrum.bspsolutions.listeners;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.factions.event.EventFactionsChunkChange;
 
-public class FactionListener implements Listener
+public class FactionListener extends BSPListener
 {
 
 

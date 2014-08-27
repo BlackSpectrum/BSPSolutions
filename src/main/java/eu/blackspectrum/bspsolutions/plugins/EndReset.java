@@ -27,12 +27,12 @@ public class EndReset
 		if ( Bukkit.getServer().getOnlinePlayers().size() > 0 )
 			return;
 
-		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) == 0 )
+		if ( BSPSolutions.Config().getLong( "EndReset.nextReset" ) == 0 )
 			if ( LocationUtil.getWorld( "world_the_end" ).getEntitiesByClasses( EnderDragon.class ).size() == 0 )
 				scheduleReset();
 
-		if ( BSPSolutions.config.getLong( "EndReset.nextReset" ) != 0
-				&& System.currentTimeMillis() >= BSPSolutions.config.getLong( "EndReset.nextReset" ) )
+		if ( BSPSolutions.Config().getLong( "EndReset.nextReset" ) != 0
+				&& System.currentTimeMillis() >= BSPSolutions.Config().getLong( "EndReset.nextReset" ) )
 			resetEnd();
 	}
 
@@ -71,23 +71,23 @@ public class EndReset
 						end.unloadChunkRequest( a, i );
 					}
 
-		BSPSolutions.config.set( "EndReset.nextReset", 0 );
-		BSPSolutions.instance.saveConfig();
+		BSPSolutions.Config().set( "EndReset.nextReset", 0 );
+		BSPSolutions.Instance().saveConfig();
 	}
 
 
 
 
 	private static void scheduleReset() {
-		final int maxDays = BSPSolutions.config.getInt( "EndReset.maxDays" ) - BSPSolutions.config.getInt( "EndReset.minDays" );
-		final int minDays = BSPSolutions.config.getInt( "EndReset.minDays" );
+		final int maxDays = BSPSolutions.Config().getInt( "EndReset.maxDays" ) - BSPSolutions.Config().getInt( "EndReset.minDays" );
+		final int minDays = BSPSolutions.Config().getInt( "EndReset.minDays" );
 
 		long nextReset = System.currentTimeMillis() + minDays * MS_IN_DAY;
 
 		if ( maxDays > 0 )
 			nextReset += RNGUtil.nextInt( maxDays + 1 ) * MS_IN_DAY;
 
-		BSPSolutions.config.set( "EndReset.nextReset", nextReset );
-		BSPSolutions.instance.saveConfig();
+		BSPSolutions.Config().set( "EndReset.nextReset", nextReset );
+		BSPSolutions.Instance().saveConfig();
 	}
 }

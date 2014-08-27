@@ -20,8 +20,8 @@ public class BSPReloadCommand extends MassiveCommand
 
 	@Override
 	public void perform() {
-		BSPSolutions.instance.onDisable();
-		BSPSolutions.instance.onEnable();
+		BSPSolutions.Instance().onDisable();
+		BSPSolutions.Instance().onEnable();
 
 		this.sender.sendMessage( "BSPSolutions reloaded!" );
 	}

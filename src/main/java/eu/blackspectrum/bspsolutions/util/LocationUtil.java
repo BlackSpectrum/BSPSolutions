@@ -22,36 +22,36 @@ public class LocationUtil
 
 
 	public static Location getCenterOfWorld() {
-		return new Location( getOverWorld(), BSPSolutions.config.getInt( "Locations.center.x" ), 0,
-				BSPSolutions.config.getInt( "Locations.center.z" ) );
+		return new Location( getOverWorld(), BSPSolutions.Config().getInt( "Locations.center.x" ), 0, BSPSolutions.Config().getInt(
+				"Locations.center.z" ) );
 	}
 
 
 
 
 	public static World getEnd() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worlds.end" ) );
+		return getWorld( BSPSolutions.Config().getString( "Locations.worlds.end" ) );
 	}
 
 
 
 
 	public static World getNether() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worlds.nether" ) );
+		return getWorld( BSPSolutions.Config().getString( "Locations.worlds.nether" ) );
 	}
 
 
 
 
 	public static World getOverWorld() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worlds.world" ) );
+		return getWorld( BSPSolutions.Config().getString( "Locations.worlds.world" ) );
 	}
 
 
 
 
 	public static World getPurgatoryWorld() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worlds.purgatory" ) );
+		return getWorld( BSPSolutions.Config().getString( "Locations.worlds.purgatory" ) );
 	}
 
 
@@ -70,7 +70,7 @@ public class LocationUtil
 
 
 	public static World getSpawnWorld() {
-		return getWorld( BSPSolutions.config.getString( "Locations.worlds.spawn" ) );
+		return getWorld( BSPSolutions.Config().getString( "Locations.worlds.spawn" ) );
 	}
 
 
@@ -89,9 +89,9 @@ public class LocationUtil
 						.getLocation()
 						.toVector()
 						.distance(
-								new Vector( BSPSolutions.config.getInt( "Locations.center.x" ), player.getLocation().getY(),
-										BSPSolutions.config.getInt( "Locations.center.z" ) ) ) <= BSPSolutions.config
-						.getInt( "Locations.center.radius" );
+								new Vector( BSPSolutions.Config().getInt( "Locations.center.x" ), player.getLocation().getY(), BSPSolutions
+										.Config().getInt( "Locations.center.z" ) ) ) <= BSPSolutions.Config().getInt(
+						"Locations.center.radius" );
 
 	}
 

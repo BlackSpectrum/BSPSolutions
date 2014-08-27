@@ -6,7 +6,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -20,7 +19,7 @@ import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
-public class EntityListener implements Listener
+public class EntityListener extends BSPListener
 {
 
 

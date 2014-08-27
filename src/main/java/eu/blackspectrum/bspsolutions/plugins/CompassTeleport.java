@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
-import eu.blackspectrum.bspsolutions.TeleportingPlayers;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class CompassTeleport
@@ -20,9 +20,8 @@ public class CompassTeleport
 	public static void onPlayerHurt( final EntityDamageEvent event ) {
 		if ( event.getEntity() instanceof Player )
 		{
-			final Player player = (Player) event.getEntity();
-			if ( TeleportingPlayers.Instance().isTeleporting( player ) )
-				TeleportingPlayers.Instance().abortTeleport( player );
+			final BSPPlayer player = BSPPlayer.get( event.getEntity() );
+			player.abortTeleport();
 		}
 	}
 
@@ -38,16 +37,16 @@ public class CompassTeleport
 
 
 	public static void onRightClick( final PlayerInteractEvent event ) {
-		final Player player = event.getPlayer();
+		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
 
 		if ( event.getAction() == Action.RIGHT_CLICK_AIR )
 			if ( event.hasItem() && event.getItem().getType() == Material.COMPASS )
-				if ( TeleportingPlayers.Instance().isTeleporting( player ) )
-					TeleportingPlayers.Instance().abortTeleport( player );
-				else if ( LocationUtil.isCloseToCenter( player ) )
-					TeleportingPlayers.Instance().startTeleport( player );
+				if ( player.isTeleporting() )
+					player.abortTeleport();
+				else if ( LocationUtil.isCloseToCenter( player.getPlayer() ) )
+					player.startTeleport();
 				else
-					player.sendMessage( BSPSolutions.config.getString( "CompassTP.cantUseMessage" ) );
+					player.sendMessage( BSPSolutions.Config().getString( "CompassTP.cantUseMessage" ) );
 	}
 
 
@@ -66,7 +65,7 @@ public class CompassTeleport
 		config.set( "CompassTP.failMessage", config.getString( "CompassTP.failMessage", "Teleport failed!" ) );
 		config.set( "CompassTP.cantUseMessage",
 				config.getString( "CompassTP.cantUseMessage", "You cannot use that here. Use compass to get to the Center of the World." ) );
-		config.set( "CompassTP.timerLength", BSPSolutions.config.getInt( "CompassTP.timerLength", 5 ) );
+		config.set( "CompassTP.timerLength", BSPSolutions.Config().getInt( "CompassTP.timerLength", 5 ) );
 	}
 
 }

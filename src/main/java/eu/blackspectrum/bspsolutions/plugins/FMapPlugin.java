@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import eu.blackspectrum.bspsolutions.FMaps;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.renderers.FMapRenderer;
 
 public class FMapPlugin
@@ -38,12 +38,13 @@ public class FMapPlugin
 
 	public static void onPlayerRightClickMap( final PlayerInteractEvent event ) {
 
-		if ( event.getAction() != Action.RIGHT_CLICK_AIR )
+		if ( event.getAction() != Action.RIGHT_CLICK_AIR
+				&& !( event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().isSneaking() ) )
 			return;
 
 		final ItemStack item = event.getPlayer().getItemInHand();
 
 		if ( item != null && item.getType() == Material.MAP )
-			FMaps.Instance().getFMap( item.getDurability() ).togglePlayer( event.getPlayer().getUniqueId() );
+			BSPPlayer.get( event.getPlayer() ).toggleFMap( item.getDurability() );
 	}
 }

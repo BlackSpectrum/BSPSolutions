@@ -7,7 +7,7 @@ import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
 import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
-import eu.blackspectrum.bspsolutions.Purgatory;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 
 public class PurgatoryFreeCommand extends MassiveCommand
 {
@@ -41,6 +41,6 @@ public class PurgatoryFreeCommand extends MassiveCommand
 			return;
 		}
 
-		Purgatory.Instance().freePlayer( target );
+		BSPPlayer.get( target ).freeFromPurgatory();
 	}
 }

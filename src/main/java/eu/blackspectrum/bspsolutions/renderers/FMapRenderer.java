@@ -11,11 +11,12 @@ import org.bukkit.map.MapView;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColls;
 import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.FMaps;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.entities.FMap;
+import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
 public class FMapRenderer extends MapRenderer
 {
@@ -50,6 +51,7 @@ public class FMapRenderer extends MapRenderer
 		}
 
 		fMap.setSecondChance( true );
+		final BSPPlayer bspPlayer = BSPPlayer.get( player );
 
 		// Remove cursors
 		final MapCursorCollection cursors = canvas.getCursors();
@@ -58,7 +60,7 @@ public class FMapRenderer extends MapRenderer
 			cursors.removeCursor( cursors.getCursor( 0 ) );
 
 		// Render current data
-		if ( fMap.isFactionModeForPlayer( player ) )
+		if ( bspPlayer.isFMap( fMap.getId() ) )
 			fMap.renderFactions( canvas );
 		else
 			fMap.renderTerrain( canvas );
@@ -154,10 +156,10 @@ public class FMapRenderer extends MapRenderer
 		if ( faction.isNone() )
 			return 4; // green
 
-		if ( faction.equals( FactionColls.get().getForWorld( world ).getSafezone() ) )
+		if ( FactionsUtil.isSafeZone( faction ) )
 			return 72; // Gold
 
-		if ( faction.equals( FactionColls.get().getForWorld( world ).getWarzone() ) )
+		if ( FactionsUtil.isWarZone( faction ) )
 			return (byte) 142; // dark red
 
 		return 58;

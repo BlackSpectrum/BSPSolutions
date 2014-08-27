@@ -142,7 +142,7 @@ public class FMaps
 			}
 		}
 		// *********************************************************
-		new File( "plugins" + File.separator + BSPSolutions.pluginName + File.separator + "maps" ).mkdirs();
+		new File( "plugins" + File.separator + BSPSolutions.PluginName() + File.separator + "maps" ).mkdirs();
 	}
 
 

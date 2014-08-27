@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColls;
+import com.massivecraft.factions.entity.UConf;
 import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
@@ -32,7 +32,7 @@ public class FactionsUtil
 
 		// When last player logs off he still gets counted as offline, so <= 1
 		if ( faction.getOnlinePlayers().size() <= 1 )
-			offlineFactions.put( faction.getId(), System.currentTimeMillis() + BSPSolutions.config.getLong( "Factions.offlineDelay" )
+			offlineFactions.put( faction.getId(), System.currentTimeMillis() + BSPSolutions.Config().getLong( "Factions.offlineDelay" )
 					* 1000 );
 	}
 
@@ -98,14 +98,14 @@ public class FactionsUtil
 
 
 	public static boolean isSafeZone( final Faction faction ) {
-		return faction.equals( FactionColls.get().getForUniverse( faction.getUniverse() ).getSafezone() );
+		return faction.getId().equals( UConf.get( faction ).factionIdSafezone );
 	}
 
 
 
 
 	public static boolean isWarZone( final Faction faction ) {
-		return faction.equals( FactionColls.get().getForUniverse( faction.getUniverse() ).getWarzone() );
+		return faction.getId().equals( UConf.get( faction ).factionIdWarzone );
 	}
 
 

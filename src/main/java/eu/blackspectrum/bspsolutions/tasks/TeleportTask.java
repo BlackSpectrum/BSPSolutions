@@ -1,26 +1,25 @@
 package eu.blackspectrum.bspsolutions.tasks;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
-import eu.blackspectrum.bspsolutions.TeleportingPlayers;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class TeleportTask extends BukkitRunnable
 {
 
 
-	private final Player	player;
+	private final BSPPlayer	player;
 	private int				timer;
 
 
 
 
-	public TeleportTask(final Player player) {
+	public TeleportTask(final BSPPlayer player) {
 		this.player = player;
-		this.timer = BSPSolutions.config.getInt( "CompassTP.timerLength", 5 );
+		this.timer = BSPSolutions.Config().getInt( "CompassTP.timerLength", 5 );
 	}
 
 
@@ -28,16 +27,16 @@ public class TeleportTask extends BukkitRunnable
 
 	@Override
 	public void run() {
-		if ( !TeleportingPlayers.Instance().isTeleporting( this.player ) )
+		if ( !this.player.isTeleporting() )
 		{
 			this.cancel();
 			return;
 		}
 
-		if ( !LocationUtil.isCloseToCenter( this.player ) )
+		if ( !LocationUtil.isCloseToCenter( this.player.getPlayer() ) )
 		{
 
-			TeleportingPlayers.Instance().abortTeleport( this.player );
+			this.player.abortTeleport();
 			this.cancel();
 			return;
 		}
@@ -45,9 +44,9 @@ public class TeleportTask extends BukkitRunnable
 			this.player.sendMessage( "Teleporting in " + this.timer-- + " seconds. Use again to cancel." );
 		else
 		{
-			this.player.teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
-			this.player.sendMessage( BSPSolutions.config.getString( "CompassTP.successMessage" ) );
-			TeleportingPlayers.Instance().removePlayer( this.player );
+			this.player.getPlayer().teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
+			this.player.sendMessage( BSPSolutions.Config().getString( "CompassTP.successMessage" ) );
+			this.player.setTeleporting( false );
 			this.cancel();
 		}
 	}

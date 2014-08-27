@@ -5,33 +5,41 @@ import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import com.massivecraft.massivecore.Aspect;
+import com.massivecraft.massivecore.AspectColl;
+import com.massivecraft.massivecore.MassivePlugin;
 
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
-import eu.blackspectrum.bspsolutions.listeners.BlockListener;
-import eu.blackspectrum.bspsolutions.listeners.EntityListener;
-import eu.blackspectrum.bspsolutions.listeners.MiscEventListener;
-import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayerColls;
+import eu.blackspectrum.bspsolutions.listeners.BSPListener;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
+import eu.blackspectrum.bspsolutions.plugins.Purgatory;
 import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
-public class BSPSolutions extends JavaPlugin
+public class BSPSolutions extends MassivePlugin
 {
 
 
-	public static Plugin		instance;
-	public static Configuration	config;
-	public static String		pluginName;
+	private static BSPSolutions		instance;
+	private static Configuration	config;
+	private static String			pluginName;
+
+	private Aspect					aspect;
+
+
+
+
+	public static Configuration Config() {
+		return config;
+	}
 
 
 
@@ -53,6 +61,13 @@ public class BSPSolutions extends JavaPlugin
 
 
 
+	public static BSPSolutions Instance() {
+		return instance;
+	}
+
+
+
+
 	public static boolean isClimbing( final Entity e ) {
 		final Material m = e.getLocation().getBlock().getType();
 		return !e.isOnGround() && m == Material.LADDER || m == Material.VINE;
@@ -68,15 +83,36 @@ public class BSPSolutions extends JavaPlugin
 
 
 
+	public static String PluginName() {
+		return pluginName;
+	}
+
+
+
+
+	public BSPSolutions() {
+		instance = this;
+
+		if ( PluginName() == null || PluginName().isEmpty() )
+			pluginName = this.getName();
+	}
+
+
+
+
+	public Aspect getAspect() {
+		return this.aspect;
+	}
+
+
+
+
 	@Override
 	public void onDisable() {
 		final BukkitScheduler scheduler = this.getServer().getScheduler();
 
 		// Unregister all tasks
 		scheduler.cancelTasks( this );
-
-		// Unregister all events
-		HandlerList.unregisterAll( this );
 
 		FMaps.Instance().collectGarbage();
 		FMaps.Instance().dump();
@@ -87,36 +123,67 @@ public class BSPSolutions extends JavaPlugin
 
 	@Override
 	public void onEnable() {
-		instance = this;
 
-		if ( pluginName == null || pluginName.isEmpty() )
-			pluginName = this.getName();
+		if ( !this.preEnable() )
+			return;
 
+		// ***************************
+		// SetUp config
+		// ***************************
 		this.setUpConfig();
+		// ***************************
 
+		// ***************************
+		// SetUp Aspect
+		// ***************************
+		this.aspect = AspectColl.get().get( "bsp", true );
+		this.aspect.register();
+		// ***************************
+
+		// ***************************
+		// Init colls
+		// ***************************
+		BSPPlayerColls.get().init();
+		// ***************************
+
+		// ***************************
 		// Register listener
-		final PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents( new PlayerListener(), this );
-		pm.registerEvents( new EntityListener(), this );
-		pm.registerEvents( new BlockListener(), this );
-		pm.registerEvents( new MiscEventListener(), this );
+		// ***************************
+		BSPListener.Instance().register();
+		BSPListener.Instance().register();
+		BSPListener.Instance().register();
+		BSPListener.Instance().register();
+		BSPListener.Instance().register();
+		// ***************************
 
+		// ***************************
 		// Start plugin enables
+		// ***************************
 		EndReset.onEnable();
+		// ***************************
 
+		// ***************************
 		// Initialize misc
+		// ***************************
 		FMaps.Instance().initialize();
+		// ***************************
 
+		// ***************************
 		// Add commands
+		// ***************************
 		new PurgatoryCommand().register();
 		new BSPCommand().register();
 		new RandomTeleportCommand().register();
+		// ***************************
 
+		// ***************************
 		// Schedule tasks
+		// ***************************
 		final BukkitScheduler scheduler = this.getServer().getScheduler();
 
 		scheduler.runTaskTimer( this, new PurgatoryCheckTask(), 1200, 1200 );
 		scheduler.runTaskTimer( this, new GarbageCollectTask(), 6000, 6000 );
+		// ***************************
 	}
 
 
@@ -126,14 +193,15 @@ public class BSPSolutions extends JavaPlugin
 		config = this.getConfig();
 
 		// Utils
-		LocationUtil.setUpConfig( config );
-		FactionsUtil.setUpConfig( config );
+		LocationUtil.setUpConfig( Config() );
+		FactionsUtil.setUpConfig( Config() );
 
 		// Plugins
-		EndReset.setUpConfig( config );
-		Purgatory.setUpConfig( config );
-		CompassTeleport.setUpConfig( config );
+		EndReset.setUpConfig( Config() );
+		Purgatory.setUpConfig( Config() );
+		CompassTeleport.setUpConfig( Config() );
 
 		this.saveConfig();
 	}
+
 }
