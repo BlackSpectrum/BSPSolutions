@@ -12,9 +12,6 @@ public class BetterLeashes
 
 
 	public static void onUnleash( final PlayerUnleashEntityEvent event ) {
-		if ( event.isCancelled() )
-			return;
-
 		event.setCancelled( true );
 
 		if ( !( event.getEntity() instanceof LivingEntity ) )

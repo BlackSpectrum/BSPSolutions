@@ -31,9 +31,6 @@ public class SaferSafeZones
 
 
 	public static void onPlayerChunkMove( final PlayerMoveEvent event ) {
-		if ( event.isCancelled() )
-			return;
-
 		final Location from = event.getFrom();
 		final Location to = event.getTo();
 		final Player player = event.getPlayer();

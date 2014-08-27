@@ -183,10 +183,8 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Schedule tasks
 		// ***************************
-		final BukkitScheduler scheduler = this.getServer().getScheduler();
-
-		scheduler.runTaskTimer( this, new PurgatoryCheckTask(), 1200, 1200 );
-		scheduler.runTaskTimer( this, new GarbageCollectTask(), 6000, 6000 );
+		PurgatoryCheckTask.get().schedule( 1200 );
+		GarbageCollectTask.get().schedule( 12000 );
 		// ***************************
 	}
 

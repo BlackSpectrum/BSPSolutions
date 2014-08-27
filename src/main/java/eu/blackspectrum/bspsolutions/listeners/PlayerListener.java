@@ -66,6 +66,12 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerFish( final PlayerFishEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
 		FishFix.onPlayerCatchFish( event );
 	}
 
@@ -74,9 +80,16 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
+		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
+		
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
 		CompassTeleport.onRightClick( event );
 		FMapPlugin.onPlayerRightClickMap( event );
-		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
 		SaferSafeZones.onPlayerUseItem( event );
 		ForceOpen.onOpenChest( event );
 	}
@@ -86,6 +99,12 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteractEntity( final PlayerInteractEntityEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
 		AbandonPet.onPetHit( event );
 	}
 
@@ -96,9 +115,7 @@ public class PlayerListener extends BSPListener
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
 		CompassTeleport.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
-
 		FactionsUtil.removeFaction( event.getPlayer() );
-
 		Purgatory.onPlayerJoin( event );
 	}
 
@@ -107,6 +124,12 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerMove( final PlayerMoveEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
 		SaferSafeZones.onPlayerChunkMove( event );
 	}
 
@@ -115,7 +138,6 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit( final PlayerQuitEvent event ) {
-
 		FactionsUtil.addFaction( event.getPlayer() );
 	}
 
@@ -132,6 +154,12 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerUnleashEntity( final PlayerUnleashEntityEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
 		BetterLeashes.onUnleash( event );
 	}
 

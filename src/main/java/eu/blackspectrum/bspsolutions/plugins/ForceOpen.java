@@ -12,9 +12,6 @@ public class ForceOpen
 
 
 	public static void onOpenChest( final PlayerInteractEvent event ) {
-		if ( event.isCancelled() )
-			return;
-
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 		{
 			final Block block = event.getClickedBlock();

@@ -107,6 +107,7 @@ public class FMaps
 
 
 
+	@SuppressWarnings("deprecation")
 	public void initialize() {
 		// Initialize all maps with FMaps
 		// *********************************************************

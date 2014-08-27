@@ -138,7 +138,6 @@ public class FactionsUtil
 
 
 
-
 	public static void setUpConfig( final Configuration config ) {
 		config.set( "Factions.offlineDelay", config.get( "Factions.offlineDelay", 300 ) );
 	}

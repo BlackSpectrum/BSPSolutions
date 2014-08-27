@@ -40,6 +40,12 @@ public class EntityListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn( final CreatureSpawnEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+
 		AbandonPet.onPetBreed( event );
 	}
 
@@ -48,6 +54,12 @@ public class EntityListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamaged( final EntityDamageEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+
 		SaferSafeZones.onPlayerDamaged( event );
 		CompassTeleport.onPlayerHurt( event );
 	}
@@ -65,6 +77,12 @@ public class EntityListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityExplode( final EntityExplodeEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+
 		if ( event.getEntityType() == EntityType.CREEPER )
 		{
 			final Iterator<Block> it = event.blockList().iterator();

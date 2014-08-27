@@ -30,6 +30,9 @@ public class FactionListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onChunkClaim( final EventFactionsChunkChange event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
 		if ( event.isCancelled() )
 			return;
 
