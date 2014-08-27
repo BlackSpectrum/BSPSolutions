@@ -10,11 +10,15 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
+import eu.blackspectrum.bspsolutions.adapters.BedBoardAdapter;
+import eu.blackspectrum.bspsolutions.adapters.BedBoardMapAdapter;
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayerColls;
+import eu.blackspectrum.bspsolutions.entities.BedBoard;
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
 import eu.blackspectrum.bspsolutions.listeners.FactionListener;
@@ -186,6 +190,8 @@ public class BSPSolutions extends MassivePlugin
 		PurgatoryCheckTask.get().schedule( 1200 );
 		GarbageCollectTask.get().schedule( 12000 );
 		// ***************************
+		
+		postEnable();
 	}
 
 
@@ -204,6 +210,14 @@ public class BSPSolutions extends MassivePlugin
 		CompassTeleport.setUpConfig( config );
 
 		this.saveConfig();
+	}
+	
+	@Override
+	public GsonBuilder getGsonBuilder()
+	{
+		return super.getGsonBuilder()
+				.registerTypeAdapter( BedBoard.class, BedBoardAdapter.get() )
+				.registerTypeAdapter(BedBoard.MAP_TYPE, BedBoardMapAdapter.get());
 	}
 
 }

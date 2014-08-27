@@ -24,6 +24,7 @@ import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
+import eu.blackspectrum.bspsolutions.plugins.SpawnBed;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
 public class PlayerListener extends BSPListener
@@ -81,6 +82,11 @@ public class PlayerListener extends BSPListener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract( final PlayerInteractEvent event ) {
 		FalseAccessBlocker.onPlayerInteractBlockCancelled( event );
+		CompassTeleport.onRightClick( event );
+		FMapPlugin.onPlayerRightClickMap( event );
+		SaferSafeZones.onPlayerUseItem( event );
+		SpawnBed.onPlayerClickedBed( event );
+		
 		
 		// ************************
 		// Ignore cancelled
@@ -88,9 +94,6 @@ public class PlayerListener extends BSPListener
 		if ( event.isCancelled() )
 			return;
 		
-		CompassTeleport.onRightClick( event );
-		FMapPlugin.onPlayerRightClickMap( event );
-		SaferSafeZones.onPlayerUseItem( event );
 		ForceOpen.onOpenChest( event );
 	}
 

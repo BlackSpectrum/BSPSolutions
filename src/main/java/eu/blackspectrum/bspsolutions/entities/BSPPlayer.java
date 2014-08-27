@@ -2,10 +2,12 @@ package eu.blackspectrum.bspsolutions.entities;
 
 import java.util.ArrayList;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.massivecore.store.SenderEntity;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
@@ -19,12 +21,15 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	// Store generic booleans in here
 	// Bits (right to left):
 	// 1: isTeleporting
-	private byte				booleans;
+	private byte				booleans		= 0;
 
-	private long				timeInPurgatory;
+	private long				timeInPurgatory	= 0;
 
 	// MapIds that are faction mode for this player
-	private ArrayList<Short>	fMaps	= null;
+	private ArrayList<Short>	fMaps			= null;
+
+	private String				bedId			= null;
+
 
 
 
@@ -33,6 +38,10 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		return BSPPlayerColls.get().get2( o );
 	}
 
+	public UPlayer getUPlayer()
+	{
+		return UPlayer.get( getPlayer() );
+	}
 
 
 
@@ -57,7 +66,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	public void freeFromPurgatory() {
 		final Player player = this.getPlayer();
 		this.setTimeInPurgatory( 0 );
-		player.teleport( LocationUtil.getRespawnLocation( player ), TeleportCause.PLUGIN );
+		player.teleport( getSpawnLocation(), TeleportCause.PLUGIN );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}
@@ -68,7 +77,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	public void freeFromPurgatory( final PlayerRespawnEvent event ) {
 		final Player player = this.getPlayer();
 		this.setTimeInPurgatory( 0 );
-		event.setRespawnLocation( LocationUtil.getRespawnLocation( player ) );
+		event.setRespawnLocation( getSpawnLocation() );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}
@@ -78,7 +87,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	@Override
 	public boolean isDefault() {
-		return this.canLeavePurgatory() && ( this.fMaps == null || this.fMaps.size() == 0 );
+		return this.canLeavePurgatory() && ( this.fMaps == null || this.fMaps.size() == 0 ) && bedId == null;
 	}
 
 
@@ -106,13 +115,26 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	}
 
 
+	public void setBed(BSPBed bed)
+	{
+		if(bed == null)
+			bedId = null;
+		else
+			this.bedId = bed.getId();
+	}
+	
+	public BSPBed getBed()
+	{
+		return BSPBedColls.get().get(this).get(bedId);
+	}
 
 
 	@Override
 	public BSPPlayer load( final BSPPlayer that ) {
-		this.setTimeInPurgatory( that.timeInPurgatory );		
+		this.setTimeInPurgatory( that.timeInPurgatory );
 		this.fMaps = that.fMaps;
-		
+		this.bedId = that.bedId;
+
 		return this;
 	}
 
@@ -162,6 +184,17 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 		this.fMaps.add( id );
 		return true;
+	}
+	
+	public Location getSpawnLocation()
+	{
+		Location ret = getBed().getSpawnLocation();
+		
+		if(ret == null)
+			ret = LocationUtil.getSpawnWorld().getSpawnLocation();
+		
+		return ret;
+		
 	}
 
 }
