@@ -46,7 +46,7 @@ public class CompassTeleport
 				else if ( LocationUtil.isCloseToCenter( player.getPlayer() ) )
 					player.startTeleport();
 				else
-					player.sendMessage( BSPSolutions.Config().getString( "CompassTP.cantUseMessage" ) );
+					player.sendMessage( BSPSolutions.getConfig2().getString( "CompassTP.cantUseMessage" ) );
 	}
 
 
@@ -65,7 +65,7 @@ public class CompassTeleport
 		config.set( "CompassTP.failMessage", config.getString( "CompassTP.failMessage", "Teleport failed!" ) );
 		config.set( "CompassTP.cantUseMessage",
 				config.getString( "CompassTP.cantUseMessage", "You cannot use that here. Use compass to get to the Center of the World." ) );
-		config.set( "CompassTP.timerLength", BSPSolutions.Config().getInt( "CompassTP.timerLength", 5 ) );
+		config.set( "CompassTP.timerLength", BSPSolutions.getConfig2().getInt( "CompassTP.timerLength", 5 ) );
 	}
 
 }

@@ -8,13 +8,28 @@ import eu.blackspectrum.bspsolutions.FMaps;
 import eu.blackspectrum.bspsolutions.events.GarbageCollectEvent;
 import eu.blackspectrum.bspsolutions.plugins.FMapPlugin;
 
-public class MiscEventListener extends BSPListener
+public class MiscListener extends BSPListener
 {
+
+
+	private static MiscListener	instance;
+
+
+
+
+	public static BSPListener get() {
+		if ( instance == null )
+			instance = new MiscListener();
+
+		return instance;
+	}
+
+
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onGarbageCollect( final GarbageCollectEvent event ) {
-		FMaps.Instance().collectGarbage();
+		FMaps.get().collectGarbage();
 	}
 
 

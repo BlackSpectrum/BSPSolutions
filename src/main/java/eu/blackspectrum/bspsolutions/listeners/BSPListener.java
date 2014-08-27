@@ -9,18 +9,7 @@ public class BSPListener implements Listener
 {
 
 
-	private static BSPListener	instance;
-	private boolean				registered	= false;
-
-
-
-
-	public static BSPListener Instance() {
-		if ( instance == null )
-			instance = new BSPListener();
-
-		return instance;
-	}
+	private boolean	registered	= false;
 
 
 
@@ -28,7 +17,7 @@ public class BSPListener implements Listener
 	public void register() {
 		if ( !this.registered )
 		{
-			Bukkit.getPluginManager().registerEvents( instance, BSPSolutions.Instance() );
+			Bukkit.getPluginManager().registerEvents( this, BSPSolutions.get() );
 			this.registered = true;
 		}
 	}

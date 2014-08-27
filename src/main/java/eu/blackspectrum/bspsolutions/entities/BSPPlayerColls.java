@@ -31,7 +31,7 @@ public class BSPPlayerColls extends XColls<BSPPlayerColl, BSPPlayer>
 
 	@Override
 	public Aspect getAspect() {
-		return BSPSolutions.Instance().getAspect();
+		return BSPSolutions.get().getAspect();
 	}
 
 

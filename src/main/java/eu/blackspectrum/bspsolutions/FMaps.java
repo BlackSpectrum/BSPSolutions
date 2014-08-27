@@ -29,7 +29,7 @@ public class FMaps
 
 
 	// Singleton
-	public static FMaps Instance() {
+	public static FMaps get() {
 		if ( instance == null )
 			instance = new FMaps();
 
@@ -142,7 +142,7 @@ public class FMaps
 			}
 		}
 		// *********************************************************
-		new File( "plugins" + File.separator + BSPSolutions.PluginName() + File.separator + "maps" ).mkdirs();
+		new File( "plugins" + File.separator + BSPSolutions.getPluginName() + File.separator + "maps" ).mkdirs();
 	}
 
 

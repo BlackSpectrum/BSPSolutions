@@ -49,7 +49,7 @@ public class RandomTeleportCommand extends MassiveCommand
 			return;
 		}
 
-		final int radiusMin = BSPSolutions.Config().getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.Config().getInt(
+		final int radiusMin = BSPSolutions.getConfig2().getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.getConfig2().getInt(
 				"Locations.spawn.radiusMax" );
 
 		int x, y, z;

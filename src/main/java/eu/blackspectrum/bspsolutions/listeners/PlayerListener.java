@@ -30,6 +30,21 @@ public class PlayerListener extends BSPListener
 {
 
 
+	private static PlayerListener	instance;
+
+
+
+
+	public static BSPListener get() {
+		if ( instance == null )
+			instance = new PlayerListener();
+
+		return instance;
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChangedWorld( final PlayerChangedWorldEvent event ) {
 		CompassTeleport.onWorldChange( event );

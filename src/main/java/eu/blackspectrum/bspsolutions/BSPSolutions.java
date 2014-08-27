@@ -15,7 +15,11 @@ import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayerColls;
-import eu.blackspectrum.bspsolutions.listeners.BSPListener;
+import eu.blackspectrum.bspsolutions.listeners.BlockListener;
+import eu.blackspectrum.bspsolutions.listeners.EntityListener;
+import eu.blackspectrum.bspsolutions.listeners.FactionListener;
+import eu.blackspectrum.bspsolutions.listeners.MiscListener;
+import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
@@ -37,7 +41,7 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static Configuration Config() {
+	public static Configuration getConfig2() {
 		return config;
 	}
 
@@ -61,7 +65,7 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static BSPSolutions Instance() {
+	public static BSPSolutions get() {
 		return instance;
 	}
 
@@ -83,7 +87,7 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static String PluginName() {
+	public static String getPluginName() {
 		return pluginName;
 	}
 
@@ -93,7 +97,7 @@ public class BSPSolutions extends MassivePlugin
 	public BSPSolutions() {
 		instance = this;
 
-		if ( PluginName() == null || PluginName().isEmpty() )
+		if ( getPluginName() == null || getPluginName().isEmpty() )
 			pluginName = this.getName();
 	}
 
@@ -114,8 +118,8 @@ public class BSPSolutions extends MassivePlugin
 		// Unregister all tasks
 		scheduler.cancelTasks( this );
 
-		FMaps.Instance().collectGarbage();
-		FMaps.Instance().dump();
+		FMaps.get().collectGarbage();
+		FMaps.get().dump();
 	}
 
 
@@ -149,11 +153,11 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Register listener
 		// ***************************
-		BSPListener.Instance().register();
-		BSPListener.Instance().register();
-		BSPListener.Instance().register();
-		BSPListener.Instance().register();
-		BSPListener.Instance().register();
+		PlayerListener.get().register();
+		EntityListener.get().register();
+		BlockListener.get().register();
+		FactionListener.get().register();
+		MiscListener.get().register();
 		// ***************************
 
 		// ***************************
@@ -165,7 +169,7 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Initialize misc
 		// ***************************
-		FMaps.Instance().initialize();
+		FMaps.get().initialize();
 		// ***************************
 
 		// ***************************
@@ -190,16 +194,16 @@ public class BSPSolutions extends MassivePlugin
 
 
 	private void setUpConfig() {
-		config = this.getConfig();
+		config = this.getConfig2();
 
 		// Utils
-		LocationUtil.setUpConfig( Config() );
-		FactionsUtil.setUpConfig( Config() );
+		LocationUtil.setUpConfig( getConfig2() );
+		FactionsUtil.setUpConfig( getConfig2() );
 
 		// Plugins
-		EndReset.setUpConfig( Config() );
-		Purgatory.setUpConfig( Config() );
-		CompassTeleport.setUpConfig( Config() );
+		EndReset.setUpConfig( getConfig2() );
+		Purgatory.setUpConfig( getConfig2() );
+		CompassTeleport.setUpConfig( getConfig2() );
 
 		this.saveConfig();
 	}

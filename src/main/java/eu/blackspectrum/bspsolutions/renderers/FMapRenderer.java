@@ -46,7 +46,7 @@ public class FMapRenderer extends MapRenderer
 		// Did the fMap get thrown to garbage?
 		if ( fMap == null || fMap.isDumped() )
 		{
-			this.fMapRef = new WeakReference<FMap>( FMaps.Instance().getFMap( map.getId() ) );
+			this.fMapRef = new WeakReference<FMap>( FMaps.get().getFMap( map.getId() ) );
 			fMap = this.fMapRef.get();
 		}
 

@@ -19,7 +19,7 @@ public class TeleportTask extends BukkitRunnable
 
 	public TeleportTask(final BSPPlayer player) {
 		this.player = player;
-		this.timer = BSPSolutions.Config().getInt( "CompassTP.timerLength", 5 );
+		this.timer = BSPSolutions.getConfig2().getInt( "CompassTP.timerLength", 5 );
 	}
 
 
@@ -45,7 +45,7 @@ public class TeleportTask extends BukkitRunnable
 		else
 		{
 			this.player.getPlayer().teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
-			this.player.sendMessage( BSPSolutions.Config().getString( "CompassTP.successMessage" ) );
+			this.player.sendMessage( BSPSolutions.getConfig2().getString( "CompassTP.successMessage" ) );
 			this.player.setTeleporting( false );
 			this.cancel();
 		}

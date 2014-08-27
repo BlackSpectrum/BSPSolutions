@@ -23,6 +23,21 @@ public class EntityListener extends BSPListener
 {
 
 
+	private static EntityListener	instance;
+
+
+
+
+	public static BSPListener get() {
+		if ( instance == null )
+			instance = new EntityListener();
+
+		return instance;
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onCreatureSpawn( final CreatureSpawnEvent event ) {
 		AbandonPet.onPetBreed( event );

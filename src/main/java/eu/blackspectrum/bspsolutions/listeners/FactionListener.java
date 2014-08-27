@@ -13,6 +13,21 @@ public class FactionListener extends BSPListener
 {
 
 
+	private static FactionListener	instance;
+
+
+
+
+	public static BSPListener get() {
+		if ( instance == null )
+			instance = new FactionListener();
+
+		return instance;
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onChunkClaim( final EventFactionsChunkChange event ) {
 		if ( event.isCancelled() )

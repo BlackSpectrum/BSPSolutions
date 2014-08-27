@@ -39,7 +39,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	public void abortTeleport() {
 		if ( this.isTeleporting() )
 		{
-			this.getPlayer().sendMessage( BSPSolutions.Config().getString( "CompassTP.failMessage" ) );
+			this.getPlayer().sendMessage( BSPSolutions.getConfig2().getString( "CompassTP.failMessage" ) );
 			this.setTeleporting( false );
 		}
 	}
@@ -110,8 +110,9 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	@Override
 	public BSPPlayer load( final BSPPlayer that ) {
-		this.setTimeInPurgatory( that.timeInPurgatory );
-
+		this.setTimeInPurgatory( that.timeInPurgatory );		
+		this.fMaps = that.fMaps;
+		
 		return this;
 	}
 
@@ -138,7 +139,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public void startTeleport() {
 		this.setTeleporting( true );
-		new TeleportTask( this ).runTaskTimer( BSPSolutions.Instance(), 0, 20 );
+		new TeleportTask( this ).runTaskTimer( BSPSolutions.get(), 0, 20 );
 	}
 
 
@@ -157,7 +158,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		}
 
 		if ( this.fMaps == null )
-			this.fMaps = new ArrayList<Short>();
+			this.fMaps = new ArrayList<Short>( 2 );
 
 		this.fMaps.add( id );
 		return true;

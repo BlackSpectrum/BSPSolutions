@@ -11,6 +11,21 @@ public class BlockListener extends BSPListener
 {
 
 
+	private static BlockListener	instance;
+
+
+
+
+	public static BSPListener get() {
+		if ( instance == null )
+			instance = new BlockListener();
+
+		return instance;
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak( final BlockBreakEvent event ) {
 		FalseAccessBlocker.onBlockBreackCancelled( event );

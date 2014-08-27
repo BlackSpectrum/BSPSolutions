@@ -32,7 +32,7 @@ public class FactionsUtil
 
 		// When last player logs off he still gets counted as offline, so <= 1
 		if ( faction.getOnlinePlayers().size() <= 1 )
-			offlineFactions.put( faction.getId(), System.currentTimeMillis() + BSPSolutions.Config().getLong( "Factions.offlineDelay" )
+			offlineFactions.put( faction.getId(), System.currentTimeMillis() + BSPSolutions.getConfig2().getLong( "Factions.offlineDelay" )
 					* 1000 );
 	}
 
