@@ -37,14 +37,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public static BSPPlayer get( final Object o ) {
-		return BSPPlayerColls.get().get2( o );
-	}
-
-
-
-
-	public UPlayer getUPlayer() {
-		return UPlayer.get( getPlayer() );
+		return BSPPlayerColl.get().get( o );
 	}
 
 
@@ -62,10 +55,10 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public boolean canLeavePurgatory() {
-		if ( timeInPurgatory == null )
+		if ( this.timeInPurgatory == null )
 			return true;
 
-		return this.timeInPurgatory == null ? true : timeInPurgatory <= System.currentTimeMillis();
+		return this.timeInPurgatory == null ? true : this.timeInPurgatory <= System.currentTimeMillis();
 	}
 
 
@@ -74,7 +67,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	public void freeFromPurgatory() {
 		final Player player = this.getPlayer();
 		this.setTimeInPurgatory( null );
-		player.teleport( getSpawnLocation(), TeleportCause.PLUGIN );
+		player.teleport( this.getSpawnLocation(), TeleportCause.PLUGIN );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}
@@ -85,7 +78,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	public void freeFromPurgatory( final PlayerRespawnEvent event ) {
 		final Player player = this.getPlayer();
 		this.setTimeInPurgatory( null );
-		event.setRespawnLocation( getSpawnLocation() );
+		event.setRespawnLocation( this.getSpawnLocation() );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
 	}
@@ -93,16 +86,56 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
+	public BSPBed getBed() {
+		return BSPBed.get( this.bedId );
+	}
+
+
+
+
+	public Long getLastCancelledEvent() {
+		return this.lastCancelledEvent == null ? 0 : this.lastCancelledEvent;
+	}
+
+
+
+
+	public Long getLastRespawn() {
+		return this.lastRespawn == null ? 0 : this.lastRespawn;
+	}
+
+
+
+
+	public Location getSpawnLocation() {
+		Location ret = this.getBed() == null ? null : this.getBed().getSpawnLocation();
+
+		if ( ret == null )
+			ret = LocationUtil.getSpawnWorld().getSpawnLocation();
+
+		return ret;
+	}
+
+
+
+
+	public UPlayer getUPlayer() {
+		return UPlayer.get( this.getPlayer() );
+	}
+
+
+
+
 	@Override
 	public boolean isDefault() {
-		return this.canLeavePurgatory() && ( this.fMaps == null || this.fMaps.size() == 0 ) && bedId == null;
+		return this.canLeavePurgatory() && ( this.fMaps == null || this.fMaps.size() == 0 ) && this.bedId == null;
 	}
 
 
 
 
 	public boolean isFMap( final short id ) {
-		return fMaps == null ? false : this.fMaps.contains( id );
+		return this.fMaps == null ? false : this.fMaps.contains( id );
 	}
 
 
@@ -122,23 +155,6 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
-	public void setBed( BSPBed bed ) {
-		if ( bed == null )
-			bedId = null;
-		else
-			this.bedId = bed.getId();
-	}
-
-
-
-
-	public BSPBed getBed() {
-		return BSPBedColls.get().get( this ).get( bedId );
-	}
-
-
-
-
 	@Override
 	public BSPPlayer load( final BSPPlayer that ) {
 		this.setTimeInPurgatory( that.timeInPurgatory );
@@ -146,6 +162,30 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		this.bedId = that.bedId;
 
 		return this;
+	}
+
+
+
+
+	public void setBed( final BSPBed bed ) {
+		if ( bed == null )
+			this.bedId = null;
+		else
+			this.bedId = bed.getId();
+	}
+
+
+
+
+	public void setLastCancelledEvent( final Long lastCancelledEvent ) {
+		this.lastCancelledEvent = lastCancelledEvent;
+	}
+
+
+
+
+	public void setLastRespawn( final Long lastRespawn ) {
+		this.lastRespawn = lastRespawn;
 	}
 
 
@@ -193,46 +233,6 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 		this.fMaps.add( id );
 		return true;
-	}
-
-
-
-
-	public Location getSpawnLocation() {
-		Location ret = getBed().getSpawnLocation();
-
-		if ( ret == null )
-			ret = LocationUtil.getSpawnWorld().getSpawnLocation();
-
-		return ret;
-	}
-
-
-
-
-	public Long getLastRespawn() {
-		return lastRespawn == null ? 0: lastRespawn;
-	}
-
-
-
-
-	public void setLastRespawn( Long lastRespawn ) {
-		this.lastRespawn = lastRespawn;
-	}
-
-
-
-
-	public Long getLastCancelledEvent() {
-		return lastCancelledEvent == null ? 0 : lastCancelledEvent;
-	}
-
-
-
-
-	public void setLastCancelledEvent( Long lastCancelledEvent ) {
-		this.lastCancelledEvent = lastCancelledEvent;
 	}
 
 }

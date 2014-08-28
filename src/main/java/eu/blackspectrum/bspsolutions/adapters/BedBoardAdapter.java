@@ -13,32 +13,43 @@ import com.massivecraft.massivecore.xlib.gson.JsonSerializer;
 
 import eu.blackspectrum.bspsolutions.entities.BedBoard;
 
-
-
 public class BedBoardAdapter implements JsonDeserializer<BedBoard>, JsonSerializer<BedBoard>
 {
+
+
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
-	private static BedBoardAdapter i = new BedBoardAdapter();
-	public static BedBoardAdapter get() { return i; }
-	
+
+	private static BedBoardAdapter	i	= new BedBoardAdapter();
+
+
+
+
+	public static BedBoardAdapter get() {
+		return i;
+	}
+
+
+
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public BedBoard deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-	{
-		return new BedBoard((Map<PS, String>) context.deserialize(json, BedBoard.MAP_TYPE));
+	public BedBoard deserialize( final JsonElement json, final Type typeOfT, final JsonDeserializationContext context )
+			throws JsonParseException {
+		return new BedBoard( (Map<PS, String>) context.deserialize( json, BedBoard.MAP_TYPE ) );
 	}
 
+
+
+
 	@Override
-	public JsonElement serialize(BedBoard src, Type typeOfSrc, JsonSerializationContext context)
-	{
-		return context.serialize(src.getMap(), BedBoard.MAP_TYPE);
+	public JsonElement serialize( final BedBoard src, final Type typeOfSrc, final JsonSerializationContext context ) {
+		return context.serialize( src.getMap(), BedBoard.MAP_TYPE );
 	}
-	
+
 }

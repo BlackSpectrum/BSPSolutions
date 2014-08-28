@@ -1,5 +1,9 @@
 package eu.blackspectrum.bspsolutions;
 
+import java.io.File;
+import java.util.Map.Entry;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
@@ -10,6 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
 import eu.blackspectrum.bspsolutions.adapters.BedBoardAdapter;
@@ -17,8 +22,12 @@ import eu.blackspectrum.bspsolutions.adapters.BedBoardMapAdapter;
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
-import eu.blackspectrum.bspsolutions.entities.BSPPlayerColls;
+import eu.blackspectrum.bspsolutions.entities.BSPBed;
+import eu.blackspectrum.bspsolutions.entities.BSPBedColl;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayerColl;
 import eu.blackspectrum.bspsolutions.entities.BedBoard;
+import eu.blackspectrum.bspsolutions.entities.BedBoardColl;
 import eu.blackspectrum.bspsolutions.listeners.BlockListener;
 import eu.blackspectrum.bspsolutions.listeners.EntityListener;
 import eu.blackspectrum.bspsolutions.listeners.FactionListener;
@@ -32,6 +41,8 @@ import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
+import eu.blackspectrum.spawnbed.SpawnBed;
+import eu.blackspectrum.spawnbed.entities.BedHead;
 
 public class BSPSolutions extends MassivePlugin
 {
@@ -42,6 +53,13 @@ public class BSPSolutions extends MassivePlugin
 	private static String			pluginName;
 
 	private Aspect					aspect;
+
+
+
+
+	public static BSPSolutions get() {
+		return instance;
+	}
 
 
 
@@ -70,8 +88,8 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static BSPSolutions get() {
-		return instance;
+	public static String getPluginName() {
+		return pluginName;
 	}
 
 
@@ -92,13 +110,6 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static String getPluginName() {
-		return pluginName;
-	}
-
-
-
-
 	public BSPSolutions() {
 		instance = this;
 
@@ -111,6 +122,15 @@ public class BSPSolutions extends MassivePlugin
 
 	public Aspect getAspect() {
 		return this.aspect;
+	}
+
+
+
+
+	@Override
+	public GsonBuilder getGsonBuilder() {
+		return super.getGsonBuilder().registerTypeAdapter( BedBoard.class, BedBoardAdapter.get() )
+				.registerTypeAdapter( BedBoard.MAP_TYPE, BedBoardMapAdapter.get() );
 	}
 
 
@@ -152,7 +172,9 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Init colls
 		// ***************************
-		BSPPlayerColls.get().init();
+		BSPPlayerColl.get().init();
+		BSPBedColl.get().init();
+		BedBoardColl.get().init();
 		// ***************************
 
 		// ***************************
@@ -191,8 +213,49 @@ public class BSPSolutions extends MassivePlugin
 		PurgatoryCheckTask.get().schedule( 1200 );
 		GarbageCollectTask.get().schedule( 12000 );
 		// ***************************
-		
-		postEnable();
+
+		this.migrateSpawnBed();
+
+		this.postEnable();
+	}
+
+
+
+
+	private void migrateSpawnBed() {
+		// Check if migrating is needed
+		final File dir = new File( "mstore" + File.separator + "bsp_bed" );
+		if ( dir.exists() )
+		{
+			this.log( "Disabling SpawnBed, you can delete this now." );
+			Bukkit.getPluginManager().disablePlugin( SpawnBed.instance );
+			return;
+		}
+
+		this.log( "********************************************" );
+		this.log( "Migrating SpawnBed to BSPSolutions" );
+		for ( final Entry<UUID, BedHead> entry : SpawnBed.beds.entrySet() )
+		{
+
+			final BSPPlayer bspPlayer = BSPPlayer.get( entry.getKey().toString() );
+			final PS ps = PS.valueOf( entry.getValue().getLocation().getBlock()
+					.getRelative( entry.getValue().getOrientation().getOppositeFace() ) );
+			final BedBoard board = BedBoardColl.get().get( ps.getWorld() );
+
+			final BSPBed bed = BSPBedColl.get().create();
+			bed.setOwner( bspPlayer );
+			bed.setLocation( ps );
+			bspPlayer.setBed( bed );
+			board.setBedAt( ps, bed );
+		}
+
+		this.log( "Success!" );
+
+		this.log( "Disabling SpawnBed, you can delete this now." );
+		Bukkit.getPluginManager().disablePlugin( SpawnBed.instance );
+
+		this.log( "Migrating done" );
+		this.log( "********************************************" );
 	}
 
 
@@ -212,14 +275,6 @@ public class BSPSolutions extends MassivePlugin
 		SpawnSafe.setUpConfig( config );
 
 		this.saveConfig();
-	}
-	
-	@Override
-	public GsonBuilder getGsonBuilder()
-	{
-		return super.getGsonBuilder()
-				.registerTypeAdapter( BedBoard.class, BedBoardAdapter.get() )
-				.registerTypeAdapter(BedBoard.MAP_TYPE, BedBoardMapAdapter.get());
 	}
 
 }

@@ -50,8 +50,8 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChangedWorld( final PlayerChangedWorldEvent event ) {
-		BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
-		
+		final BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
+
 		CompassTeleport.onWorldChange( event );
 		SaferSafeZones.onPlayerChangedWorld( event );
 		SpawnSafe.onPlayerChangedWorld( event, bspPlayer );
@@ -77,7 +77,7 @@ public class PlayerListener extends BSPListener
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		FishFix.onPlayerCatchFish( event );
 	}
 
@@ -91,14 +91,13 @@ public class PlayerListener extends BSPListener
 		FMapPlugin.onPlayerRightClickMap( event );
 		SaferSafeZones.onPlayerUseItem( event );
 		SpawnBed.onPlayerClickedBed( event );
-		
-		
+
 		// ************************
 		// Ignore cancelled
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		ForceOpen.onOpenChest( event );
 	}
 
@@ -112,7 +111,7 @@ public class PlayerListener extends BSPListener
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		AbandonPet.onPetHit( event );
 	}
 
@@ -137,7 +136,7 @@ public class PlayerListener extends BSPListener
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		SaferSafeZones.onPlayerChunkMove( event );
 	}
 
@@ -167,7 +166,7 @@ public class PlayerListener extends BSPListener
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		BetterLeashes.onUnleash( event );
 	}
 

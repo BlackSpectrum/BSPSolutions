@@ -9,8 +9,20 @@ public class BSPPlayerColl extends SenderColl<BSPPlayer>
 {
 
 
-	public BSPPlayerColl(final String name) {
-		super( name, BSPPlayer.class, MStore.getDb(), BSPSolutions.get() );
+	private static BSPPlayerColl	i	= new BSPPlayerColl();
+
+
+
+
+	public static BSPPlayerColl get() {
+		return i;
+	}
+
+
+
+
+	public BSPPlayerColl() {
+		super( "bsp_player", BSPPlayer.class, MStore.getDb(), BSPSolutions.get() );
 	}
 
 }

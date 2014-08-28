@@ -72,7 +72,7 @@ public class EntityListener extends BSPListener
 
 
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDamagedByEntity( EntityDamageByEntityEvent event ) {
+	public void onEntityDamagedByEntity( final EntityDamageByEntityEvent event ) {
 		// ************************
 		// Ignore cancelled
 		// ************************

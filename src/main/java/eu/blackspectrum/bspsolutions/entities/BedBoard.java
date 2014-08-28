@@ -22,11 +22,47 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 
 
 
-	@Override
-	public BedBoard load( BedBoard that ) {
-		this.map = that.map;
+	public BedBoard() {
+		this.map = new ConcurrentSkipListMap<PS, String>();
+	}
 
-		return this;
+
+
+
+	public BedBoard(final Map<PS, String> map) {
+		this.map = new ConcurrentSkipListMap<PS, String>( map );
+	}
+
+
+
+
+	@Override
+	public BSPBed getBedAt( PS ps ) {
+		if ( ps == null )
+			return null;
+		ps = ps.getBlockCoords( true );
+
+		final BSPBed ret = BSPBed.get( this.map.get( ps ) );
+
+		return ret;
+	}
+
+
+
+
+	public Map<PS, String> getMap() {
+		return Collections.unmodifiableMap( this.map );
+	}
+
+
+
+
+	public PS getPSForBed( final BSPBed bed ) {
+		for ( final Entry<PS, String> e : this.map.entrySet() )
+			if ( e.getValue().equals( bed.getId() ) )
+				return e.getKey();
+
+		return null;
 	}
 
 
@@ -44,91 +80,53 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 
 
 
-	public BedBoard() {
-		this.map = new ConcurrentSkipListMap<PS, String>();
-	}
+	@Override
+	public BedBoard load( final BedBoard that ) {
+		this.map = that.map;
 
-
-
-
-	public BedBoard(Map<PS, String> map) {
-		this.map = new ConcurrentSkipListMap<PS, String>( map );
-	}
-
-
-
-
-	public Map<PS, String> getMap() {
-		return Collections.unmodifiableMap( this.map );
+		return this;
 	}
 
 
 
 
 	@Override
-	public BSPBed getBedAt( PS ps ) {
-		if ( ps == null )
-			return null;
-		ps = ps.getBlockCoords( true );
-
-		BSPBed ret = BSPBed.get( map.get( ps ), this );
-
-		return ret;
+	public void removeBed( final BSPBed bed ) {
+		this.removeBedAt( this.getPSForBed( bed ) );
 	}
 
 
 
 
-	public PS getPSForBed( BSPBed bed ) {
-		for ( Entry<PS, String> e : map.entrySet() )
+	@Override
+	public void removeBedAt( final PS ps ) {
+		if ( ps == null )
+			return;
+
+		final BSPBed bed = this.getBedAt( ps );
+
+		if ( bed != null )
 		{
-			if ( e.getValue().equals( bed.getId() ) )
-				return e.getKey();
+			bed.getOwner().setBed( null );
+			bed.detach();
+			this.map.remove( ps );
 		}
 
-		return null;
 	}
 
 
 
 
 	@Override
-	public void setBedAt( PS ps, BSPBed bed ) {
+	public void setBedAt( PS ps, final BSPBed bed ) {
 
 		ps = ps.getBlockCoords( true );
 
 		if ( bed == null )
-			removeBedAt( ps );
+			this.removeBedAt( ps );
 		else
-			map.put( ps, bed.getId() );
+			this.map.put( ps, bed.getId() );
 
-	}
-
-
-
-
-	@Override
-	public void removeBed( BSPBed bed ) {
-		removeBedAt( getPSForBed( bed ) );
-	}
-
-
-
-
-	@Override
-	public void removeBedAt( PS ps ) {
-		if(ps == null)
-			return;
-		
-		BSPBed bed = getBedAt( ps );
-		
-		if(bed != null)
-		{
-			bed.getOwner().setBed( null );
-			bed.detach();
-			map.remove( ps );
-		}
-		
 	}
 
 }

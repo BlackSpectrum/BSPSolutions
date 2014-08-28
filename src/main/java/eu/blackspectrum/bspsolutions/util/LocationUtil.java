@@ -33,6 +33,13 @@ public class LocationUtil
 
 
 
+	public static double getHorizontalDistance( final Location loc1, final Location loc2 ) {
+		return loc1.toVector().setY( 0 ).distance( loc2.toVector().setY( 0 ) );
+	}
+
+
+
+
 	public static World getNether() {
 		return getWorld( BSPSolutions.getConfig2().getString( "Locations.worlds.nether" ) );
 	}
@@ -49,13 +56,6 @@ public class LocationUtil
 
 	public static World getPurgatoryWorld() {
 		return getWorld( BSPSolutions.getConfig2().getString( "Locations.worlds.purgatory" ) );
-	}
-
-
-
-
-	public static double getHorizontalDistance( Location loc1, Location loc2 ) {
-		return loc1.toVector().setY( 0 ).distance( loc2.toVector().setY( 0 ) );
 	}
 
 

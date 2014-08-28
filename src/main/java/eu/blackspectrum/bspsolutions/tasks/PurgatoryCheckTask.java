@@ -9,27 +9,28 @@ import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 public class PurgatoryCheckTask implements Runnable
 {
 
-	private static PurgatoryCheckTask instance;
-	private boolean isScheduled = false;
-	
-	public static PurgatoryCheckTask get()
-	{
-		if(instance == null)
+
+	private static PurgatoryCheckTask	instance;
+	private boolean						isScheduled	= false;
+
+
+
+
+	public static PurgatoryCheckTask get() {
+		if ( instance == null )
 			instance = new PurgatoryCheckTask();
-		
+
 		return instance;
 	}
-	
-	private PurgatoryCheckTask() {	}
-	
-	public void schedule(int interval)
-	{
-		if(!isScheduled)
-		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask( BSPSolutions.get(), this, interval, interval );
-			isScheduled = true;
-		}
+
+
+
+
+	private PurgatoryCheckTask() {
 	}
+
+
+
 
 	@Override
 	public void run() {
@@ -38,6 +39,17 @@ public class PurgatoryCheckTask implements Runnable
 			final BSPPlayer player = BSPPlayer.get( p );
 			if ( player.isInPurgatory() && player.canLeavePurgatory() )
 				player.freeFromPurgatory();
+		}
+	}
+
+
+
+
+	public void schedule( final int interval ) {
+		if ( !this.isScheduled )
+		{
+			Bukkit.getScheduler().scheduleSyncRepeatingTask( BSPSolutions.get(), this, interval, interval );
+			this.isScheduled = true;
 		}
 	}
 

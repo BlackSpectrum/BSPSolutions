@@ -18,13 +18,6 @@ public class SpawnSafe
 {
 
 
-	public static void onPlayerChangedWorld( final PlayerChangedWorldEvent event, BSPPlayer bspPlayer ) {
-		bspPlayer.setLastRespawn( System.currentTimeMillis() );
-	}
-
-
-
-
 	public static void onEntityDamage( final EntityDamageEvent event, BSPPlayer bspPlayer ) {
 		final Entity victim = event.getEntity();
 
@@ -61,7 +54,14 @@ public class SpawnSafe
 
 
 
-	public static void setUpConfig( Configuration config ) {
+	public static void onPlayerChangedWorld( final PlayerChangedWorldEvent event, final BSPPlayer bspPlayer ) {
+		bspPlayer.setLastRespawn( System.currentTimeMillis() );
+	}
+
+
+
+
+	public static void setUpConfig( final Configuration config ) {
 		config.set( "SpawnSafe.protectionTime", config.getDouble( "SpawnSafe.protectionTime", 3.0d ) );
 		config.set( "SpawnSafe.damageDealtToProtected", config.getDouble( "SpawnSafe.damageDealtToProtected", 0.0d ) );
 		config.set( "SpawnSafe.damageDealtByProtected", config.getDouble( "SpawnSafe.damageDealtByProtected", 1.0d ) );

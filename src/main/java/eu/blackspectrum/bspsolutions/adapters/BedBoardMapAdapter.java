@@ -1,7 +1,5 @@
 package eu.blackspectrum.bspsolutions.adapters;
 
-
-
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,54 +20,68 @@ import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class BedBoardMapAdapter implements JsonDeserializer<Map<PS, String>>, JsonSerializer<Map<PS, String>>
 {
+
+
 	// -------------------------------------------- //
 	// INSTANCE & CONSTRUCT
 	// -------------------------------------------- //
-	
-	private static BedBoardMapAdapter i = new BedBoardMapAdapter();
-	public static BedBoardMapAdapter get() { return i; }
-	
+
+	private static BedBoardMapAdapter	i	= new BedBoardMapAdapter();
+
+
+
+
+	public static BedBoardMapAdapter get() {
+		return i;
+	}
+
+
+
+
 	// -------------------------------------------- //
 	// OVERRIDE
 	// -------------------------------------------- //
-	
+
 	@Override
-	public Map<PS, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException
-	{
-		Map<PS, String> ret = new ConcurrentSkipListMap<PS, String>();
-		
-		JsonObject jsonObject = json.getAsJsonObject();
-		
-		for (Entry<String, JsonElement> entry : jsonObject.entrySet())
+	public Map<PS, String> deserialize( final JsonElement json, final Type typeOfT, final JsonDeserializationContext context )
+			throws JsonParseException {
+		final Map<PS, String> ret = new ConcurrentSkipListMap<PS, String>();
+
+		final JsonObject jsonObject = json.getAsJsonObject();
+
+		for ( final Entry<String, JsonElement> entry : jsonObject.entrySet() )
 		{
-			String[] blockCoordParts = entry.getKey().split("[,\\s]+");
-			int blockX = Integer.parseInt(blockCoordParts[0]);
-			int blockY = Integer.parseInt(blockCoordParts[1]);
-			int blockZ = Integer.parseInt(blockCoordParts[2]);
-			PS block = PS.valueOf( new Location( LocationUtil.getOverWorld(), blockX, blockY, blockZ ) ).getBlockCoords(true);
-			
-			String id = context.deserialize(entry.getValue(), String.class);
-			
-			ret.put(block, id);
+			final String[] blockCoordParts = entry.getKey().split( "[,\\s]+" );
+			final int blockX = Integer.parseInt( blockCoordParts[0] );
+			final int blockY = Integer.parseInt( blockCoordParts[1] );
+			final int blockZ = Integer.parseInt( blockCoordParts[2] );
+			final PS block = PS.valueOf( new Location( LocationUtil.getOverWorld(), blockX, blockY, blockZ ) ).getBlockCoords( true );
+
+			final String id = context.deserialize( entry.getValue(), String.class );
+
+			ret.put( block, id );
 		}
-		
+
 		return ret;
 	}
 
+
+
+
 	@Override
-	public JsonElement serialize(Map<PS, String> src, Type typeOfSrc, JsonSerializationContext context)
-	{
-		JsonObject ret = new JsonObject();
-		
-		for (Entry<PS, String> entry : src.entrySet())
+	public JsonElement serialize( final Map<PS, String> src, final Type typeOfSrc, final JsonSerializationContext context ) {
+		final JsonObject ret = new JsonObject();
+
+		for ( final Entry<PS, String> entry : src.entrySet() )
 		{
-			PS ps = entry.getKey();
-			String id = entry.getValue();
-			
-			ret.add(ps.getBlockX().toString() + "," + ps.getBlockY().toString() + "," +ps.getBlockZ().toString(), context.serialize(id, String.class));
+			final PS ps = entry.getKey();
+			final String id = entry.getValue();
+
+			ret.add( ps.getBlockX().toString() + "," + ps.getBlockY().toString() + "," + ps.getBlockZ().toString(),
+					context.serialize( id, String.class ) );
 		}
-		
+
 		return ret;
 	}
-	
+
 }

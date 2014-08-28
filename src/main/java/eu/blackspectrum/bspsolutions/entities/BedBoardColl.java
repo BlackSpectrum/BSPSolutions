@@ -11,27 +11,46 @@ public class BedBoardColl extends Coll<BedBoard> implements IBedBoard
 {
 
 
-	public BedBoardColl(String name) {
-		super( name, BedBoard.class, MStore.getDb(),BSPSolutions.get(), false, true, true );
+	private static BedBoardColl	i	= new BedBoardColl();
+
+
+
+
+	public static BedBoardColl get() {
+		return i;
 	}
 
 
-	@Override
-	public String fixId(Object oid)
-	{
-		if (oid == null) return null;
-		if (oid instanceof String) return (String)oid;
-		if (oid instanceof BedBoard) return this.getId(oid);
-		
-		return MUtil.extract(String.class, "worldName", oid);
+
+
+	public BedBoardColl() {
+		super( "bsp_bedboard", BedBoard.class, MStore.getDb(), BSPSolutions.get(), false, true, true );
 	}
 
+
+
+
 	@Override
-	public BSPBed getBedAt( PS ps ) {
+	public String fixId( final Object oid ) {
+		if ( oid == null )
+			return null;
+		if ( oid instanceof String )
+			return (String) oid;
+		if ( oid instanceof BedBoard )
+			return this.getId( oid );
+
+		return MUtil.extract( String.class, "worldName", oid );
+	}
+
+
+
+
+	@Override
+	public BSPBed getBedAt( final PS ps ) {
 		if ( ps == null )
 			return null;
 
-		BedBoard board = this.get( ps.getWorld() );
+		final BedBoard board = this.get( ps.getWorld() );
 
 		if ( board == null )
 			return null;
@@ -43,47 +62,51 @@ public class BedBoardColl extends Coll<BedBoard> implements IBedBoard
 
 
 	@Override
-	public void setBedAt( PS ps, BSPBed bed ) {
+	public void removeBed( final BSPBed bed ) {
+		if ( bed == null )
+			return;
+
+		final BedBoard board = this.get( bed.getLocation().getWorld() );
+
+		if ( board == null )
+			return;
+
+		board.removeBed( bed );
+
+	}
+
+
+
+
+	@Override
+	public void removeBedAt( final PS ps ) {
 		if ( ps == null )
 			return;
 
-		BedBoard board = this.get( ps.getWorld() );
+		final BedBoard board = this.get( ps.getWorld() );
+
+		if ( board == null )
+			return;
+
+		board.removeBedAt( ps );
+
+	}
+
+
+
+
+	@Override
+	public void setBedAt( final PS ps, final BSPBed bed ) {
+		if ( ps == null )
+			return;
+
+		final BedBoard board = this.get( ps.getWorld() );
 
 		if ( board == null )
 			return;
 
 		board.setBedAt( ps, bed );
 
-	}
-
-
-	@Override
-	public void removeBed( BSPBed bed ) {
-		if ( bed == null )
-			return;
-
-		BedBoard board = this.get( bed.getLocation().getWorld() );
-
-		if ( board == null )
-			return;
-
-		board.removeBed( bed );
-		
-	}
-
-
-	@Override
-	public void removeBedAt( PS ps ) {
-		if ( ps == null )
-			return;
-
-		BedBoard board = this.get( ps.getWorld() );
-
-		if ( board == null )
-			return;
-
-		board.removeBedAt( ps );
-		
 	}
 
 }

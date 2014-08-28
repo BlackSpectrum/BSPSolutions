@@ -1,5 +1,6 @@
 package eu.blackspectrum.bspsolutions.plugins;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.Action;
@@ -13,85 +14,14 @@ import com.massivecraft.factions.FPerm;
 import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.entities.BSPBed;
-import eu.blackspectrum.bspsolutions.entities.BSPBedColls;
+import eu.blackspectrum.bspsolutions.entities.BSPBedColl;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.entities.BedBoard;
-import eu.blackspectrum.bspsolutions.entities.BedBoardColls;
+import eu.blackspectrum.bspsolutions.entities.BedBoardColl;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class SpawnBed
 {
-
-
-	public static void onPlayerClickedBed( PlayerInteractEvent event ) {
-		Block clickedBlock = event.getClickedBlock();
-
-		if ( clickedBlock == null || clickedBlock.getType() != Material.BED_BLOCK
-				|| !clickedBlock.getWorld().equals( LocationUtil.getOverWorld() ) )
-			return;
-
-		BSPPlayer player = BSPPlayer.get( event.getPlayer() );
-
-		// Prevent sleeping
-		event.setCancelled( event.getAction() == Action.RIGHT_CLICK_BLOCK );
-
-		final Bed bedBlock = (Bed) clickedBlock.getState().getData();
-		if ( bedBlock.isHeadOfBed() )
-			clickedBlock = clickedBlock.getRelative( bedBlock.getFacing().getOppositeFace() );
-
-		PS ps = PS.valueOf( clickedBlock );
-
-		BedBoard board = BedBoardColls.get().getForWorld( ps.getWorld() ).get( ps.getWorld() );
-		BSPBed bed = board.getBedAt( ps );
-
-		// No bed found, player can set here
-		if ( bed == null )
-		{
-			// Leftclicking does nothing
-			if(event.getAction() == Action.LEFT_CLICK_BLOCK)
-				return;
-			
-			if ( !FPerm.BUILD.has( player.getUPlayer(), ps, false ) )
-			{
-				player.sendMessage( "It is too dangerous to sleep in non friendly territory." );
-				return;
-			}
-
-			BSPBed oldBed = player.getBed();
-			if ( oldBed != null )
-				board.removeBed( oldBed );
-
-			bed = BSPBedColls.get().get( player ).create();
-			bed.setOwner( player );
-			bed.setLocation( ps );
-			player.setBed( bed );
-			board.setBedAt( ps, bed );
-			player.sendMessage( "This is your bed now. Keep it clean." );
-		}
-
-		// Bed found, is this the players bed?
-		else if ( bed.getOwner().equals( player ) )
-		{
-			if ( event.getAction() == Action.LEFT_CLICK_BLOCK )
-			{
-				board.removeBedAt( ps );
-				player.sendMessage( "No longer your bed." );
-			}
-			else
-			{
-				if ( bed.getSpawnLocation() != null )
-					player.sendMessage( "This is your bed, it looks tidy." );
-				else
-					player.sendMessage( "This is your bed, seems to dangerous to sleep in." );
-			}
-		}
-		else
-			// send owner name
-			player.sendMessage( "This is the bed of " + bed.getOwnerName() + "." );
-
-	}
-
-
 
 
 	public static void onBlockBreak( final BlockBreakEvent event ) {
@@ -99,6 +29,21 @@ public class SpawnBed
 		if ( !block.getWorld().equals( LocationUtil.getOverWorld() ) )
 			return;
 		onBlockBreak( block );
+	}
+
+
+
+
+	public static void onEntityExplode( final EntityExplodeEvent event ) {
+		if ( event.isCancelled() )
+			return;
+
+		if ( !event.getLocation().getWorld().equals( LocationUtil.getOverWorld() ) )
+			return;
+
+		// Iterate all destroyed blocks
+		for ( final Block block : event.blockList() )
+			onBlockBreak( block );
 	}
 
 
@@ -123,36 +68,85 @@ public class SpawnBed
 
 
 
-	public static void onEntityExplode( final EntityExplodeEvent event ) {
-		if ( event.isCancelled() )
+	public static void onPlayerClickedBed( final PlayerInteractEvent event ) {
+		Block clickedBlock = event.getClickedBlock();
+
+		if ( clickedBlock == null || clickedBlock.getType() != Material.BED_BLOCK
+				|| !clickedBlock.getWorld().equals( LocationUtil.getOverWorld() ) )
 			return;
 
-		if ( !event.getLocation().getWorld().equals( LocationUtil.getOverWorld() ) )
-			return;
+		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
 
-		// Iterate all destroyed blocks
-		for ( final Block block : event.blockList() )
+		// Prevent sleeping
+		event.setCancelled( event.getAction() == Action.RIGHT_CLICK_BLOCK );
+
+		final Bed bedBlock = (Bed) clickedBlock.getState().getData();
+		if ( bedBlock.isHeadOfBed() )
+			clickedBlock = clickedBlock.getRelative( bedBlock.getFacing().getOppositeFace() );
+
+		final PS ps = PS.valueOf( clickedBlock );
+
+		final BedBoard board = BedBoardColl.get().get( ps.getWorld() );
+		BSPBed bed = board.getBedAt( ps );
+
+		// No bed found, player can set here
+		if ( bed == null )
 		{
-			onBlockBreak( block );
+			// Leftclicking does nothing
+			if ( event.getAction() == Action.LEFT_CLICK_BLOCK )
+				return;
+
+			if ( !FPerm.BUILD.has( player.getUPlayer(), ps, false ) )
+			{
+				player.sendMessage( ChatColor.AQUA + "It is too dangerous to sleep in non friendly territory." );
+				return;
+			}
+
+			final BSPBed oldBed = player.getBed();
+			if ( oldBed != null )
+				board.removeBed( oldBed );
+
+			bed = BSPBedColl.get().create();
+			bed.setOwner( player );
+			bed.setLocation( ps );
+			player.setBed( bed );
+			board.setBedAt( ps, bed );
+			player.sendMessage( ChatColor.AQUA + "This is your bed now. Keep it clean." );
 		}
+
+		// Bed found, is this the players bed?
+		else if ( bed.getOwner().equals( player ) )
+		{
+			if ( event.getAction() == Action.LEFT_CLICK_BLOCK )
+			{
+				board.removeBedAt( ps );
+				player.sendMessage( ChatColor.AQUA + "This is no longer your bed." );
+			}
+			else if ( bed.getSpawnLocation() != null )
+				player.sendMessage( ChatColor.AQUA + "This is your bed, it looks tidy." );
+			else
+				player.sendMessage( ChatColor.AQUA + "This is your bed, it seems too " + ChatColor.DARK_RED + "dangerous to sleep in." );
+		}
+		else
+			// send owner name
+			player.sendMessage( ChatColor.AQUA + "This is the bed of " + ChatColor.GOLD + bed.getOwnerName() + ChatColor.AQUA + "." );
+
 	}
 
 
 
 
-	private static void onBlockBreak( Block block ) {
+	private static void onBlockBreak( final Block block ) {
 		// Only consider BED_BLOCK in overworld
 		if ( block.getType() != Material.BED_BLOCK )
 			return;
 
-		PS ps = PS.valueOf( block );
+		final PS ps = PS.valueOf( block );
 
-		BedBoard board = BedBoardColls.get().getForWorld( ps.getWorld() ).get( ps.getWorld() );
-		BSPBed bed = board.getBedAt( ps );
+		final BedBoard board = BedBoardColl.get().get( ps.getWorld() );
+		final BSPBed bed = board.getBedAt( ps );
 
 		if ( bed != null )
-		{
 			board.removeBedAt( ps );
-		}
 	}
 }

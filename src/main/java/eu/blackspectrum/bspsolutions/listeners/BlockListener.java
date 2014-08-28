@@ -44,16 +44,8 @@ public class BlockListener extends BSPListener
 
 
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBlockPlace( final BlockPlaceEvent event ) {
-		FalseAccessBlocker.onBlockCancelledInAir( event );
-	}
-
-
-
-
 	@EventHandler
-	public void onBlockFromTo( BlockFromToEvent event ) {
+	public void onBlockFromTo( final BlockFromToEvent event ) {
 		// ************************
 		// Ignore cancelled
 		// ************************
@@ -61,5 +53,13 @@ public class BlockListener extends BSPListener
 			return;
 
 		SpawnBed.onLiquidFromTo( event );
+	}
+
+
+
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockPlace( final BlockPlaceEvent event ) {
+		FalseAccessBlocker.onBlockCancelledInAir( event );
 	}
 }

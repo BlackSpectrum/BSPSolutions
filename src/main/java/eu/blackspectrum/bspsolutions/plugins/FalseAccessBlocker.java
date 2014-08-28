@@ -20,7 +20,7 @@ public class FalseAccessBlocker
 
 	public static void onBlockBreackCancelled( final BlockBreakEvent event ) {
 		final Player player = event.getPlayer();
-		BSPPlayer bspPlayer = BSPPlayer.get( player );
+		final BSPPlayer bspPlayer = BSPPlayer.get( player );
 		if ( !event.isCancelled() )
 			return;
 
@@ -73,21 +73,14 @@ public class FalseAccessBlocker
 
 	public static void onPlayerInteractBlockCancelled( final PlayerInteractEvent event ) {
 		final Player player = event.getPlayer();
-		BSPPlayer bspPlayer = BSPPlayer.get( player );
-		
+		final BSPPlayer bspPlayer = BSPPlayer.get( player );
+
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
-		{
 			if ( event.isCancelled() )
-			{
 				bspPlayer.setLastCancelledEvent( System.currentTimeMillis() );
-			}
+			else if ( bspPlayer.getLastCancelledEvent() + 750L > System.currentTimeMillis() )
+				event.setCancelled( true );
 			else
-			{
-				if ( bspPlayer.getLastCancelledEvent() + 750L > System.currentTimeMillis() )
-					event.setCancelled( true );
-				else
-					bspPlayer.setLastCancelledEvent( null );
-			}
-		}
+				bspPlayer.setLastCancelledEvent( null );
 	}
 }
