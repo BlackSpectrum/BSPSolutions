@@ -21,15 +21,17 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	// Store generic booleans in here
 	// Bits (right to left):
 	// 1: isTeleporting
-	private byte				booleans		= 0;
+	private byte				booleans			= 0;
 
-	private long				timeInPurgatory	= 0;
+	private Long				timeInPurgatory		= null;
 
 	// MapIds that are faction mode for this player
-	private ArrayList<Short>	fMaps			= null;
+	private ArrayList<Short>	fMaps				= null;
 
-	private String				bedId			= null;
+	private String				bedId				= null;
 
+	private transient Long		lastRespawn			= null;
+	private transient Long		lastCancelledEvent	= null;
 
 
 
@@ -38,10 +40,13 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		return BSPPlayerColls.get().get2( o );
 	}
 
-	public UPlayer getUPlayer()
-	{
+
+
+
+	public UPlayer getUPlayer() {
 		return UPlayer.get( getPlayer() );
 	}
+
 
 
 
@@ -57,7 +62,10 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public boolean canLeavePurgatory() {
-		return this.timeInPurgatory <= System.currentTimeMillis();
+		if ( timeInPurgatory == null )
+			return true;
+
+		return this.timeInPurgatory == null ? true : timeInPurgatory <= System.currentTimeMillis();
 	}
 
 
@@ -65,7 +73,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public void freeFromPurgatory() {
 		final Player player = this.getPlayer();
-		this.setTimeInPurgatory( 0 );
+		this.setTimeInPurgatory( null );
 		player.teleport( getSpawnLocation(), TeleportCause.PLUGIN );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
@@ -76,7 +84,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public void freeFromPurgatory( final PlayerRespawnEvent event ) {
 		final Player player = this.getPlayer();
-		this.setTimeInPurgatory( 0 );
+		this.setTimeInPurgatory( null );
 		event.setRespawnLocation( getSpawnLocation() );
 
 		player.sendMessage( "You got freed from the Purgatory!" );
@@ -94,10 +102,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public boolean isFMap( final short id ) {
-		if ( this.fMaps == null )
-			return false;
-
-		return this.fMaps.contains( id );
+		return fMaps == null ? false : this.fMaps.contains( id );
 	}
 
 
@@ -115,18 +120,23 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	}
 
 
-	public void setBed(BSPBed bed)
-	{
-		if(bed == null)
+
+
+	public void setBed( BSPBed bed ) {
+		if ( bed == null )
 			bedId = null;
 		else
 			this.bedId = bed.getId();
 	}
-	
-	public BSPBed getBed()
-	{
-		return BSPBedColls.get().get(this).get(bedId);
+
+
+
+
+	public BSPBed getBed() {
+		return BSPBedColls.get().get( this ).get( bedId );
 	}
+
+
 
 
 	@Override
@@ -151,9 +161,8 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
-	public void setTimeInPurgatory( final long arg ) {
+	public void setTimeInPurgatory( final Long arg ) {
 		this.timeInPurgatory = arg;
-
 	}
 
 
@@ -185,16 +194,45 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		this.fMaps.add( id );
 		return true;
 	}
-	
-	public Location getSpawnLocation()
-	{
+
+
+
+
+	public Location getSpawnLocation() {
 		Location ret = getBed().getSpawnLocation();
-		
-		if(ret == null)
+
+		if ( ret == null )
 			ret = LocationUtil.getSpawnWorld().getSpawnLocation();
-		
+
 		return ret;
-		
+	}
+
+
+
+
+	public Long getLastRespawn() {
+		return lastRespawn == null ? 0: lastRespawn;
+	}
+
+
+
+
+	public void setLastRespawn( Long lastRespawn ) {
+		this.lastRespawn = lastRespawn;
+	}
+
+
+
+
+	public Long getLastCancelledEvent() {
+		return lastCancelledEvent == null ? 0 : lastCancelledEvent;
+	}
+
+
+
+
+	public void setLastCancelledEvent( Long lastCancelledEvent ) {
+		this.lastCancelledEvent = lastCancelledEvent;
 	}
 
 }

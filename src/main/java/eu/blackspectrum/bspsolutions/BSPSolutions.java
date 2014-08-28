@@ -27,6 +27,7 @@ import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
+import eu.blackspectrum.bspsolutions.plugins.SpawnSafe;
 import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
@@ -208,6 +209,7 @@ public class BSPSolutions extends MassivePlugin
 		EndReset.setUpConfig( config );
 		Purgatory.setUpConfig( config );
 		CompassTeleport.setUpConfig( config );
+		SpawnSafe.setUpConfig( config );
 
 		this.saveConfig();
 	}

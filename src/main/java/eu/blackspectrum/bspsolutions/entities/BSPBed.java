@@ -17,9 +17,9 @@ public class BSPBed extends Entity<BSPBed>
 	private PS location;
 
 
-	public static BSPBed get(String id, String world)
+	public static BSPBed get(String id, Object worldNameExtractable)
 	{
-		return BSPBedColls.get().getForWorld( world ).get( id );
+		return BSPBedColls.get().get(worldNameExtractable).get( id );
 	}
 
 
@@ -61,7 +61,7 @@ public class BSPBed extends Entity<BSPBed>
 	{
 		Block bed = location.asBukkitBlock().getRelative( BlockFace.UP );
 		
-		for ( final BlockFace face : new BlockFace[] { BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH, BlockFace.NORTH_WEST,
+		for ( final BlockFace face : new BlockFace[] {BlockFace.SELF, BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH, BlockFace.NORTH_WEST,
 				BlockFace.WEST, BlockFace.SOUTH_WEST, BlockFace.SOUTH, BlockFace.SOUTH_EAST } )
 		{
 			final Block block = bed.getRelative( face );

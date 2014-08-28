@@ -69,10 +69,9 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 	public BSPBed getBedAt( PS ps ) {
 		if ( ps == null )
 			return null;
-		String world = ps.getWorld();
 		ps = ps.getBlockCoords( true );
 
-		BSPBed ret = BSPBed.get( map.get( ps ), world );
+		BSPBed ret = BSPBed.get( map.get( ps ), this );
 
 		return ret;
 	}

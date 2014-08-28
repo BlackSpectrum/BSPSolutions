@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
@@ -25,6 +26,7 @@ import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.plugins.SpawnBed;
+import eu.blackspectrum.bspsolutions.plugins.SpawnSafe;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 
 public class PlayerListener extends BSPListener
@@ -48,8 +50,11 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerChangedWorld( final PlayerChangedWorldEvent event ) {
+		BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
+		
 		CompassTeleport.onWorldChange( event );
 		SaferSafeZones.onPlayerChangedWorld( event );
+		SpawnSafe.onPlayerChangedWorld( event, bspPlayer );
 	}
 
 

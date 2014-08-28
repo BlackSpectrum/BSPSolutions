@@ -9,11 +9,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 
 public class FalseAccessBlocker
 {
@@ -21,10 +20,11 @@ public class FalseAccessBlocker
 
 	public static void onBlockBreackCancelled( final BlockBreakEvent event ) {
 		final Player player = event.getPlayer();
+		BSPPlayer bspPlayer = BSPPlayer.get( player );
 		if ( !event.isCancelled() )
 			return;
 
-		player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.get(), System.currentTimeMillis() ) );
+		bspPlayer.setLastCancelledEvent( System.currentTimeMillis() );
 
 		Vector dir = event.getBlock().getLocation().toVector().add( new Vector( 0.5, 0, 0.5 ) ).subtract( player.getLocation().toVector() );
 
@@ -73,27 +73,20 @@ public class FalseAccessBlocker
 
 	public static void onPlayerInteractBlockCancelled( final PlayerInteractEvent event ) {
 		final Player player = event.getPlayer();
-
+		BSPPlayer bspPlayer = BSPPlayer.get( player );
+		
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 		{
 			if ( event.isCancelled() )
 			{
-				player.setMetadata( "lastCancelledEvent", new FixedMetadataValue( BSPSolutions.get(), System.currentTimeMillis() ) );
-				return;
+				bspPlayer.setLastCancelledEvent( System.currentTimeMillis() );
 			}
-
-			if ( player.hasMetadata( "lastCancelledEvent" ) )
+			else
 			{
-				long lastCancelledEvent = -1;
-				for ( final MetadataValue meta : player.getMetadata( "lastCancelledEvent" ) )
-					if ( meta.getOwningPlugin().equals( BSPSolutions.get() ) )
-						lastCancelledEvent = meta.asLong();
-
-				if ( lastCancelledEvent > 0 && lastCancelledEvent + 750L > System.currentTimeMillis() )
+				if ( bspPlayer.getLastCancelledEvent() + 750L > System.currentTimeMillis() )
 					event.setCancelled( true );
-
-				player.removeMetadata( "lastCancelledEvent", BSPSolutions.get() );
-
+				else
+					bspPlayer.setLastCancelledEvent( null );
 			}
 		}
 	}

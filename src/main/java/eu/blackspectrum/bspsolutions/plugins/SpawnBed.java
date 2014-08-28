@@ -47,7 +47,10 @@ public class SpawnBed
 		// No bed found, player can set here
 		if ( bed == null )
 		{
-
+			// Leftclicking does nothing
+			if(event.getAction() == Action.LEFT_CLICK_BLOCK)
+				return;
+			
 			if ( !FPerm.BUILD.has( player.getUPlayer(), ps, false ) )
 			{
 				player.sendMessage( "It is too dangerous to sleep in non friendly territory." );
