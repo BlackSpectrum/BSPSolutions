@@ -1,6 +1,7 @@
 package eu.blackspectrum.bspsolutions.tasks;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
@@ -36,6 +37,9 @@ public class PurgatoryCheckTask implements Runnable
 	public void run() {
 		for ( final Player p : Bukkit.getOnlinePlayers() )
 		{
+			if(p.getGameMode() == GameMode.CREATIVE)
+				continue;
+			
 			final BSPPlayer player = BSPPlayer.get( p );
 			if ( player.isInPurgatory() && player.canLeavePurgatory() )
 				player.freeFromPurgatory();

@@ -18,10 +18,11 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 {
 
 
+	// TODO: Transient for now, change when something needs to be serialized
 	// Store generic booleans in here
 	// Bits (right to left):
 	// 1: isTeleporting
-	private byte				booleans			= 0;
+	private transient byte		booleans			= 0;
 
 	private Long				timeInPurgatory		= null;
 

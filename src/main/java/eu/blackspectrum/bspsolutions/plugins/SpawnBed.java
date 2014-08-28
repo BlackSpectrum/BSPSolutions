@@ -125,7 +125,7 @@ public class SpawnBed
 			else if ( bed.getSpawnLocation() != null )
 				player.sendMessage( ChatColor.AQUA + "This is your bed, it looks tidy." );
 			else
-				player.sendMessage( ChatColor.AQUA + "This is your bed, it seems too " + ChatColor.DARK_RED + "dangerous to sleep in." );
+				player.sendMessage( ChatColor.AQUA + "This is your bed, it seems too " + ChatColor.DARK_RED + "dangerous " +  ChatColor.AQUA + "to sleep in." );
 		}
 		else
 			// send owner name
