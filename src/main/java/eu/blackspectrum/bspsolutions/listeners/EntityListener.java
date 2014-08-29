@@ -101,7 +101,7 @@ public class EntityListener extends BSPListener
 		if ( event.isCancelled() )
 			return;
 
-		if ( event.getEntityType() == EntityType.CREEPER )
+		if ( event.getEntityType() != null && event.getEntityType() == EntityType.CREEPER )
 		{
 			final Iterator<Block> it = event.blockList().iterator();
 			while ( it.hasNext() )

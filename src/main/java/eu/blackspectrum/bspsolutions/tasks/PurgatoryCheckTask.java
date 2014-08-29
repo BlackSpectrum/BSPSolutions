@@ -37,9 +37,9 @@ public class PurgatoryCheckTask implements Runnable
 	public void run() {
 		for ( final Player p : Bukkit.getOnlinePlayers() )
 		{
-			if(p.getGameMode() == GameMode.CREATIVE)
+			if ( p.getGameMode() == GameMode.CREATIVE )
 				continue;
-			
+
 			final BSPPlayer player = BSPPlayer.get( p );
 			if ( player.isInPurgatory() && player.canLeavePurgatory() )
 				player.freeFromPurgatory();

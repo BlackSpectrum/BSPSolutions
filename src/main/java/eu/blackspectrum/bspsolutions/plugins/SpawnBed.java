@@ -125,7 +125,8 @@ public class SpawnBed
 			else if ( bed.getSpawnLocation() != null )
 				player.sendMessage( ChatColor.AQUA + "This is your bed, it looks tidy." );
 			else
-				player.sendMessage( ChatColor.AQUA + "This is your bed, it seems too " + ChatColor.DARK_RED + "dangerous " +  ChatColor.AQUA + "to sleep in." );
+				player.sendMessage( ChatColor.AQUA + "This is your bed, it seems too " + ChatColor.DARK_RED + "dangerous " + ChatColor.AQUA
+						+ "to sleep in." );
 		}
 		else
 			// send owner name
@@ -136,10 +137,14 @@ public class SpawnBed
 
 
 
-	private static void onBlockBreak( final Block block ) {
+	private static void onBlockBreak( Block block ) {
 		// Only consider BED_BLOCK in overworld
 		if ( block.getType() != Material.BED_BLOCK )
 			return;
+
+		final Bed bedBlock = (Bed) block.getState().getData();
+		if ( bedBlock.isHeadOfBed() )
+			block = block.getRelative( bedBlock.getFacing().getOppositeFace() );
 
 		final PS ps = PS.valueOf( block );
 

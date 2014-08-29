@@ -217,9 +217,9 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
-	public boolean toggleFMap( final short id ) {
+	public boolean toggleFMap( final Short id ) {
 
-		if ( this.fMaps != null && this.isFMap( id ) )
+		if ( this.isFMap( id ) )
 		{
 			this.fMaps.remove( id );
 

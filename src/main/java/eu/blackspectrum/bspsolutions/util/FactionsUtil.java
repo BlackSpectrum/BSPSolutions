@@ -1,6 +1,7 @@
 package eu.blackspectrum.bspsolutions.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
@@ -48,6 +49,23 @@ public class FactionsUtil
 
 	public static void addFaction( final String id ) {
 		addFaction( Faction.get( id ) );
+	}
+
+
+
+
+	public static void collectGarbage() {
+		if ( offlineFactions == null )
+			return;
+
+		final Iterator<Long> it = offlineFactions.values().iterator();
+
+		while ( it.hasNext() )
+			if ( System.currentTimeMillis() >= it.next() )
+				it.remove();
+
+		if ( offlineFactions.size() == 0 )
+			offlineFactions = null;
 	}
 
 
@@ -142,5 +160,4 @@ public class FactionsUtil
 	public static void setUpConfig( final Configuration config ) {
 		config.set( "Factions.offlineDelay", config.get( "Factions.offlineDelay", 300 ) );
 	}
-
 }
