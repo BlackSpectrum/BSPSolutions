@@ -1,5 +1,9 @@
 package eu.blackspectrum.bspsolutions;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
@@ -38,11 +42,9 @@ public class BSPSolutions extends MassivePlugin
 {
 
 
-	private static BSPSolutions		instance;
-	private static Configuration	config;
-	private static String			pluginName;
+	private static BSPSolutions	instance;
 
-	private Aspect					aspect;
+	private Aspect				aspect;
 
 
 
@@ -55,31 +57,26 @@ public class BSPSolutions extends MassivePlugin
 
 
 	public static Configuration getConfig2() {
-		return config;
+		return instance.getConfig();
 	}
 
 
 
 
-	public static Player getPlayer( final String name ) {
-		Player retPlayer = null;
+	public static List<Player> getPlayers( final String name ) {
+		final List<Player> retPlayers = new ArrayList<Player>();
 		for ( final Player p : Bukkit.getOnlinePlayers() )
 			if ( p.getName().matches( "(?i:.*" + name + ".*)" ) )
+				retPlayers.add( p );
 
-			{
-				if ( retPlayer != null )
-					return null;
-				retPlayer = p;
-			}
-
-		return retPlayer;
+		return Collections.unmodifiableList( retPlayers );
 	}
 
 
 
 
 	public static String getPluginName() {
-		return pluginName;
+		return instance.getName();
 	}
 
 
@@ -102,9 +99,6 @@ public class BSPSolutions extends MassivePlugin
 
 	public BSPSolutions() {
 		instance = this;
-
-		if ( getPluginName() == null || getPluginName().isEmpty() )
-			pluginName = this.getName();
 	}
 
 
@@ -181,7 +175,7 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Initialize misc
 		// ***************************
-		FMaps.get().initialize();
+		FMaps.get().init();
 		// ***************************
 
 		// ***************************
@@ -206,7 +200,7 @@ public class BSPSolutions extends MassivePlugin
 
 
 	private void setUpConfig() {
-		config = this.getConfig();
+		final Configuration config = this.getConfig();
 
 		// Utils
 		LocationUtil.setUpConfig( config );

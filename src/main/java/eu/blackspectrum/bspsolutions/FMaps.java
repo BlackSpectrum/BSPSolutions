@@ -108,7 +108,7 @@ public class FMaps
 
 
 	@SuppressWarnings("deprecation")
-	public void initialize() {
+	public void init() {
 		// Initialize all maps with FMaps
 		// *********************************************************
 		short lastedMap = -1;

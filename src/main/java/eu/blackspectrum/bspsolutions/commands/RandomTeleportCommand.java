@@ -1,5 +1,7 @@
 package eu.blackspectrum.bspsolutions.commands;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -39,15 +41,23 @@ public class RandomTeleportCommand extends MassiveCommand
 		Player target = null;
 
 		if ( this.arg( 0 ) != null && !this.arg( 0 ).trim().isEmpty() )
-			target = BSPSolutions.getPlayer( this.arg( 0 ) );
+		{
+			final List<Player> players = BSPSolutions.getPlayers( this.arg( 0 ) );
+			if ( players.isEmpty() )
+			{
+				this.sendMessage( "No player found for \"" + this.arg( 0 ) + "\"" );
+				return;
+			}
+
+			else if ( players.size() > 1 )
+			{
+				this.sendMessage( "Multiple players found for \"" + this.arg( 0 ) + "\"" );
+				return;
+			}
+			target = players.get( 0 );
+		}
 		else
 			target = (Player) this.sender;
-
-		if ( target == null )
-		{
-			this.sendMessage( "None or multiple Players found for that name" );
-			return;
-		}
 
 		final int radiusMin = BSPSolutions.getConfig2().getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.getConfig2()
 				.getInt( "Locations.spawn.radiusMax" );
