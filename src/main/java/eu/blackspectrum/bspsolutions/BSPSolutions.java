@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
@@ -129,11 +128,6 @@ public class BSPSolutions extends MassivePlugin
 
 	@Override
 	public void onDisable() {
-		final BukkitScheduler scheduler = this.getServer().getScheduler();
-
-		// Unregister all tasks
-		scheduler.cancelTasks( this );
-
 		FMaps.get().collectGarbage();
 		FMaps.get().dump();
 	}

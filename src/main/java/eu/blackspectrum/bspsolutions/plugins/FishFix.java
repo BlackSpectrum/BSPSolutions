@@ -88,6 +88,8 @@ public class FishFix
 		// Spawn experience
 		playerWorld.addEntity( new EntityExperienceOrb( playerWorld, playerX, playerY + 0.5D, playerZ + 0.5D, event.getExpToDrop() ) );
 
+		// Damage the fishing rod
+		owner.inventory.getItemInHand().damage( 1, owner );
 		// event.getHook().remove();
 
 		hook.die();

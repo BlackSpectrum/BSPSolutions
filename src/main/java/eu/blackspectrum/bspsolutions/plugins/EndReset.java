@@ -24,7 +24,7 @@ public class EndReset
 	public static void onEnable() {
 
 		// Only when there are no players left
-		if ( Bukkit.getServer().getOnlinePlayers().size() > 0 )
+		if ( Bukkit.getServer().getOnlinePlayers().length > 0 )
 			return;
 
 		if ( BSPSolutions.getConfig2().getLong( "EndReset.nextReset" ) == 0 )
