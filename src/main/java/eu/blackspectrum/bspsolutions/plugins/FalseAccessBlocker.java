@@ -79,7 +79,7 @@ public class FalseAccessBlocker
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 			if ( event.isCancelled() )
 				bspPlayer.setLastCancelledEvent( System.currentTimeMillis() );
-			else if ( bspPlayer.getLastCancelledEvent() + ((long) 0.75f * Consts.MILIS_IN_SECOND) > System.currentTimeMillis() )
+			else if ( bspPlayer.getLastCancelledEvent() + (long) 0.75f * Consts.MILIS_IN_SECOND > System.currentTimeMillis() )
 				event.setCancelled( true );
 			else
 				bspPlayer.setLastCancelledEvent( null );

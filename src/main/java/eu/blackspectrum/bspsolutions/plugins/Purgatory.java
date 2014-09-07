@@ -18,7 +18,8 @@ public class Purgatory
 	public static void onPlayerDie( final PlayerDeathEvent event ) {
 		final BSPPlayer player = BSPPlayer.get( event.getEntity() );
 
-		player.setTimeInPurgatory( System.currentTimeMillis() + BSPSolutions.getConfig2().getLong( "Purgatory.time" ) * Consts.MILIS_IN_SECOND );
+		player.setTimeInPurgatory( System.currentTimeMillis() + BSPSolutions.getConfig2().getLong( "Purgatory.time" )
+				* Consts.MILIS_IN_SECOND );
 	}
 
 

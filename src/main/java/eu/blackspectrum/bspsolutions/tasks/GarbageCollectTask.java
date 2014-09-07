@@ -21,14 +21,19 @@ public class GarbageCollectTask extends ModuloRepeatTask
 	}
 
 
+
+
 	// Run once every 10 minutes
 	@Override
 	public long getDelayMillis() {
 		return Consts.MILIS_IN_MINUTE * 10;
 	}
 
+
+
+
 	@Override
-	public void invoke( long now ) {
+	public void invoke( final long now ) {
 		Bukkit.getServer().getPluginManager().callEvent( new GarbageCollectEvent() );
 
 	}

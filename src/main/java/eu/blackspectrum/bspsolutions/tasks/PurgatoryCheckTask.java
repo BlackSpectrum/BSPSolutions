@@ -35,7 +35,7 @@ public class PurgatoryCheckTask extends ModuloRepeatTask
 
 
 	@Override
-	public void invoke( long now ) {
+	public void invoke( final long now ) {
 		for ( final Player p : Bukkit.getOnlinePlayers() )
 		{
 			if ( p.getGameMode() == GameMode.CREATIVE )
