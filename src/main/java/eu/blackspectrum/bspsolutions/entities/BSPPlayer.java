@@ -144,6 +144,9 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public boolean isInPurgatory() {
+		if ( this.isOffline() )
+			return false;
+
 		return this.getPlayer().getWorld().equals( LocationUtil.getPurgatoryWorld() );
 	}
 
