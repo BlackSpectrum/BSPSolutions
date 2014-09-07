@@ -4,37 +4,38 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import eu.blackspectrum.bspsolutions.BSPSolutions;
+import com.massivecraft.massivecore.ModuloRepeatTask;
+
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 
-public class PurgatoryCheckTask implements Runnable
+public class PurgatoryCheckTask extends ModuloRepeatTask
 {
 
 
-	private static PurgatoryCheckTask	instance;
-	private boolean						isScheduled	= false;
+	private static PurgatoryCheckTask	instance	= new PurgatoryCheckTask();
 
 
 
 
 	public static PurgatoryCheckTask get() {
-		if ( instance == null )
-			instance = new PurgatoryCheckTask();
-
 		return instance;
 	}
 
 
 
 
-	private PurgatoryCheckTask() {
+	// Run once a minute
+	@Override
+	public long getDelayMillis() {
+		return Consts.MILIS_IN_MINUTE;
 	}
 
 
 
 
 	@Override
-	public void run() {
+	public void invoke( long now ) {
 		for ( final Player p : Bukkit.getOnlinePlayers() )
 		{
 			if ( p.getGameMode() == GameMode.CREATIVE )
@@ -44,17 +45,7 @@ public class PurgatoryCheckTask implements Runnable
 			if ( player.isInPurgatory() && player.canLeavePurgatory() )
 				player.freeFromPurgatory();
 		}
-	}
 
-
-
-
-	public void schedule( final int interval ) {
-		if ( !this.isScheduled )
-		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask( BSPSolutions.get(), this, interval, interval );
-			this.isScheduled = true;
-		}
 	}
 
 }

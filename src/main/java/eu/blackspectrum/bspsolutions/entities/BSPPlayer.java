@@ -11,6 +11,7 @@ import com.massivecraft.factions.entity.UPlayer;
 import com.massivecraft.massivecore.store.SenderEntity;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.tasks.TeleportTask;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
@@ -211,7 +212,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public void startTeleport() {
 		this.setTeleporting( true );
-		new TeleportTask( this ).runTaskTimer( BSPSolutions.get(), 0, 20 );
+		new TeleportTask( this ).runTaskTimer( BSPSolutions.get(), 0, Consts.TICKS_IN_SECOND );
 	}
 
 

@@ -2,50 +2,35 @@ package eu.blackspectrum.bspsolutions.tasks;
 
 import org.bukkit.Bukkit;
 
-import eu.blackspectrum.bspsolutions.BSPSolutions;
+import com.massivecraft.massivecore.ModuloRepeatTask;
+
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.events.GarbageCollectEvent;
 
-public class GarbageCollectTask implements Runnable
+public class GarbageCollectTask extends ModuloRepeatTask
 {
 
 
-	private static GarbageCollectTask	instance;
-	private boolean						isScheduled	= false;
+	private static GarbageCollectTask	instance	= new GarbageCollectTask();
 
 
 
 
 	public static GarbageCollectTask get() {
-		if ( instance == null )
-			instance = new GarbageCollectTask();
-
 		return instance;
 	}
 
 
-
-
-	private GarbageCollectTask() {
+	// Run once every 10 minutes
+	@Override
+	public long getDelayMillis() {
+		return Consts.MILIS_IN_MINUTE * 10;
 	}
-
-
-
 
 	@Override
-	public void run() {
+	public void invoke( long now ) {
 		Bukkit.getServer().getPluginManager().callEvent( new GarbageCollectEvent() );
-		System.gc();
-	}
 
-
-
-
-	public void schedule( final int interval ) {
-		if ( !this.isScheduled )
-		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask( BSPSolutions.get(), this, interval, interval );
-			this.isScheduled = true;
-		}
 	}
 
 }

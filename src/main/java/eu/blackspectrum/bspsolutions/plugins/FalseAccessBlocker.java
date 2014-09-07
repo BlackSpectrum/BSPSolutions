@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.util.Vector;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 
 public class FalseAccessBlocker
@@ -78,7 +79,7 @@ public class FalseAccessBlocker
 		if ( event.getAction() == Action.RIGHT_CLICK_BLOCK )
 			if ( event.isCancelled() )
 				bspPlayer.setLastCancelledEvent( System.currentTimeMillis() );
-			else if ( bspPlayer.getLastCancelledEvent() + 750L > System.currentTimeMillis() )
+			else if ( bspPlayer.getLastCancelledEvent() + ((long) 0.75f * Consts.MILIS_IN_SECOND) > System.currentTimeMillis() )
 				event.setCancelled( true );
 			else
 				bspPlayer.setLastCancelledEvent( null );

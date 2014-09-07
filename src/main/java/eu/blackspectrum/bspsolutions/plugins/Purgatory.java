@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
@@ -17,7 +18,7 @@ public class Purgatory
 	public static void onPlayerDie( final PlayerDeathEvent event ) {
 		final BSPPlayer player = BSPPlayer.get( event.getEntity() );
 
-		player.setTimeInPurgatory( System.currentTimeMillis() + BSPSolutions.getConfig2().getLong( "Purgatory.time" ) * 1000 );
+		player.setTimeInPurgatory( System.currentTimeMillis() + BSPSolutions.getConfig2().getLong( "Purgatory.time" ) * Consts.MILIS_IN_SECOND );
 	}
 
 

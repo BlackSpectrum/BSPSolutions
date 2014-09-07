@@ -189,8 +189,8 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Schedule tasks
 		// ***************************
-		PurgatoryCheckTask.get().schedule( 1200 );
-		GarbageCollectTask.get().schedule( 12000 );
+		PurgatoryCheckTask.get().activate( this );
+		GarbageCollectTask.get().activate( this );
 		// ***************************
 
 		this.postEnable();

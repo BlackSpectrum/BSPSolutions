@@ -9,16 +9,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 import eu.blackspectrum.bspsolutions.util.RNGUtil;
 
 public class EndReset
 {
-
-
-	private static final long	MS_IN_DAY	= 86400000;
-
-
 
 
 	public static void onEnable() {
@@ -82,10 +78,10 @@ public class EndReset
 		final int maxDays = BSPSolutions.getConfig2().getInt( "EndReset.maxDays" ) - BSPSolutions.getConfig2().getInt( "EndReset.minDays" );
 		final int minDays = BSPSolutions.getConfig2().getInt( "EndReset.minDays" );
 
-		long nextReset = System.currentTimeMillis() + minDays * MS_IN_DAY;
+		long nextReset = System.currentTimeMillis() + minDays * Consts.MILIS_IN_DAY;
 
 		if ( maxDays > 0 )
-			nextReset += RNGUtil.nextInt( maxDays + 1 ) * MS_IN_DAY;
+			nextReset += RNGUtil.nextInt( maxDays + 1 ) * Consts.MILIS_IN_DAY;
 
 		BSPSolutions.getConfig2().set( "EndReset.nextReset", nextReset );
 		BSPSolutions.get().saveConfig();

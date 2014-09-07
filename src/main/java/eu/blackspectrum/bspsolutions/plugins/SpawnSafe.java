@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
+import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 
 /*
@@ -26,7 +27,7 @@ public class SpawnSafe
 
 		bspPlayer = BSPPlayer.get( victim );
 
-		if ( bspPlayer.getLastRespawn() + BSPSolutions.getConfig2().getDouble( "SpawnSafe.protetionTime" ) * 1000 >= System
+		if ( bspPlayer.getLastRespawn() + BSPSolutions.getConfig2().getDouble( "SpawnSafe.protetionTime" ) * Consts.MILIS_IN_SECOND >= System
 				.currentTimeMillis() )
 			event.setDamage( event.getDamage() * BSPSolutions.getConfig2().getDouble( "SpawnSafe.damageToProtected" ) );
 		else
@@ -44,7 +45,7 @@ public class SpawnSafe
 
 		bspPlayer = BSPPlayer.get( attacker );
 
-		if ( bspPlayer.getLastRespawn() + BSPSolutions.getConfig2().getDouble( "SpawnSafe.protetionTime" ) * 1000 >= System
+		if ( bspPlayer.getLastRespawn() + BSPSolutions.getConfig2().getDouble( "SpawnSafe.protetionTime" ) * Consts.MILIS_IN_SECOND >= System
 				.currentTimeMillis() )
 			event.setDamage( event.getDamage() * BSPSolutions.getConfig2().getDouble( "SpawnSafe.damageByProtected" ) );
 		else
