@@ -33,15 +33,12 @@ public class PlayerListener extends BSPListener
 {
 
 
-	private static PlayerListener	instance;
+	private static PlayerListener	instance	= new PlayerListener();
 
 
 
 
 	public static BSPListener get() {
-		if ( instance == null )
-			instance = new PlayerListener();
-
 		return instance;
 	}
 

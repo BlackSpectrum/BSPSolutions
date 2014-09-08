@@ -13,15 +13,12 @@ public class BlockListener extends BSPListener
 {
 
 
-	private static BlockListener	instance;
+	private static BlockListener	instance	= new BlockListener();
 
 
 
 
 	public static BSPListener get() {
-		if ( instance == null )
-			instance = new BlockListener();
-
 		return instance;
 	}
 

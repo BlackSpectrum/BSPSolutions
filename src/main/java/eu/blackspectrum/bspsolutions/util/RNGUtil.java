@@ -82,6 +82,13 @@ public class RNGUtil
 
 
 
+	public static int nextInt( final int min, final int max ) {
+		return min + RANDOM.nextInt( max * 2 );
+	}
+
+
+
+
 	/**
 	 * @return
 	 * @see java.util.Random#nextLong()

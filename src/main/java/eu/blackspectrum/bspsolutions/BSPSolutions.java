@@ -10,6 +10,11 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
@@ -21,6 +26,7 @@ import eu.blackspectrum.bspsolutions.commands.BSPCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
 import eu.blackspectrum.bspsolutions.entities.BSPBedColl;
+import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayerColl;
 import eu.blackspectrum.bspsolutions.entities.BedBoard;
 import eu.blackspectrum.bspsolutions.entities.BedBoardColl;
@@ -32,11 +38,14 @@ import eu.blackspectrum.bspsolutions.listeners.PlayerListener;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
 import eu.blackspectrum.bspsolutions.plugins.EndReset;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
+import eu.blackspectrum.bspsolutions.plugins.RandomCoords;
 import eu.blackspectrum.bspsolutions.plugins.SpawnSafe;
 import eu.blackspectrum.bspsolutions.tasks.GarbageCollectTask;
 import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
+import eu.blackspectrum.bspsolutions.util.PacketUtil;
+import eu.blackspectrum.bspsolutions.util.Translate;
 
 public class BSPSolutions extends MassivePlugin
 {
@@ -167,6 +176,42 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 
 		// ***************************
+		// Register PacketAdapters
+		// ***************************
+		final ProtocolManager pm = ProtocolLibrary.getProtocolManager();
+
+		pm.addPacketListener( new PacketAdapter( RandomCoords.getParameters( true ) ) {
+
+
+			@Override
+			public void onPacketSending( final PacketEvent event ) {
+
+				PacketContainer packet;
+
+				if ( event.getPacket().getType().name().equals( "TILE_ENTITY_DATA" ) )
+					packet = PacketUtil.cloneTileEntityData( event.getPacket() );
+				else
+					packet = event.getPacket().shallowClone();
+
+				event.setPacket( packet );
+
+				Translate.outgoing( packet, BSPPlayer.get( event.getPlayer() ) );
+
+			}
+
+		} );
+
+		pm.addPacketListener( new PacketAdapter( RandomCoords.getParameters( false ) ) {
+
+
+			@Override
+			public void onPacketReceiving( final PacketEvent event ) {
+				Translate.incoming( event.getPacket(), BSPPlayer.get( event.getPlayer() ) );
+			}
+		} );
+		// ***************************
+
+		// ***************************
 		// Start plugin enables
 		// ***************************
 		EndReset.onEnable();
@@ -192,7 +237,6 @@ public class BSPSolutions extends MassivePlugin
 		PurgatoryCheckTask.get().activate( this );
 		GarbageCollectTask.get().activate( this );
 		// ***************************
-
 		this.postEnable();
 	}
 

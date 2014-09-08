@@ -26,15 +26,12 @@ public class EntityListener extends BSPListener
 {
 
 
-	private static EntityListener	instance;
+	private static EntityListener	instance	= new EntityListener();
 
 
 
 
 	public static BSPListener get() {
-		if ( instance == null )
-			instance = new EntityListener();
-
 		return instance;
 	}
 

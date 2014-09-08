@@ -14,6 +14,8 @@ import eu.blackspectrum.bspsolutions.BSPSolutions;
 import eu.blackspectrum.bspsolutions.Consts;
 import eu.blackspectrum.bspsolutions.tasks.TeleportTask;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
+import eu.blackspectrum.bspsolutions.util.MiscUtil;
+import eu.blackspectrum.bspsolutions.util.RNGUtil;
 
 public class BSPPlayer extends SenderEntity<BSPPlayer>
 {
@@ -34,6 +36,8 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	private transient Long		lastRespawn			= null;
 	private transient Long		lastCancelledEvent	= null;
+
+	private transient int		offsetX				= -1, offsetZ = -1;
 
 
 
@@ -88,6 +92,14 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
+	public void generateNewOffsets() {
+		this.offsetX = MiscUtil.roundToClosest16( RNGUtil.nextInt( Consts.MIN_OFFSET, Consts.MAX_OFFSET ) );
+		this.offsetZ = MiscUtil.roundToClosest16( RNGUtil.nextInt( Consts.MIN_OFFSET, Consts.MAX_OFFSET ) );
+	}
+
+
+
+
 	public BSPBed getBed() {
 		return BSPBed.get( this.bedId );
 	}
@@ -104,6 +116,46 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public Long getLastRespawn() {
 		return this.lastRespawn == null ? 0 : this.lastRespawn;
+	}
+
+
+
+
+	public int getOffsetChunkX() {
+		if ( this.offsetX == -1 || this.offsetZ == -1 )
+			this.generateNewOffsets();
+
+		return this.offsetX / 16;
+	}
+
+
+
+
+	public int getOffsetChunkZ() {
+		if ( this.offsetX == -1 || this.offsetZ == -1 )
+			this.generateNewOffsets();
+
+		return this.offsetZ / 16;
+	}
+
+
+
+
+	public int getOffsetX() {
+		if ( this.offsetX == -1 || this.offsetZ == -1 )
+			this.generateNewOffsets();
+
+		return this.offsetX;
+	}
+
+
+
+
+	public int getOffsetZ() {
+		if ( this.offsetX == -1 || this.offsetZ == -1 )
+			this.generateNewOffsets();
+
+		return this.offsetZ;
 	}
 
 
@@ -145,7 +197,10 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 	public boolean isInPurgatory() {
 		if ( this.isOffline() )
+		{
+			this.detach();
 			return false;
+		}
 
 		return this.getPlayer().getWorld().equals( LocationUtil.getPurgatoryWorld() );
 	}
@@ -239,5 +294,4 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 		this.fMaps.add( id );
 		return true;
 	}
-
 }

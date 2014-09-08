@@ -13,14 +13,12 @@ public class FactionListener extends BSPListener
 {
 
 
-	private static FactionListener	instance;
+	private static FactionListener	instance	= new FactionListener();
 
 
 
 
 	public static BSPListener get() {
-		if ( instance == null )
-			instance = new FactionListener();
 
 		return instance;
 	}

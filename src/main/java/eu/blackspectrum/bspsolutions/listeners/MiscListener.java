@@ -12,14 +12,12 @@ public class MiscListener extends BSPListener
 {
 
 
-	private static MiscListener	instance;
+	private static MiscListener	instance	= new MiscListener();
 
 
 
 
 	public static BSPListener get() {
-		if ( instance == null )
-			instance = new MiscListener();
 
 		return instance;
 	}
