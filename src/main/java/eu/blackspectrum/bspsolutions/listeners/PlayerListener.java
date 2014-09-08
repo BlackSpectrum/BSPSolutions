@@ -17,7 +17,6 @@ import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
 import eu.blackspectrum.bspsolutions.plugins.AbandonPet;
 import eu.blackspectrum.bspsolutions.plugins.BetterLeashes;
 import eu.blackspectrum.bspsolutions.plugins.CompassTeleport;
-import eu.blackspectrum.bspsolutions.plugins.DieSilent;
 import eu.blackspectrum.bspsolutions.plugins.DropAll;
 import eu.blackspectrum.bspsolutions.plugins.FMapPlugin;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
@@ -59,7 +58,6 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerDeath( final PlayerDeathEvent event ) {
-		DieSilent.onPlayerDeath( event );
 		DropAll.onPlayerDeath( event );
 		Purgatory.onPlayerDie( event );
 	}
