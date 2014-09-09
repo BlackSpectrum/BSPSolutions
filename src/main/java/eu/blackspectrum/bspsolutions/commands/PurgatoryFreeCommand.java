@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
@@ -18,7 +17,6 @@ public class PurgatoryFreeCommand extends MassiveCommand
 	public PurgatoryFreeCommand() {
 		this.addAliases( "free" );
 
-		this.addRequirements( ReqIsPlayer.get() );
 		this.addRequirements( ReqHasPerm.get( "BSP.purgatory" ) );
 
 		this.addOptionalArg( "player", "you" );
@@ -49,7 +47,13 @@ public class PurgatoryFreeCommand extends MassiveCommand
 			target = players.get( 0 );
 		}
 		else
-			target = (Player) this.sender;
+			if(sender instanceof Player)
+				target = (Player) this.sender;
+			else
+			{
+				this.sendMessage( "Please specify a player." );
+				return;
+			}
 
 		BSPPlayer.get( target ).freeFromPurgatory();
 	}

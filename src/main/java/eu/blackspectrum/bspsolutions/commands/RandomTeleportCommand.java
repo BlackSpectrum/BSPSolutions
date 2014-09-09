@@ -11,7 +11,6 @@ import com.massivecraft.factions.entity.BoardColls;
 import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.cmd.req.ReqHasPerm;
-import com.massivecraft.massivecore.cmd.req.ReqIsPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
 import eu.blackspectrum.bspsolutions.BSPSolutions;
@@ -26,7 +25,6 @@ public class RandomTeleportCommand extends MassiveCommand
 		this.addAliases( "randomteleport" );
 		this.addAliases( "rtp" );
 
-		this.addRequirements( ReqIsPlayer.get() );
 		this.addRequirements( ReqHasPerm.get( "BSP.admin" ) );
 
 		this.addOptionalArg( "player", "you" );
@@ -57,8 +55,13 @@ public class RandomTeleportCommand extends MassiveCommand
 			target = players.get( 0 );
 		}
 		else
-			target = (Player) this.sender;
-
+			if(sender instanceof Player)
+				target = (Player) this.sender;
+			else
+			{
+				this.sendMessage( "Please specify a player." );
+				return;
+			}
 		final int radiusMin = BSPSolutions.getConfig2().getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.getConfig2()
 				.getInt( "Locations.spawn.radiusMax" );
 
