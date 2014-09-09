@@ -37,7 +37,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 	private transient Long		lastRespawn			= null;
 	private transient Long		lastCancelledEvent	= null;
 
-	private transient int		offsetX				= -1, offsetZ = -1;
+	private transient Integer	offsetX				= null, offsetZ = null;
 
 
 
@@ -92,7 +92,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
-	public void generateNewOffsets() {
+	public synchronized void generateNewOffsets() {
 		this.offsetX = MiscUtil.roundToClosest16( RNGUtil.nextInt( Consts.MIN_OFFSET, Consts.MAX_OFFSET ) );
 		this.offsetZ = MiscUtil.roundToClosest16( RNGUtil.nextInt( Consts.MIN_OFFSET, Consts.MAX_OFFSET ) );
 	}
@@ -122,7 +122,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public int getOffsetChunkX() {
-		if ( this.offsetX == -1 || this.offsetZ == -1 )
+		if ( this.offsetX == null || this.offsetZ == null )
 			this.generateNewOffsets();
 
 		return this.offsetX / 16;
@@ -132,7 +132,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public int getOffsetChunkZ() {
-		if ( this.offsetX == -1 || this.offsetZ == -1 )
+		if ( this.offsetX == null || this.offsetZ == null )
 			this.generateNewOffsets();
 
 		return this.offsetZ / 16;
@@ -142,7 +142,7 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public int getOffsetX() {
-		if ( this.offsetX == -1 || this.offsetZ == -1 )
+		if ( this.offsetX == null || this.offsetZ == null )
 			this.generateNewOffsets();
 
 		return this.offsetX;
@@ -152,10 +152,26 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 	public int getOffsetZ() {
-		if ( this.offsetX == -1 || this.offsetZ == -1 )
+		if ( this.offsetX == null || this.offsetZ == null )
 			this.generateNewOffsets();
 
 		return this.offsetZ;
+	}
+
+
+
+
+	/**
+	 * Reduces object size by nulling transient fields
+	 */
+	public void collapse() {
+		booleans = 0;
+
+		lastRespawn = null;
+		lastCancelledEvent = null;
+
+		offsetX = null;
+		offsetZ = null;
 	}
 
 

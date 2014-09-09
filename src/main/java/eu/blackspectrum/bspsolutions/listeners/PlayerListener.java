@@ -141,6 +141,13 @@ public class PlayerListener extends BSPListener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit( final PlayerQuitEvent event ) {
 		FactionsUtil.addFaction( event.getPlayer() );
+		
+		BSPPlayer player = BSPPlayer.get( event.getPlayer() );
+		
+		if(player.isDefault())
+			player.detach();
+		else
+			player.collapse();
 	}
 
 
