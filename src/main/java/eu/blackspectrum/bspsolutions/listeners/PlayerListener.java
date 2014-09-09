@@ -1,5 +1,6 @@
 package eu.blackspectrum.bspsolutions.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -11,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.player.PlayerUnleashEntityEvent;
 
 import eu.blackspectrum.bspsolutions.entities.BSPPlayer;
@@ -27,6 +29,7 @@ import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.plugins.SpawnBed;
 import eu.blackspectrum.bspsolutions.plugins.SpawnSafe;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
+import eu.blackspectrum.bspsolutions.util.LocationUtil;
 
 public class PlayerListener extends BSPListener
 {
@@ -115,6 +118,10 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
+		Player player = event.getPlayer();
+		if(!player.hasPlayedBefore())
+			player.teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
+		
 		CompassTeleport.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
 		FactionsUtil.removeFaction( event.getPlayer() );
