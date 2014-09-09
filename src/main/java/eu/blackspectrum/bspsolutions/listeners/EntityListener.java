@@ -3,7 +3,7 @@ package eu.blackspectrum.bspsolutions.listeners;
 import java.util.Iterator;
 
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Creeper;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -98,7 +98,7 @@ public class EntityListener extends BSPListener
 		if ( event.isCancelled() )
 			return;
 
-		if ( event.getEntityType() != null && event.getEntityType() == EntityType.CREEPER )
+		if ( event.getEntity() instanceof Creeper )
 		{
 			final Iterator<Block> it = event.blockList().iterator();
 			while ( it.hasNext() )
