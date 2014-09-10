@@ -54,14 +54,13 @@ public class RandomTeleportCommand extends MassiveCommand
 			}
 			target = players.get( 0 );
 		}
+		else if ( this.sender instanceof Player )
+			target = (Player) this.sender;
 		else
-			if(sender instanceof Player)
-				target = (Player) this.sender;
-			else
-			{
-				this.sendMessage( "Please specify a player." );
-				return;
-			}
+		{
+			this.sendMessage( "Please specify a player." );
+			return;
+		}
 		final int radiusMin = BSPSolutions.getConfig2().getInt( "Locations.spawn.radiusMin" ), radiusMax = BSPSolutions.getConfig2()
 				.getInt( "Locations.spawn.radiusMax" );
 

@@ -70,6 +70,22 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 
 
 
+	/**
+	 * Reduces object size by nulling transient fields
+	 */
+	public void collapse() {
+		this.booleans = 0;
+
+		this.lastRespawn = null;
+		this.lastCancelledEvent = null;
+
+		this.offsetX = null;
+		this.offsetZ = null;
+	}
+
+
+
+
 	public void freeFromPurgatory() {
 		final Player player = this.getPlayer();
 		this.setTimeInPurgatory( null );
@@ -156,22 +172,6 @@ public class BSPPlayer extends SenderEntity<BSPPlayer>
 			this.generateNewOffsets();
 
 		return this.offsetZ;
-	}
-
-
-
-
-	/**
-	 * Reduces object size by nulling transient fields
-	 */
-	public void collapse() {
-		booleans = 0;
-
-		lastRespawn = null;
-		lastCancelledEvent = null;
-
-		offsetX = null;
-		offsetZ = null;
 	}
 
 

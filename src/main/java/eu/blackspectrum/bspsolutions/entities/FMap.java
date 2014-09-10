@@ -31,8 +31,7 @@ public class FMap
 	public static byte[] readData( final short id ) {
 		final byte[] data = new byte[128 * 128];
 
-		final File file = new File( "plugins" + File.separator + BSPSolutions.getPluginName() + File.separator + "maps" + File.separator
-				+ "map_" + id + ".dat" );
+		final File file = new File( BSPSolutions.get().getDataFolder(), "maps" + File.separator + "map_" + id + ".dat" );
 
 		if ( !file.exists() )
 			return data;
@@ -66,8 +65,7 @@ public class FMap
 
 	// write pixels to disc with gzip
 	public static void writeData( final short id, final byte[] data ) {
-		final File file = new File( "plugins" + File.separator + BSPSolutions.getPluginName() + File.separator + "maps" + File.separator
-				+ "map_" + id + ".dat" );
+		final File file = new File( BSPSolutions.get().getDataFolder(), "maps" + File.separator + "map_" + id + ".dat" );
 
 		try
 		{

@@ -118,10 +118,10 @@ public class PlayerListener extends BSPListener
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin( final PlayerJoinEvent event ) {
-		Player player = event.getPlayer();
-		if(!player.hasPlayedBefore())
+		final Player player = event.getPlayer();
+		if ( !player.hasPlayedBefore() )
 			player.teleport( LocationUtil.getSpawnWorld().getSpawnLocation(), TeleportCause.PLUGIN );
-		
+
 		CompassTeleport.onPlayerJoin( event );
 		SaferSafeZones.onPlayerJoin( event );
 		FactionsUtil.removeFaction( event.getPlayer() );
@@ -148,10 +148,10 @@ public class PlayerListener extends BSPListener
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerQuit( final PlayerQuitEvent event ) {
 		FactionsUtil.addFaction( event.getPlayer() );
-		
-		BSPPlayer player = BSPPlayer.get( event.getPlayer() );
-		
-		if(player.isDefault())
+
+		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
+
+		if ( player.isDefault() )
 			player.detach();
 		else
 			player.collapse();

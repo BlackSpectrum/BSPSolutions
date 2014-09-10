@@ -84,13 +84,6 @@ public class BSPSolutions extends MassivePlugin
 
 
 
-	public static String getPluginName() {
-		return instance.getName();
-	}
-
-
-
-
 	public static boolean isClimbing( final Entity e ) {
 		final Material m = e.getLocation().getBlock().getType();
 		return !e.isOnGround() && m == Material.LADDER || m == Material.VINE;

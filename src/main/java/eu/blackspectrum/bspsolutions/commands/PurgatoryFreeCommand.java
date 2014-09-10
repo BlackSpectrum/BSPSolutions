@@ -46,14 +46,13 @@ public class PurgatoryFreeCommand extends MassiveCommand
 			}
 			target = players.get( 0 );
 		}
+		else if ( this.sender instanceof Player )
+			target = (Player) this.sender;
 		else
-			if(sender instanceof Player)
-				target = (Player) this.sender;
-			else
-			{
-				this.sendMessage( "Please specify a player." );
-				return;
-			}
+		{
+			this.sendMessage( "Please specify a player." );
+			return;
+		}
 
 		BSPPlayer.get( target ).freeFromPurgatory();
 	}
