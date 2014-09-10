@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -24,6 +25,7 @@ import eu.blackspectrum.bspsolutions.plugins.FMapPlugin;
 import eu.blackspectrum.bspsolutions.plugins.FalseAccessBlocker;
 import eu.blackspectrum.bspsolutions.plugins.FishFix;
 import eu.blackspectrum.bspsolutions.plugins.ForceOpen;
+import eu.blackspectrum.bspsolutions.plugins.Hats;
 import eu.blackspectrum.bspsolutions.plugins.Purgatory;
 import eu.blackspectrum.bspsolutions.plugins.SaferSafeZones;
 import eu.blackspectrum.bspsolutions.plugins.SpawnBed;
@@ -111,6 +113,20 @@ public class PlayerListener extends BSPListener
 			return;
 
 		AbandonPet.onPetHit( event );
+	}
+
+
+
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerInventoryClick( final InventoryClickEvent event ) {
+		// ************************
+		// Ignore cancelled
+		// ************************
+		if ( event.isCancelled() )
+			return;
+		
+		Hats.hatSwitch( event );
 	}
 
 

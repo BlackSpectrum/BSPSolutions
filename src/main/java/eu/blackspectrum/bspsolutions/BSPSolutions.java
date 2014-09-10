@@ -128,6 +128,8 @@ public class BSPSolutions extends MassivePlugin
 	public void onDisable() {
 		FMaps.get().collectGarbage();
 		FMaps.get().dump();
+
+		super.onDisable();
 	}
 
 
@@ -252,8 +254,6 @@ public class BSPSolutions extends MassivePlugin
 		new File( BSPSolutions.get().getDataFolder(), "pics" ).mkdirs();
 		new File( BSPSolutions.get().getDataFolder(), "maps" ).mkdirs();
 	}
-
-
 
 
 

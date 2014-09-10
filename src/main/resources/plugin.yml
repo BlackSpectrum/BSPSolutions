@@ -8,3 +8,5 @@ permissions:
     default: op
   BSP.admin:
     default: op
+  BSP.hatUse:
+    default: op
