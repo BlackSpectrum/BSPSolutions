@@ -1,14 +1,21 @@
 package eu.blackspectrum.bspsolutions;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -23,6 +30,7 @@ import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import eu.blackspectrum.bspsolutions.adapters.BedBoardAdapter;
 import eu.blackspectrum.bspsolutions.adapters.BedBoardMapAdapter;
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
+import eu.blackspectrum.bspsolutions.commands.Pic2MapCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
 import eu.blackspectrum.bspsolutions.entities.BSPBedColl;
@@ -45,6 +53,7 @@ import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 import eu.blackspectrum.bspsolutions.util.PacketUtil;
+import eu.blackspectrum.bspsolutions.util.PicIO;
 import eu.blackspectrum.bspsolutions.util.Translate;
 
 public class BSPSolutions extends MassivePlugin
@@ -137,6 +146,15 @@ public class BSPSolutions extends MassivePlugin
 		if ( !this.preEnable() )
 			return;
 
+		// Make directories
+		this.makeDirs();
+
+		// ***************************
+		// Migrate
+		// ***************************
+		this.migratePic2Map();
+		// ***************************
+
 		// ***************************
 		// SetUp config
 		// ***************************
@@ -213,7 +231,7 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Initialize misc
 		// ***************************
-		FMaps.get().init();
+		Maps.init();
 		// ***************************
 
 		// ***************************
@@ -222,6 +240,7 @@ public class BSPSolutions extends MassivePlugin
 		new PurgatoryCommand().register();
 		new BSPCommand().register();
 		new RandomTeleportCommand().register();
+		new Pic2MapCommand().register();
 		// ***************************
 
 		// ***************************
@@ -230,7 +249,47 @@ public class BSPSolutions extends MassivePlugin
 		PurgatoryCheckTask.get().activate( this );
 		GarbageCollectTask.get().activate( this );
 		// ***************************
+
 		this.postEnable();
+	}
+
+
+
+
+	private void makeDirs() {
+		new File( BSPSolutions.get().getDataFolder(), "pics" ).mkdirs();
+		new File( BSPSolutions.get().getDataFolder(), "maps" ).mkdirs();
+	}
+
+
+
+
+	private void migratePic2Map() {
+		final Yaml yaml = new Yaml( new SafeConstructor() );
+
+		final File maps = new File( "plugins" + File.separator + "Pic2Map" + File.separator + "maps.yml" );
+		this.log( "Migrating Pic2Map..." );
+		if ( maps.exists() )
+			// Read the maps and delete files
+			try
+			{
+				final FileInputStream in = new FileInputStream( maps );
+				@SuppressWarnings("unchecked")
+				final HashMap<Integer, String> mapsHm = (HashMap<Integer, String>) yaml.load( new UnicodeReader( in ) );
+				in.close();
+
+				maps.delete();
+				new File( "plugins" + File.separator + "Pic2Map" ).delete();
+
+				for ( final Entry<Integer, String> entry : mapsHm.entrySet() )
+					PicIO.loadImgageFromURL( entry.getValue(), entry.getKey().shortValue() );
+			}
+			catch ( final Exception e )
+			{
+				e.printStackTrace();
+			}
+		this.log( "...done!" );
+
 	}
 
 
