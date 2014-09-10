@@ -289,9 +289,9 @@ public class BSPSolutions extends MassivePlugin
 					PicIO.loadImgageFromURL( entry.getValue(), entry.getKey().shortValue() );
 			}
 
-
-			for ( File f : new File( getDataFolder(), "pics" ).listFiles() )
-				if ( f.isFile() && f.getName().endsWith( ".jpg" )){
+			for ( final File f : new File( this.getDataFolder(), "pics" ).listFiles() )
+				if ( f.isFile() && f.getName().endsWith( ".jpg" ) )
+				{
 					PicIO.saveImageToDisc( ImageIO.read( f ), Short.valueOf( f.getName().split( "_" )[1].split( "\\." )[0] ) );
 					f.delete();
 				}
