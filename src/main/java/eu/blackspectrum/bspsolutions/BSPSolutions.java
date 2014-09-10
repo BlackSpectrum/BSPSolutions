@@ -1,23 +1,15 @@
 package eu.blackspectrum.bspsolutions;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
-import javax.imageio.ImageIO;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-import org.yaml.snakeyaml.reader.UnicodeReader;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -55,7 +47,6 @@ import eu.blackspectrum.bspsolutions.tasks.PurgatoryCheckTask;
 import eu.blackspectrum.bspsolutions.util.FactionsUtil;
 import eu.blackspectrum.bspsolutions.util.LocationUtil;
 import eu.blackspectrum.bspsolutions.util.PacketUtil;
-import eu.blackspectrum.bspsolutions.util.PicIO;
 import eu.blackspectrum.bspsolutions.util.Translate;
 
 public class BSPSolutions extends MassivePlugin
@@ -154,7 +145,6 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 		// Migrate
 		// ***************************
-		this.migratePic2Map();
 		// ***************************
 
 		// ***************************
@@ -264,46 +254,6 @@ public class BSPSolutions extends MassivePlugin
 	}
 
 
-
-
-	private void migratePic2Map() {
-		final Yaml yaml = new Yaml( new SafeConstructor() );
-
-		final File maps = new File( "plugins" + File.separator + "Pic2Map" + File.separator + "maps.yml" );
-		this.log( "Migrating Pic2Map..." );
-		try
-		{
-			if ( maps.exists() )
-			{
-				// Read the maps and delete files
-
-				final FileInputStream in = new FileInputStream( maps );
-				@SuppressWarnings("unchecked")
-				final HashMap<Integer, String> mapsHm = (HashMap<Integer, String>) yaml.load( new UnicodeReader( in ) );
-				in.close();
-
-				maps.delete();
-				new File( "plugins" + File.separator + "Pic2Map" ).delete();
-
-				for ( final Entry<Integer, String> entry : mapsHm.entrySet() )
-					PicIO.loadImgageFromURL( entry.getValue(), entry.getKey().shortValue() );
-			}
-
-			for ( final File f : new File( this.getDataFolder(), "pics" ).listFiles() )
-				if ( f.isFile() && f.getName().endsWith( ".jpg" ) )
-				{
-					PicIO.saveImageToDisc( ImageIO.read( f ), Short.valueOf( f.getName().split( "_" )[1].split( "\\." )[0] ) );
-					f.delete();
-				}
-
-		}
-		catch ( final Exception e )
-		{
-			e.printStackTrace();
-		}
-		this.log( "...done!" );
-
-	}
 
 
 
