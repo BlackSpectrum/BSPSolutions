@@ -17,7 +17,7 @@ public class PicIO
 
 
 	public static Image getImage( final short id ) throws Exception {
-		final File file = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".jpg" );
+		final File file = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".png" );
 
 		if ( !file.exists() )
 			throw new Exception( "ERROR: No picture saved for this map" );
@@ -39,7 +39,7 @@ public class PicIO
 
 
 	public static boolean isPicture( final short id ) {
-		final File file = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".jpg" );
+		final File file = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".png" );
 		return file.exists();
 	}
 
@@ -88,14 +88,14 @@ public class PicIO
 
 		final RenderedImage renderedImage = bufferedImage;
 
-		final File output = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".jpg" );
+		final File output = new File( BSPSolutions.get().getDataFolder(), "pics" + File.separator + "mapPic_" + id + ".png" );
 
 		try
 		{
 			if ( !output.exists() )
 				output.createNewFile();
 
-			ImageIO.write( renderedImage, "jpg", output );
+			ImageIO.write( renderedImage, "png", output );
 		}
 		catch ( final IOException e )
 		{

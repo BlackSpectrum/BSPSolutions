@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
@@ -269,10 +271,12 @@ public class BSPSolutions extends MassivePlugin
 
 		final File maps = new File( "plugins" + File.separator + "Pic2Map" + File.separator + "maps.yml" );
 		this.log( "Migrating Pic2Map..." );
-		if ( maps.exists() )
-			// Read the maps and delete files
-			try
+		try
+		{
+			if ( maps.exists() )
 			{
+				// Read the maps and delete files
+
 				final FileInputStream in = new FileInputStream( maps );
 				@SuppressWarnings("unchecked")
 				final HashMap<Integer, String> mapsHm = (HashMap<Integer, String>) yaml.load( new UnicodeReader( in ) );
@@ -284,10 +288,19 @@ public class BSPSolutions extends MassivePlugin
 				for ( final Entry<Integer, String> entry : mapsHm.entrySet() )
 					PicIO.loadImgageFromURL( entry.getValue(), entry.getKey().shortValue() );
 			}
-			catch ( final Exception e )
-			{
-				e.printStackTrace();
-			}
+
+
+			for ( File f : new File( getDataFolder(), "pics" ).listFiles() )
+				if ( f.isFile() && f.getName().endsWith( ".jpg" )){
+					PicIO.saveImageToDisc( ImageIO.read( f ), Short.valueOf( f.getName().split( "_" )[1].split( "\\." )[0] ) );
+					f.delete();
+				}
+
+		}
+		catch ( final Exception e )
+		{
+			e.printStackTrace();
+		}
 		this.log( "...done!" );
 
 	}
