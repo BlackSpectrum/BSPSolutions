@@ -211,7 +211,14 @@ public class BSPSolutions extends MassivePlugin
 
 			@Override
 			public void onPacketReceiving( final PacketEvent event ) {
-				Translate.incoming( event.getPacket(), BSPPlayer.get( event.getPlayer() ) );
+				try
+				{
+					Translate.incoming( event.getPacket(), BSPPlayer.get( event.getPlayer() ) );
+				}
+				catch ( Exception e )
+				{
+					event.setCancelled( true );
+				}
 			}
 		} );
 		// ***************************
