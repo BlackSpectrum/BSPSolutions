@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -70,6 +71,21 @@ public class PlayerListener extends BSPListener
 
 
 
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerKicked( PlayerKickEvent event ) {
+		FactionsUtil.addFaction( event.getPlayer() );
+
+		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
+
+		if ( player.isDefault() )
+			player.detach();
+		else
+			player.collapse();
+	}
+
+
+
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerFish( final PlayerFishEvent event ) {
 		// ************************
@@ -125,7 +141,7 @@ public class PlayerListener extends BSPListener
 		// ************************
 		if ( event.isCancelled() )
 			return;
-		
+
 		Hats.hatSwitch( event );
 	}
 
@@ -142,6 +158,10 @@ public class PlayerListener extends BSPListener
 		SaferSafeZones.onPlayerJoin( event );
 		FactionsUtil.removeFaction( event.getPlayer() );
 		Purgatory.onPlayerJoin( event );
+
+		final BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
+
+		bspPlayer.collapse();
 	}
 
 
