@@ -143,10 +143,6 @@ public class PlayerListener extends BSPListener
 		SaferSafeZones.onPlayerJoin( event );
 		FactionsUtil.removeFaction( event.getPlayer() );
 		Purgatory.onPlayerJoin( event );
-
-		final BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
-
-		bspPlayer.collapse();
 	}
 
 

@@ -3,6 +3,7 @@ package eu.blackspectrum.bspsolutions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -16,14 +17,18 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.Aspect;
 import com.massivecraft.massivecore.AspectColl;
 import com.massivecraft.massivecore.MassivePlugin;
+import com.massivecraft.massivecore.cmd.MassiveCommand;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 
 import eu.blackspectrum.bspsolutions.adapters.BedBoardAdapter;
 import eu.blackspectrum.bspsolutions.adapters.BedBoardMapAdapter;
 import eu.blackspectrum.bspsolutions.commands.BSPCommand;
+import eu.blackspectrum.bspsolutions.commands.FactionsPermCommand;
+import eu.blackspectrum.bspsolutions.commands.InfoCommand;
 import eu.blackspectrum.bspsolutions.commands.Pic2MapCommand;
 import eu.blackspectrum.bspsolutions.commands.PurgatoryCommand;
 import eu.blackspectrum.bspsolutions.commands.RandomTeleportCommand;
@@ -242,6 +247,12 @@ public class BSPSolutions extends MassivePlugin
 		new BSPCommand().register();
 		new RandomTeleportCommand().register();
 		new Pic2MapCommand().register();
+
+		final File folder = new File( this.getDataFolder(), "infos" );
+		for ( final File f : folder.listFiles() )
+			if ( f.isFile() )
+				new InfoCommand( f.getName().split( "\\." )[0] ).register();
+
 		// ***************************
 
 		// ***************************
@@ -251,6 +262,25 @@ public class BSPSolutions extends MassivePlugin
 		GarbageCollectTask.get().activate( this );
 		// ***************************
 
+		// ***************************
+		// Replace factions perms command with custom one
+		// ***************************
+		final Iterator<MassiveCommand> it = Factions.get().getOuterCmdFactions().getSubCommands().iterator();
+
+		while ( it.hasNext() )
+		{
+			final MassiveCommand cmd = it.next();
+
+			if ( cmd == Factions.get().getOuterCmdFactions().cmdFactionsPerm )
+			{
+				it.remove();
+				break;
+			}
+		}
+
+		Factions.get().getOuterCmdFactions().addSubCommand( new FactionsPermCommand() );
+		// ***************************
+
 		this.postEnable();
 	}
 
@@ -258,8 +288,9 @@ public class BSPSolutions extends MassivePlugin
 
 
 	private void makeDirs() {
-		new File( BSPSolutions.get().getDataFolder(), "pics" ).mkdirs();
-		new File( BSPSolutions.get().getDataFolder(), "maps" ).mkdirs();
+		new File( this.getDataFolder(), "pics" ).mkdirs();
+		new File( this.getDataFolder(), "maps" ).mkdirs();
+		new File( this.getDataFolder(), "infos" ).mkdirs();
 	}
 
 
