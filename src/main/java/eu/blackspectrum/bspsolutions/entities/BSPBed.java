@@ -48,20 +48,30 @@ public class BSPBed extends Entity<BSPBed>
 
 
 	public Location getSpawnLocation() {
-		final Block bed = this.location.asBukkitBlock().getRelative( BlockFace.UP );
+		
 
-		for ( final BlockFace face : new BlockFace[] { BlockFace.SELF, BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH,
+		final Block bed = this.location.asBukkitBlock();
+		
+		// Check if can spawn on bed
+		if ( LocationUtil.isLocationSafe( bed.getLocation().add( 0, 1, 0 ) ) )
+			return bed.getLocation().add( 0.5f, 0.5f, 0.5f );
+
+		
+		
+		for ( final BlockFace face : new BlockFace[] { BlockFace.EAST, BlockFace.NORTH_EAST, BlockFace.NORTH,
 				BlockFace.NORTH_WEST, BlockFace.WEST, BlockFace.SOUTH_WEST, BlockFace.SOUTH, BlockFace.SOUTH_EAST } )
 		{
 			final Block block = bed.getRelative( face );
-			if ( !LocationUtil.isLocationSafe( block.getLocation() ) )
-				continue;
+
+			if ( LocationUtil.isLocationSafe( block.getLocation() ) )
+				return block.getLocation().add( 0.5d, 0, 0.5d );
+			
 
 			if ( LocationUtil.isLocationSafe( block.getRelative( BlockFace.DOWN ).getLocation() ) )
 				return block.getLocation().add( 0.5d, -0.5d, 0.5d );
 
 			if ( LocationUtil.isLocationSafe( block.getRelative( BlockFace.UP ).getLocation() ) )
-				return block.getLocation().add( 0.5d, 0, 0.5d );
+				return block.getLocation().add( 0.5d, 1, 0.5d );
 		}
 
 		return null;
