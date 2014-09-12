@@ -71,21 +71,6 @@ public class PlayerListener extends BSPListener
 
 
 
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPlayerKicked( PlayerKickEvent event ) {
-		FactionsUtil.addFaction( event.getPlayer() );
-
-		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
-
-		if ( player.isDefault() )
-			player.detach();
-		else
-			player.collapse();
-	}
-
-
-
-
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerFish( final PlayerFishEvent event ) {
 		// ************************
@@ -162,6 +147,21 @@ public class PlayerListener extends BSPListener
 		final BSPPlayer bspPlayer = BSPPlayer.get( event.getPlayer() );
 
 		bspPlayer.collapse();
+	}
+
+
+
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onPlayerKicked( final PlayerKickEvent event ) {
+		FactionsUtil.addFaction( event.getPlayer() );
+
+		final BSPPlayer player = BSPPlayer.get( event.getPlayer() );
+
+		if ( player.isDefault() )
+			player.detach();
+		else
+			player.collapse();
 	}
 
 

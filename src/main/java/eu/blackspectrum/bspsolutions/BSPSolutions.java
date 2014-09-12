@@ -215,7 +215,7 @@ public class BSPSolutions extends MassivePlugin
 				{
 					Translate.incoming( event.getPacket(), BSPPlayer.get( event.getPlayer() ) );
 				}
-				catch ( Exception e )
+				catch ( final Exception e )
 				{
 					event.setCancelled( true );
 				}
