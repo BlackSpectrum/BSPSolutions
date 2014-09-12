@@ -20,7 +20,7 @@ public class FactionsPermCommand extends FCommand
 
 
 	private static final Rel[]		RELS				= { Rel.ENEMY, Rel.NEUTRAL, Rel.ALLY, Rel.TRUCE };
-	private static final FPerm[]	REL_DEPENDENT_PERMS	= { FPerm.BUTTON, FPerm.LEVER, FPerm.PAINBUILD, FPerm.CONTAINER };
+	private static final FPerm[]	REL_DEPENDENT_PERMS	= { FPerm.BUTTON, FPerm.LEVER, FPerm.CONTAINER };
 	private static final FPerm[]	UNUSED_PERMS		= { FPerm.SETHOME, FPerm.WITHDRAW };
 
 
