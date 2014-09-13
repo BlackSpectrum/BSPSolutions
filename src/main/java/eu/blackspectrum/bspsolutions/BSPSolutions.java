@@ -176,6 +176,12 @@ public class BSPSolutions extends MassivePlugin
 		// ***************************
 
 		// ***************************
+		// Clean BedBoard, shouldnt be needed often
+		// ***************************
+		for ( final BedBoard board : BedBoardColl.get().getAll() )
+			board.clean();
+
+		// ***************************
 		// Register listener
 		// ***************************
 		PlayerListener.get().register();

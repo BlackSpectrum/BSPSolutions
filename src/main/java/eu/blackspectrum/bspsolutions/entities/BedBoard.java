@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.massivecore.ps.PS;
 import com.massivecraft.massivecore.store.Entity;
 import com.massivecraft.massivecore.xlib.gson.reflect.TypeToken;
@@ -31,6 +32,25 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 
 	public BedBoard(final Map<PS, String> map) {
 		this.map = new ConcurrentSkipListMap<PS, String>( map );
+	}
+
+
+
+
+	public void clean() {
+		final BSPBedColl bedColl = BSPBedColl.get();
+
+		for ( final Entry<PS, String> entry : this.map.entrySet() )
+		{
+			final String bedId = entry.getValue();
+			if ( bedColl.containsId( bedId ) )
+				continue;
+
+			final PS ps = entry.getKey();
+			this.removeBedAt( ps );
+
+			Factions.get().log( "Board cleaner removed " + bedId + " from " + ps );
+		}
 	}
 
 
@@ -109,9 +129,8 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 		{
 			bed.getOwner().setBed( null );
 			bed.detach();
-			this.map.remove( ps );
 		}
-
+		this.map.remove( ps.getBlockCoords( true ) );
 	}
 
 
@@ -128,5 +147,4 @@ public class BedBoard extends Entity<BedBoard> implements IBedBoard
 			this.map.put( ps, bed.getId() );
 
 	}
-
 }
